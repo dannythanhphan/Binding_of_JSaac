@@ -93,13 +93,13 @@ router.post("/login", (req, res) => {
     });
 });
 
-// router.get("/current", passport.authenticate("jwt", { session: false }),
-//     (req, res) => {
-//         res.json({
-//             id: req.user.id,
-//             username: req.user.username,
-//         });
-//     }
-// );
+router.get("/current", passport.authenticate("jwt", { session: false }),
+    (req, res) => {
+        res.json({
+            id: req.user.id,
+            username: req.user.username,
+        });
+    }
+);
 
 module.exports = router;
