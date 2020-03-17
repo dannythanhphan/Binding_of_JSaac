@@ -25,7 +25,11 @@ router.post("/create",
             return res.status(400).json(errors);
         };
 
-        const newCharacter = new Character({name: req.body.name})
+        const newCharacter = new Character({
+            name: req.body.name,
+            user: req.user.id
+        })
+
         newCharacter.save()
         .then(character => res.json(character))
         .catch(err => {

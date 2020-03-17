@@ -16,6 +16,6 @@ module.exports = function validateCharacterCreation(data) {
 
     return {
         errors,
-        isValid: Object.kets(errors).length === 0
+        isValid: Object.keys(errors).length === 0
     };
 };
