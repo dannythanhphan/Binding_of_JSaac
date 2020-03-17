@@ -23,61 +23,90 @@ router.post("/create",
             else {
                 const newLobby = new Lobby({
                     lobbykey: lobbykey,
-                    owner: req.user.id,
+                    player1: req.user.id,
                     active: true
                 });
-                newLobby.save().then(lobby => res.json(lobby)).catch(err=>console.log(err));
+                newLobby.save().then(lobby => res.json(lobby)).catch(err => console.log(err));
             }
         });
     }
 );
 
+router.post("/join/:id", 
+    passport.authenticate('jwt', { session: false }), (req, res) => {
 
-// router.post("/join", (req, res) => {
-//     const { errors, isValid } = validateLoginInput(req.body);
+    Lobby.findOne({lobbykey: req.params.id})
+        .then(lobby => {
+            if (lobby.player1 && lobby.player2) {
+                return res.status(400).json({lobbyfull: 'This lobby is full!'})
+            }
+            else {
+                if (lobby.player1 && lobby.player1.toString() !== req.params.id) {
+                    Lobby.findOneAndUpdate(
+                        { lobbykey: req.params.id},
+                        {
+                            $set: { player2: req.user.id },
+                            $currentDate: { lastModified: true }
+                        },
+                        {new: true}
+                    )
+                    .then( lobby => res.json(lobby) )
+                    .catch( err => console.log(err) );
+                }
+                else if (lobby.player2 && lobby.player2.toString() !== req.params.id) {
+                    Lobby.findOneAndUpdate(
+                        { lobbykey: req.params.id},
+                        {
+                            $set: { player1: req.user.id },
+                            $currentDate: { lastModified: true }
+                        },
+                        {new: true}
+                    )
+                    .then( lobby => res.json(lobby) )
+                    .catch( err => console.log(err) );
+                }
+            }
+        })
+        .catch(err => res.status(404).json({
+            nolobbiesfound: 'No lobbies with this key exist!' }));
+});
 
-//     if (!isValid) {
-//         return res.status(400).json(errors);
-//     }
+router.delete("/leave/:id",
+    passport.authenticate('jwt', { session: false }), (req, res) => {
+    
+    Lobby.findOne({lobbykey: req.params.id})
+        .then(lobby => {
+            if (lobby.player1 && lobby.player1.toString() === req.user.id) {
+                    Lobby.findOneAndUpdate(
+                        { lobbykey: req.params.id},
+                        {
+                            $unset: { player1: "" },
+                            $currentDate: { lastModified: true }
+                        },
+                        { new: true }
+                    )
+                    .then( lobby => res.json(lobby) )
+                    .catch( err => console.log(err) );
+            }
+            else if (lobby.player2 && lobby.player2.toString() === req.user.id) {
+                    Lobby.findOneAndUpdate(
+                        { lobbykey: req.params.id},
+                        {
+                            $unset: { player2: "" },
+                            $currentDate: { lastModified: true }
+                        },
+                        { new: true }
+                    )
+                    .then( lobby => res.json(lobby) )
+                    .catch( err => console.log(err) );
+            }
+            else {
+                return res.status(400).json({ nothing: 'This lobby does not contain this player' })
+            }
+        })
+        .catch(err => res.status(404).json({
+            nolobbiesfound: 'No lobbies with this key exist!' }));    
+});
 
-//     const username = req.body.username;
-//     const password = req.body.password;
-
-//     User.findOne({ username }).then(user => {
-//         if (!user) {
-//             errors.username = "User not found";
-//             return res.status(404).json(errors);
-//         }
-
-//         bcrypt.compare(password, user.password).then(isMatch => {
-//             if (isMatch) {
-//                 const payload = { id: user.id, handle: user.handle };
-//                 jwt.sign(
-//                     payload,
-//                     keys.secretOrKey,
-//                     { expiresIn: 3600 },
-//                     (err, token) => {
-//                         res.json({
-//                             success: true,
-//                             token: "Bearer " + token
-//                         });
-//                     }
-//                 );
-//             } else {
-//                 errors.password = "Incorrect password";
-//                 return res.status(400).json(errors);
-//             }
-//         });
-//     });
-// });
-
-// router.get("/current", passport.authenticate("jwt", { session: false }),
-//     (req, res) => {
-//         res.json({
-//             id: req.user.id,
-//             username: req.user.username,
-//         });
-//     }
-// );
 
 module.exports = router;

@@ -1,13 +1,11 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const LobbySchema = new Schema({
-    owner: {
+    player1: {
         type: Schema.Types.ObjectId,
-        ref: 'users',
-        required: true,
-        index: true
+        ref: 'users'
     },
-    player: {
+    player2: {
         type: Schema.Types.ObjectId,
         ref: 'users'
     },
@@ -16,10 +14,10 @@ const LobbySchema = new Schema({
     //     required: true,
     //     index: true
     // },
-    active: {
-        type: Boolean,
-        required: true
-    },
+    // active: {
+    //     type: Boolean,
+    //     required: true
+    // },
     lobbykey: {
         type: String,
         required: true,
