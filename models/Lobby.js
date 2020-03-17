@@ -11,14 +11,22 @@ const LobbySchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'users'
     },
-    lobbyname: {
+    // lobbyname: {
+    //     type: String,
+    //     required: true,
+    //     index: true
+    // },
+    active: {
+        type: Boolean,
+        required: true
+    },
+    lobbykey: {
         type: String,
         required: true,
         index: true
     },
     password: {
         type: String,
-        required: true
     },
     date: {
         type: Date,
