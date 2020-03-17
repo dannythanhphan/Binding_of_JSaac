@@ -31,4 +31,4 @@ const charactersReducer = (state = initialState, action) => {
     }
 };
 
-export default characterReducer;
+export default charactersReducer;

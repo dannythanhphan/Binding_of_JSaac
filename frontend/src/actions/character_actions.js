@@ -9,7 +9,7 @@ export const receiveCharacter = character => ({
     character
 });
 
-export const receiveCharacters = characters ({
+export const receiveCharacters = characters => ({
     type: RECEIVE_CHARACTERS,
     characters
 });
