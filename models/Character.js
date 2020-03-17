@@ -42,11 +42,15 @@ const CharacterSchema = new Schema({
         type: Number,
         default: 0,
     },
+    availableStatPoints: {
+        type: Number,
+        default: 0,
+    },
     user: {
         type: Schema.Types.ObjectId,
         ref: 'users'
     },
-    // add lobby and items later
+    // add lobby and items later, possibly add crits
 });
 
 module.exports = Character = mongoose.model('characters', CharacterSchema);

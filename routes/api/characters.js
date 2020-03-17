@@ -11,7 +11,7 @@ router.get('/user/:id', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-    Chracter.findById(req.params.id)
+    Character.findById(req.params.id)
     .then(character => res.json(character))
     .catch(err => res.status(404).json({ noCharacter: "No character found."}))
 })
@@ -44,4 +44,6 @@ router.delete("/death/:id",
             errors.creation = "Something went wrong.";
             return res.status(400).json(errors);
         })
-})
+});
+
+module.exports = router;
