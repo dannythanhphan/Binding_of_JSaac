@@ -38,6 +38,10 @@ const CharacterSchema = new Schema({
         type: Number,
         default: 1,
     },
+    defense: {
+        type: Number,
+        default: 0,
+    },
     user: {
         type: Schema.Types.ObjectId,
         ref: 'users'
