@@ -4,11 +4,11 @@ const validateCharacterCreation = require("../../validation/character_creation")
 const router = express.Router();
 const passport = require('passport');
 
-// router.get('/user/:id', (req, res) => {
-//     Character.find({user: req.params.id})
-//     .then(characters => res.json(characters))
-//     .catch(err => res.status(404).json({ noCharacters: "No characters found." }));
-// });
+router.get('/:userId', (req, res) => {
+    Character.find({user: req.params.userId})
+    .then(characters => res.json(characters))
+    .catch(err => res.status(404).json({ noCharacters: "No characters found." }));
+});
 
 router.get('/:id', (req, res) => {
     Character.findById(req.params.id)
