@@ -4,11 +4,11 @@ const validateCharacterCreation = require("../../validation/character_creation")
 const router = express.Router();
 const passport = require('passport');
 
-router.get('/user/:id', (req, res) => {
-    Character.find({user: req.params.id})
-    .then(characters => res.json(characters))
-    .catch(err => res.status(404).json({ noCharacters: "No characters found." }));
-});
+// router.get('/user/:id', (req, res) => {
+//     Character.find({user: req.params.id})
+//     .then(characters => res.json(characters))
+//     .catch(err => res.status(404).json({ noCharacters: "No characters found." }));
+// });
 
 router.get('/:id', (req, res) => {
     Character.findById(req.params.id)
@@ -41,8 +41,8 @@ router.post("/create",
 router.delete("/death/:id", 
     passport.authenticate('jwt', { session: false }),
     (req, res) => {
-        dedCharacter = Chracter.findById(req.params.id);
-        dedCharacter.destroy()
+        dedCharacter = Character.findById(req.params.id);
+        dedCharacter.deleteOne()
         .then(() => res.json({ dedCharacter: "Character has died." }))
         .catch(err => {
             errors.creation = "Something went wrong.";
