@@ -1,6 +1,6 @@
 const express = require("express");
 const Character = require("../../models/Character");
-const validateCharactcerCreation = require("../../validation/character_creation");
+const validateCharacterCreation = require("../../validation/character_creation");
 const router = express.Router();
 const passport = require('passport');
 
@@ -19,7 +19,7 @@ router.get('/:id', (req, res) => {
 router.post("/create", 
     passport.authenticate('jwt', { session: false }), 
     (req, res) => {
-        const { errors, isValid } = validateCharactcerCreation(req.body);
+        const { errors, isValid } = validateCharacterCreation(req.body);
 
         if (!isValid) {
             return res.status(400).json(errors);
