@@ -1,12 +1,9 @@
 .session-page-session-form {
     position: absolute;
-    top: 33%;
-    left: 36.4%;
-    height: 300px;
-    width: 500px;
-    /* background-image: url("./session_picture1.jpg");
-    filter: grayscale(80%);
-    background-size: cover; */
+    /* height: 170px; */
+    top: 35%;
+    left: 33%;
+    width: 33%;
     border-radius: 8px;
 }
 
@@ -17,113 +14,69 @@
     width: 100%;
     height: 100%;
     position: absolute;
-    background-color: rgb(158, 157, 157);
-    /* background-image: url("./session_picture1.jpg"); */
-    /* filter: opacity(80%); */
-    /* background-size: cover; */
-    border-radius: 8px;
+    background-color: #EEEFF1;
+    filter: opacity(70%);
+    border-radius: 0 0 8px 8px;
 }
 
 .session-form {
-    margin-top: 20%;
+    margin-top: 16%;
     text-align: center;
-    /* color: white; */
     font-size: 16px;
     height: 50%;
     font-weight: bold;
     position: relative;
+    display: flex;
+    justify-content: center;
 }
 
-.username-label {
+.session-form label {
     font-size: 18px;
+    display: block;
 }
 
-.password-label {
-    font-size: 18px;
-}
-
-.confirm-password-label {
-    font-size: 18px;
-
+.session-form input {
+    border-radius: 5px;
+    padding: 5px;
+    margin-left: 10px;
+    margin-top: -3px;
+    width: 60%;
+    background-color: #EEEFF1;
+    float: right;
 }
 
 .session-login-signup-buttons {
-    margin-top: 5%;
+    margin-top: 10%;
+    margin-bottom: 20px;
+    display: flex;
+    align-content: space-between;
 }
 
-::placeholder {
-    color: black;
-}
-
-input:focus::placeholder {
-    color: transparent;
-}
-
-input.session-inputs {
-    margin-left: 1%;
-    background-color: transparent;
-    border: none;
-    /* border-bottom: 1px solid black; */
-    outline: none;
-}
-
-input.confirm-session-input {
-    margin-left: 4.5%;
-    background-color: transparent;
-    border: none;
-    /* border-bottom: 1px solid black; */
-    outline: none;
-}
-
-.session-button {
+.session-login-signup-buttons button,
+.session-login-signup-buttons a {
     font-size: 18px;
     background-color: transparent;
     border: 2px solid rgb(62, 84, 114);
     color:rgb(62, 84, 114);
     transition-duration: 0.4s;
-    padding: 2%;
     cursor: pointer;
     font-weight: bold;
+    border-radius: 4px;
+    width: 150px;
+}
+
+.session-login-signup-buttons button {
     margin-right: 5%;
-    width: 25%;
-    border-radius: 4px;
 }
 
-.session-button:hover {
-    background-color: rgb(62, 84, 114); /* Green */
-    color: white;
-}
-
-.session-home-button {
-    border: 2px solid rgb(62, 84, 114);
+.session-login-signup-buttons a {
     text-decoration: none;
-    color:rgb(62, 84, 114);
-    transition-duration: 0.4s;
-    font-size: 18px;
-    padding: 2.1%;
-    padding-left: 5%;
-    padding-right: 5%;
-    border-radius: 4px;
+    padding: 2.1% 0%;
+    margin-right: 0;
 }
 
-.session-home-button:hover {
-    background-color: rgb(62, 84, 114); /* Green */
-    color: white;
-}
-
-.login-signup-button {
-    border: 2px solid rgb(62, 84, 114);
-    text-decoration: none;
-    color:rgb(62, 84, 114);
-    transition-duration: 0.4s;
-    font-size: 18px;
-    padding: 2.1%;
-    padding-left: 5%;
-    padding-right: 5%;
-    border-radius: 4px;
-}
-
-.login-signup-button:hover {
-    background-color: rgb(62, 84, 114); /* Green */
+.session-login-signup-buttons button:hover,
+.session-login-signup-buttons a:hover {
+    background-color: rgb(62, 84, 114); 
     color: white;
 }

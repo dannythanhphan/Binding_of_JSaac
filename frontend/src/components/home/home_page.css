@@ -7,22 +7,19 @@
 }
 
 .home-logo-image {
-    width: 425px;
-    height: 200px;
+    width: 33%;
     position: absolute;
-    left: 38%;
-    top: 12%;
+    left: 33%;
+    top: 17%;
+    z-index: 3;
 }
 
 .home-page-session-form {
     position: absolute;
-    top: 33%;
-    left: 36.4%;
-    height: 300px;
-    width: 500px;
-    /* background-image: url("./session_picture1.jpg");
-    filter: grayscale(80%);
-    background-size: cover; */
+    height: 170px;
+    top: 35%;
+    left: 33%;
+    width: 33%;
     border-radius: 8px;
 }
 
@@ -33,17 +30,14 @@
     width: 100%;
     height: 100%;
     position: absolute;
-    background-color: rgb(158, 157, 157);
-    /* background-image: url("./session_picture1.jpg"); */
-    filter: opacity(90%);
-    /* background-size: cover; */
-    border-radius: 8px;
+    background-color: #EEEFF1;
+    filter: opacity(70%);
+    border-radius: 0 0 8px 8px;
 }
 
 .home-page-welcome {
-    margin-top: 20%;
+    margin-top: 16%;
     text-align: center;
-    /* color: white; */
     font-size: 22px;
     height: 50%;
     font-weight: bold;
@@ -51,66 +45,32 @@
 }
 
 .home-page-session-buttons {
-    margin-top: 8%;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
 }
 
-.home-page-login-button {
+.home-page-session-buttons button {
+    display: block;
     border: 2px solid  rgb(62, 84, 114);
     background-color: transparent;
-    cursor: pointer;
-    padding: 2%;
-    padding-bottom: 3%;
-    border-radius: 4px;
-    margin-right: 4%;
     transition-duration: 0.4s;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 5px;
+    width: 175px;
+    cursor: pointer;
 }
 
-.home-page-login-button:hover {
-    background-color: rgb(62, 84, 114); /* Green */
-}
-
-.home-page-login-button:hover .home-page-login-button-text {
+.home-page-session-buttons button:hover {
+    background-color: rgb(62, 84, 114);
     color: white;
 }
 
+.home-page-login-button,
 .home-page-signup-button {
-    border: 2px solid  rgb(62, 84, 114);
-    background-color: transparent;
-    cursor: pointer;
-    padding: 2%;
-    padding-bottom: 3%;
-    border-radius: 4px;
-    transition-duration: 0.4s;
-}
-
-.home-page-signup-button:hover {
-    background-color: rgb(62, 84, 114); /* Green */
-}
-
-.home-page-signup-button:hover .home-page-signup-button-text {
-    color: white;
-}
-
-.home-page-login-button-text {
     text-decoration: none;
-    color:  rgb(62, 84, 114);
-    font-size: 16px;
-    font-weight: bold;
-    background-color: transparent;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    width: 25%;
-}
-
-.home-page-signup-button-text {
-    text-decoration: none;
-    color:  rgb(62, 84, 114);
-    font-size: 16px;
-    font-weight: bold;
-    background-color: transparent;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    width: 25%;
 }
