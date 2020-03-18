@@ -53,7 +53,7 @@ const CharacterSchema = new Schema({
     characterSprite: {
         type: Number
     }
-    // add lobby and items later, possibly add crits
+    // add items later, possibly add crits
 });
 
 module.exports = Character = mongoose.model('characters', CharacterSchema);

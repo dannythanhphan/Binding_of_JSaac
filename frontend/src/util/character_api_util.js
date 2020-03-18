@@ -4,8 +4,12 @@ export const getCharacter = id => (
     axios.get(`/api/characters/${id}`)
 );
 
-export const getCharacters = userId => (
-    axios.get(`/api/characters/${userId}`)
+export const getMyCharacters = userId => (
+    axios.get(`/api/characters/user/${userId}`)
+);
+
+export const getGameCharacters = lobbykey => (
+    axios.get(`/api/characters/lobby/${lobbykey}`)
 );
 
 export const createCharacter = data => (

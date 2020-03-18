@@ -5,18 +5,20 @@ import {
 
 const initialState = {};
 
-const lobbiesReducer = (state = initialState, action) => {
+const lobbyReducer = (state = initialState, action) => {
     Object.freeze(state);
     const newState = Object.assign({}, state);
 
     switch (action.type) {
-        // case RECEIVE_LOBBY:
+        case RECEIVE_LOBBY:
+            return action.lobby;
 
-        // case REMOVE_CHARACTER:
+        case REMOVE_LOBBY:
+            return initialState;
     
         default:
             return state;
     }
 };
 
-export default lobbiesReducer;
+export default lobbyReducer;
