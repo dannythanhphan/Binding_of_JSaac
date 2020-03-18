@@ -5,6 +5,7 @@ import configureStore from './store/store';
 import jwt_decode from 'jwt-decode';
 import { setAuthToken } from './util/session_api_util';
 import { logout } from './actions/session_actions';
+import { create, join } from './actions/lobby_actions';
 
 document.addEventListener('DOMContentLoaded', () => {
   let store;
@@ -29,6 +30,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     store = configureStore({});
   }
+  window.create = create;
+  window.join = join;
+  window.dispatch = store.dispatch;
 
   const root = document.getElementById('root');
 

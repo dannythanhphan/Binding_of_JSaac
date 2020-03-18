@@ -1,17 +1,25 @@
 const Lobby = require("./models/Lobby");
 const socket_io = require("socket.io");
 const io = socket_io();
+io.listen(8000);
 const watchLobbies = () => {
     const changeStream = Lobby.watch();
 
+    const lobby = io.of(`/lobby`);
+
+
+    lobby.on('connection', (socket) => {
+        socket.on('room', (room) => {
+            socket.join(room);
+        })
+
+    })
+
     changeStream.on("change", change => {
-        console.log(change.fullDocument); // You could parse out the needed info and send only that data.
-        const lobby = io.of(`/lobby`);
         setInterval( () => {
             lobby.to(change.fullDocument.lobbykey).emit("changeLobbyData", "blah");
-        }, 2000)
+        }, 1000)
     });
-
 
 };
 

@@ -27,7 +27,9 @@ router.post("/create",
                     player1: req.user.id,
                     active: true
                 });
-                newLobby.save().then(lobby => res.json(lobby)).catch(err => console.log(err));
+                newLobby.save().then(lobby => {
+                    res.json(lobby) })
+                    .catch(err => console.log(err));
             }
         });
     }
