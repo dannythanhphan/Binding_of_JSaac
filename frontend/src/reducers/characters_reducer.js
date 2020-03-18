@@ -12,7 +12,7 @@ const charactersReducer = (state = initialState, action) => {
 
     switch (action.type) {
         case RECEIVE_CHARACTERS:
-            Object.keys(action.characters)
+            action.characters.data
             .forEach(character => (
                 newState[character._id] = character
             ))

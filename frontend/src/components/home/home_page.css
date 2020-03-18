@@ -11,7 +11,7 @@
     position: absolute;
     left: 33%;
     top: 17%;
-    z-index: 3;
+    z-index: 1;
 }
 
 .home-page-session-form {
