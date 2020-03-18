@@ -50,6 +50,9 @@ const CharacterSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'users'
     },
+    characterSprite: {
+        type: Number
+    }
     // add items later, possibly add crits
 });
 

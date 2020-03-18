@@ -1,0 +1,80 @@
+.main-page {
+    background-color: rgb(35, 35, 35);
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+}
+
+.main-character-info {
+    height: 92%;
+    width: 75%;
+    background-color: #EEEFF1;
+    margin-left: 2%;
+    margin-top: 2%;
+    margin-right: 2%;
+}
+
+.main-character-select-side-bar {
+    background-color: transparent;
+    width: 25%;
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5%;
+    font-family: 'Oxanium', cursive;
+    font-weight: bold;
+
+}
+
+.side-bar-character-box {
+    width: 95%;
+    height: 13%;
+    background-color: white;
+    display: flex;
+    border-radius: 4px;
+}
+
+.side-bar-character-box:hover {
+    box-shadow: 0 0 15px -2px rgb(167, 162, 162);
+}
+
+.character-avatar-image {
+    width: 95%;
+    height: 75%;
+}
+
+.side-bar-character-image {
+    display: flex;
+    flex-direction: column;
+    background-size: cover;
+    margin-left: 2%;
+    margin-top: 2%;
+}
+
+.side-bar-character-info {
+    width: 100%;
+    margin-top: 1.5%;
+}
+
+.character-name-level {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2%;
+}
+
+.character-name {
+    font-size: 18px;
+    font-weight: 1000;
+}
+
+.side-bar-character-stats {
+    display: flex;
+    padding-left: 14%;
+}
+
+.character-stats {
+    display: flex;
+    flex-direction: column;
+    margin-right: 10%;
+    text-align: center;
+}

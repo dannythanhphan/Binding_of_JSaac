@@ -37,7 +37,8 @@ router.post("/create",
 
         const newCharacter = new Character({
             name: req.body.name,
-            user: req.user.id
+            user: req.user.id,
+            characterSprite: req.body.characterSprite
         })
 
         newCharacter.save()

@@ -17,7 +17,7 @@ const charactersReducer = (state = initialState, action) => {
     switch (action.type) {
         case RECEIVE_MY_CHARACTERS:
             newState['myCharacters'] = {};
-            Object.keys(action.characters)
+            Object.keys(action.characters.data)
             .forEach(character => (
                 newState['myCharacters'][character._id] = character
             ))
