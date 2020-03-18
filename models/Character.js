@@ -50,11 +50,6 @@ const CharacterSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'users'
     },
-    lobby: {
-        type: Schema.Types.ObjectId,
-        ref: 'lobbies',
-        default: null,
-    }
     // add items later, possibly add crits
 });
 

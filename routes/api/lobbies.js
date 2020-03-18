@@ -16,8 +16,7 @@ router.post("/create/:characterId",
     passport.authenticate('jwt', { session: false }), (req, res) => {
 
         let lobbykey = generateKey(6);
-        let character = Character.findById(req.params.characterId);
-
+        
         Lobby.findOne({ lobbykey: lobbykey }).then(lobby => {
             if (lobby) {
                 lobbykey = generateKey(6);
@@ -29,10 +28,7 @@ router.post("/create/:characterId",
                   active: true
                 });
                 newLobby.save()
-                .then(lobby => {
-                    character.update({ lobby: lobby._id });
-                    return res.json(lobby)
-                })
+                .then(lobby => res.json(lobby))
                 .catch(err => console.log(err));
             }
         });

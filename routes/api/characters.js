@@ -1,5 +1,6 @@
 const express = require("express");
 const Character = require("../../models/Character");
+const Lobby = require('../../models/Lobby');
 const validateCharacterCreation = require("../../validation/character_creation");
 const router = express.Router();
 const passport = require('passport');
@@ -17,9 +18,12 @@ router.get('/:id', (req, res) => {
 });
 
 router.get('/lobby/:lobbyId', (req, res) => {
-    Character.find({lobby: req.params.lobbyId})
-    .then(characters => res.json(characters))
-    .catch(err => res.status(404).json("No characters in this lobby."))
+    Lobby.findById(req.params.lobbyId)
+    .then(lobby =>
+        Character.find({ _id: { $in: [lobby.player1, lobby.player2] } })
+        .then(characters => res.json(characters))
+        .catch(err => res.status(404).json("No characters in this lobby."))
+    ).catch(err => res.status(404),json("Lobby does not exist"));
 });
 
 router.post("/create", 
