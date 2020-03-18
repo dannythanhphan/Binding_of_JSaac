@@ -1,5 +1,7 @@
 import * as APIUtil from '../util/lobby_api_util';
 import jwt_decode from 'jwt-decode';
+import openSocket from 'socket.io-client';
+const socket = openSocket('http://localhost');
 
 export const RECEIVE_LOBBY = "RECEIVE_LOBBY";
 export const REMOVE_LOBBY = "REMOVE_LOBBY";
@@ -36,6 +38,7 @@ export const join = (id) => dispatch => {
         .then(
             res => { 
                 dispatch(receiveLobby(res));
+                socket.of("/lobby").join(res.lobbykey);
             }
         )
         .catch(
@@ -48,6 +51,7 @@ export const create = () => dispatch => {
         .then(
             res => { 
                 dispatch(receiveLobby(res));
+                socket.of("/lobby").join(res.lobbykey);
             }
         )
         .catch(

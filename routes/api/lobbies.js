@@ -10,6 +10,7 @@ const keys = require("../../config/keys");
 const passport = require("passport");
 
 const router = express.Router();
+const io = require('socket.io')();
 
 router.post("/create", 
     passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -32,7 +33,7 @@ router.post("/create",
     }
 );
 
-router.post("/join/:id", 
+router.patch("/join/:id", 
     passport.authenticate('jwt', { session: false }), (req, res) => {
 
     Lobby.findOne({lobbykey: req.params.id})
@@ -71,7 +72,7 @@ router.post("/join/:id",
             nolobbiesfound: 'No lobbies with this key exist!' }));
 });
 
-router.delete("/leave/:id",
+router.patch("/leave/:id",
     passport.authenticate('jwt', { session: false }), (req, res) => {
     
     Lobby.findOne({lobbykey: req.params.id})

@@ -4,7 +4,6 @@ import useImage from 'use-image';
 import Konva from 'konva';
 
 
-
 class Map extends React.Component {
     constructor(props) {
         super(props);
