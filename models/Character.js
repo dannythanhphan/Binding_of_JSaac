@@ -50,7 +50,7 @@ const CharacterSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'users'
     },
-    // add lobby and items later, possibly add crits
+    // add items later, possibly add crits
 });
 
 module.exports = Character = mongoose.model('characters', CharacterSchema);
