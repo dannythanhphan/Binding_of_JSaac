@@ -17,8 +17,8 @@ router.get('/:id', (req, res) => {
     .catch(err => res.status(404).json({ noCharacter: "No character found."}))
 });
 
-router.get('/lobby/:lobbyId', (req, res) => {
-    Lobby.findById(req.params.lobbyId)
+router.get('/lobby/:lobbykey', (req, res) => {
+    Lobby.find({lobbykey: req.params.lobbykey})
     .then(lobby =>
         Character.find({ _id: { $in: [lobby.player1, lobby.player2] } })
         .then(characters => res.json(characters))

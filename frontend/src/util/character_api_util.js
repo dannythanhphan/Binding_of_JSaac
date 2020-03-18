@@ -8,8 +8,8 @@ export const getMyCharacters = userId => (
     axios.get(`/api/characters/user/${userId}`)
 );
 
-export const getGameCharacters = lobbyId => (
-    axios.get(`/api/characters/lobby/${lobbyId}`)
+export const getGameCharacters = lobbykey => (
+    axios.get(`/api/characters/lobby/${lobbykey}`)
 );
 
 export const createCharacter = data => (
