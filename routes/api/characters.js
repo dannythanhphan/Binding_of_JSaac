@@ -4,7 +4,7 @@ const validateCharacterCreation = require("../../validation/character_creation")
 const router = express.Router();
 const passport = require('passport');
 
-router.get('/:userId', (req, res) => {
+router.get('/user/:userId', (req, res) => {
     Character.find({user: req.params.userId})
     .then(characters => res.json(characters))
     .catch(err => res.status(404).json({ noCharacters: "No characters found." }));
@@ -14,7 +14,13 @@ router.get('/:id', (req, res) => {
     Character.findById(req.params.id)
     .then(character => res.json(character))
     .catch(err => res.status(404).json({ noCharacter: "No character found."}))
-})
+});
+
+router.get('/lobby/:lobbyId', (req, res) => {
+    Character.find({lobby: req.params.lobbyId})
+    .then(characters => res.json(characters))
+    .catch(err => res.status(404).json("No characters in this lobby."))
+});
 
 router.post("/create", 
     passport.authenticate('jwt', { session: false }), 
