@@ -5,6 +5,7 @@ import HomePage from './home/home_page';
 // import NavBarContainer from './nav/navbar_container';
 import LoginFormContainer from './session/login_form_container';
 import SignupFormContainer from './session/signup_form_container';
+import MapContainer from './map_container';
 import { Route } from 'react-router';
 
 const App = () => (
@@ -12,6 +13,7 @@ const App = () => (
         <Route exact path="/" component={HomePage} />
         <Route exact path="/login" component={LoginFormContainer} />
         <Route exact path="/register" component={SignupFormContainer} />
+        <Route exact path="/map" component={MapContainer} />
     </div>
 );
 
