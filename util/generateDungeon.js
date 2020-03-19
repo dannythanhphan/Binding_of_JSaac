@@ -37,7 +37,7 @@ const generateFloor = level => {
     let leftExit, rightExit, topExit, bottomExit;
     for (let roomRow = 0; roomRow < FLOOR_SIZE; roomRow++) {
         for (let roomCol = 0; roomCol < FLOOR_SIZE; roomCol++) {
-            roomId = roomRow * FLOOR_WIDTH;
+            roomId = roomRow * FLOOR_SIZE;
             width = ROOM_WIDTH;
             height = ROOM_HEIGHT;
             leftExit = (roomCol === 0) ? -1 : roomId - 1;
@@ -78,12 +78,13 @@ const generateRoom = (roomId, width, height, leftExit, rightExit, topExit, botto
     }
 
     const type = "spike";
+    const trapDamage = TRAP_DAMAGE;
 
     for (let i = 0; i < numTraps; i++) {
         xPos = Math.floor(Math.random() * ROOM_WIDTH);
         yPos = Math.floor(Math.random() * ROOM_HEIGHT);
-        meleeAttack = TRAP_DAMAGE;
-        room.traps.push(generateTrap(type, meleeAttack, xPos, yPos))
+        
+        room.traps.push(generateTrap(type, trapDamage, xPos, yPos))
     }    
 
     return room;
@@ -103,10 +104,10 @@ const generateMonster = ( name, level, totalHp, currentHp, meleeAttack, rangedAt
     return monster;
 }
 
-const generateTrap = ( type, meleeAttack, xPos, yPos ) => {
-    const monster = new Monster({
+const generateTrap = ( type, trapDamage, xPos, yPos ) => {
+    const trap = new Trap({
         type: type,
-        meleeAttack: meleeAttack,
+        meleeAttack: trapDamage,
         xPos: xPos,
         yPos: yPos
     })
