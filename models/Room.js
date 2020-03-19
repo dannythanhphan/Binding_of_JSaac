@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const Monster = require('./Monster');
+const Trap = require('./Trap');
+
 const ROOM_WIDTH = 21;
 const ROOM_HEIGHT = 15;
-const TILE_SIZE = 100;
 
 const RoomSchema = new Schema({
     roomId: {
@@ -21,23 +22,30 @@ const RoomSchema = new Schema({
         default: ROOM_HEIGHT
     },    
     leftExit: {
-        type: Boolean,
-        required: true
+        type: Number,
+        required: true,
+        default: -1
     },
     rightExit: {
-        type: Boolean,
-        required: true
+        type: Number,
+        required: true,
+        default: -1
     },    
     topExit: {
-        type: Boolean,
-        required: true
+        type: Number,
+        required: true,
+        default: -1
     },
     bottomExit: {
-        type: Boolean,
-        required: true
+        type: Number,
+        required: true,
+        default: -1
     },
     monsters: {
         type: [Monster.schema]
+    },
+    traps: {
+        type: [Trap.schema]
     }
 });
 

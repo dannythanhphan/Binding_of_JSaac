@@ -32,7 +32,7 @@ const LobbySchema = new Schema({
         default: Date.now
     },
     dungeon: {
-        type: [Dungeon.schema]
+        type: Dungeon.schema
     }
 });
 
