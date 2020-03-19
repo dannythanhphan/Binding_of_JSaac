@@ -11,4 +11,4 @@ export const receiveUser = payload => ({
 export const fetchCurrentUser = () => dispatch => (
     APIUtil.current()
     .then(payload => dispatch(receiveUser(payload.data)))
-);x 
+); 

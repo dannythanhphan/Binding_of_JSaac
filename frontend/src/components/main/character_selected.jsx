@@ -6,9 +6,6 @@ import superWoman from './animations/character_animations3.png';
 
 
 class CharacterSelected extends React.Component {
-    componentDidMount() {
-        this.props.fetchCharacter(this.props.match.params.characterId)
-    }
 
     render () {
         let running;
