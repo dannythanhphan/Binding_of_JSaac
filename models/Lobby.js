@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Dungeon = require('./Dungeon');
 const LobbySchema = new Schema({
     player1: {
         type: Schema.Types.ObjectId,
@@ -29,7 +30,8 @@ const LobbySchema = new Schema({
     date: {
         type: Date,
         default: Date.now
-    }
+    },
+    dungeon: Dungeon
 });
 
 module.exports = Lobby = mongoose.model('lobbies', LobbySchema);
