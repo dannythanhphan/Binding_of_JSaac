@@ -7,6 +7,11 @@ const TrapSchema = new Schema({
         required: true,
         default: "spike"
     },
+    meleeAttack: {
+        type: Number,
+        required: true,
+        default: 20
+    },
     xPos: {
         type: Number,
         required: true
