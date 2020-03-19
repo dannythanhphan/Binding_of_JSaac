@@ -1,29 +1,40 @@
 import {
-    RECEIVE_CHARACTER,
-    RECEIVE_CHARACTERS,
+    RECEIVE_NEW_CHARACTER,
+    RECEIVE_MY_CHARACTERS,
+    RECEIVE_GAME_CHARACTERS,
     REMOVE_CHARACTER
 } from '../actions/character_actions';
 
-const initialState = {};
+const initialState = {
+    myCharacters: {},
+    gameCharacters: {}
+};
 
 const charactersReducer = (state = initialState, action) => {
     Object.freeze(state);
-    const newState = Object.assign({}, state);
+    let newState = Object.assign({}, state);
 
     switch (action.type) {
-        case RECEIVE_CHARACTERS:
-            Object.keys(action.characters)
-            .forEach(character => (
-                newState[character._id] = character
+        case RECEIVE_MY_CHARACTERS:
+            newState['myCharacters'] = {};
+            action.characters.data.forEach(character => (
+                newState['myCharacters'][character._id] = character
             ))
             return newState;
 
-        case RECEIVE_CHARACTER:
-            newState[action.character._id] = action.character;
+        case RECEIVE_GAME_CHARACTERS:
+            newState['gameCharacters'] = {};
+            action.characters.data.forEach( character => (
+                newState['gameCharacters'][character._id] = character
+            ));
+            return newState;
+
+        case RECEIVE_NEW_CHARACTER:
+            newState['myCharacters'][action.character._id] = action.character;
             return newState;
 
         case REMOVE_CHARACTER:
-            delete newState[action.id]
+            delete newState['myCharacters'][action.id]
             return newState;
     
         default:

@@ -3,11 +3,11 @@ const Schema = mongoose.Schema;
 const LobbySchema = new Schema({
     player1: {
         type: Schema.Types.ObjectId,
-        ref: 'users'
+        ref: 'characters'
     },
     player2: {
         type: Schema.Types.ObjectId,
-        ref: 'users'
+        ref: 'characters'
     },
     // lobbyname: {
     //     type: String,

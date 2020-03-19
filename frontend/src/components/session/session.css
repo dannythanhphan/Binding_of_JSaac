@@ -3,7 +3,7 @@
     /* height: 170px; */
     top: 35%;
     left: 33%;
-    width: 33%;
+    width: 34%;
     border-radius: 8px;
 }
 
@@ -28,6 +28,7 @@
     position: relative;
     display: flex;
     justify-content: center;
+    z-index: 5;
 }
 
 .session-form label {

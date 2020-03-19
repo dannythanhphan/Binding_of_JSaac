@@ -1,0 +1,117 @@
+.main-page {
+    width: 100vw;
+    height: 100vh;
+    background-image: url("../home/home_page.jpg");
+    background-size: cover;
+    position: relative;
+    display: flex;
+}
+    
+
+.main-character-info {
+    background-color: #EEEFF1;
+    filter: opacity(70%);
+    border-radius: 10px;
+    font-family: 'Oxanium', cursive;
+    width: 70%;
+    height: 92%;
+    margin: 2% 1% 1% 2%;
+}
+
+.main-character-select-side-bar:before {
+    content: "";
+    top: 0;
+    left: 0;
+    left: 73%;
+    width: 25%;
+    height: 85.8%;
+    margin: 5% 2% 0 0 ;
+    position: absolute;
+    background-color: #EEEFF1;
+    filter: opacity(70%);
+    border-radius: 0 0 10px 10px;
+    z-index: 0;
+}
+
+.main-character-select-side-bar {
+    width: 25%;
+    height: 80%;
+    margin-top: 5%;
+    padding-top: 80px;
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: flex-start;
+    overflow: scroll;
+    cursor: pointer;
+}
+
+.side-bar-character-box {
+    width: 90%;
+    height: 100px;
+    background-color: #4e6883;
+    display: flex;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    z-index: 2;
+    transition: .4s;
+    color: #EEEFF1;
+}
+
+.side-bar-character-box:hover {
+    box-shadow: 0 0 15px -2px rgb(167, 162, 162);
+    background-color: #EEEFF1;
+    color: #1B2235;
+}
+
+.character-avatar-image {
+    height: 90px;
+}
+
+.main-logo-image {
+    width: 100%;
+    position: absolute;
+    z-index: 3;
+    width: 25%;
+    left: 73%;
+}
+
+.side-bar-character-image {
+    display: flex;
+    flex-direction: column;
+    background-size: cover;
+    margin-left: 2%;
+    margin-top: 2%;
+}
+
+.side-bar-character-info {
+    width: 100%;
+    margin-top: 1.5%;
+}
+
+.character-name-level {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2%;
+}
+
+.character-name {
+    font-size: 18px;
+    font-weight: 1000;
+}
+
+.side-bar-character-stats {
+    display: flex;
+    padding-left: 14%;
+    flex-wrap: wrap;
+}
+
+.character-stats {
+    display: flex;
+    flex-direction: column;
+    margin-right: 10%;
+    text-align: center;
+}

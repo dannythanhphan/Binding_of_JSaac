@@ -1,6 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 // const User = require("../../models/User");
+const Character = require('../../models/Character');
 const Lobby = require("../../models/Lobby");
 const validateLobbyCreationInput = require("../../validation/lobby-creation");
 const generateKey = require('../../util');
@@ -12,30 +13,32 @@ const passport = require("passport");
 const router = express.Router();
 const io = require('socket.io')();
 
-router.post("/create", 
+router.post("/create/:characterId", 
     passport.authenticate('jwt', { session: false }), (req, res) => {
 
         let lobbykey = generateKey(6);
-
+        
         Lobby.findOne({ lobbykey: lobbykey }).then(lobby => {
             if (lobby) {
                 lobbykey = generateKey(6);
             }
             else {
                 const newLobby = new Lobby({
-                    lobbykey: lobbykey,
-                    player1: req.user.id,
-                    active: true
+                  lobbykey: lobbykey,
+                  player1: req.params.characterId,
+                  active: true
                 });
-                newLobby.save().then(lobby => {
-                    res.json(lobby) })
-                    .catch(err => console.log(err));
+
+                newLobby.save()
+                .then(lobby => res.json(lobby))
+                .catch(err => console.log(err));
             }
         });
     }
 );
 
-router.patch("/join/:id", 
+
+router.post("/join/:id/:characterId", 
     passport.authenticate('jwt', { session: false }), (req, res) => {
 
     Lobby.findOne({lobbykey: req.params.id})
@@ -48,7 +51,7 @@ router.patch("/join/:id",
                     Lobby.findOneAndUpdate(
                         { lobbykey: req.params.id},
                         {
-                            $set: { player2: req.user.id },
+                            $set: { player2: req.params.characterId },
                             $currentDate: { lastModified: true }
                         },
                         {
