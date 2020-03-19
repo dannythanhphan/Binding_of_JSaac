@@ -4,7 +4,7 @@ import { Switch } from 'react-router-dom';
 import HomePage from './home/home_page';
 import LoginFormContainer from './session/login_form_container';
 import SignupFormContainer from './session/signup_form_container';
-// import { Route } from 'react-router';
+import { Route } from 'react-router';
 import MainPageContainer from './main/main_page_container';
 
 const App = () => (
@@ -15,7 +15,6 @@ const App = () => (
 
         <AuthRoute exact path="/" component={HomePage} />
         <AuthRoute exact path="/login" component={LoginFormContainer} />
-        <AuthRoute exact path="/register" component={SignupFormContainer} />
     </div>
 );
 
