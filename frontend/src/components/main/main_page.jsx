@@ -14,7 +14,7 @@ class MainPage extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.characters.myCharacters !== this.props.characters.myCharacters) {
+        if (prevProps.characters.length !== this.props.characters.length) {
             this.props.fetchCharacters(this.props.currentUser.id)
         }
     }
