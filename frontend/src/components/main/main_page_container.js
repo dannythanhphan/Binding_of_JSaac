@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
-import { fetchCharacters } from "../../actions/character_actions";
 import MainPage from "./main_page";
 import { logout } from "../../actions/session_actions";
+import { fetchCurrentUser } from "../../actions/user_actions";
 
 const mapStateToProps = (state) => ({
     characters: Object.values(state.entities.characters),
@@ -9,7 +9,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchCharacters: (userId) => dispatch(fetchCharacters(userId)),
+    fetchCurrentUser: () => dispatch(fetchCurrentUser()),
     logout: () => dispatch(logout())
 });
 

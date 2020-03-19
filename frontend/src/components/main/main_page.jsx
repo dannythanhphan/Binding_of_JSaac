@@ -5,7 +5,7 @@ import logo from '../home/logo.png'
 
 class MainPage extends React.Component {
     componentDidMount() {
-        this.props.fetchCharacters(this.props.currentUser.id)
+        this.props.fetchCurrentUser();
     }
 
     render() {
