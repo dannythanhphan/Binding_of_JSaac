@@ -4,7 +4,8 @@ const bcrypt = require("bcryptjs");
 const Character = require('../../models/Character');
 const Lobby = require("../../models/Lobby");
 const validateLobbyCreationInput = require("../../validation/lobby-creation");
-const generateKey = require('../../util');
+const generateKey = require('../../util/generateKey');
+const generateDungeon = require('../../util/generateDungeon')
 
 const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
@@ -17,22 +18,21 @@ router.post("/create/:characterId",
     passport.authenticate('jwt', { session: false }), (req, res) => {
 
         let lobbykey = generateKey(6);
-        
         Lobby.findOne({ lobbykey: lobbykey }).then(lobby => {
             if (lobby) {
                 lobbykey = generateKey(6);
             }
-            else {
-                const newLobby = new Lobby({
-                  lobbykey: lobbykey,
-                  player1: req.params.characterId,
-                  active: true
-                });
 
-                newLobby.save()
-                .then(lobby => res.json(lobby))
-                .catch(err => console.log(err));
-            }
+            const newLobby = new Lobby({
+                lobbykey: lobbykey,
+                player1: req.params.characterId,
+                active: true,
+                dungeon: generateDungeon()
+            });
+
+            newLobby.save()
+            .then(lobby => res.json(lobby))
+            .catch(err => console.log(err));
         });
     }
 );
