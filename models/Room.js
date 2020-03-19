@@ -23,20 +23,24 @@ const RoomSchema = new Schema({
         default: ROOM_HEIGHT
     },    
     leftExit: {
-        type: Boolean,
-        required: true
+        type: Number,
+        required: true,
+        default: -1
     },
     rightExit: {
-        type: Boolean,
-        required: true
+        type: Number,
+        required: true,
+        default: -1
     },    
     topExit: {
-        type: Boolean,
-        required: true
+        type: Number,
+        required: true,
+        default: -1
     },
     bottomExit: {
-        type: Boolean,
-        required: true
+        type: Number,
+        required: true,
+        default: -1
     },
     monsters: {
         type: [Monster.schema]
