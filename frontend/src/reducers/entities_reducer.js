@@ -7,5 +7,9 @@ import usersReducer from './users_reducer';
 export default combineReducers({
     users: usersReducer,
     characters: charactersReducer,
-    lobby: lobbyReducer
+    lobby: lobbyReducer,
+    floors: floorsReducer,
+    rooms: roomsReducer,
+    monsters: monstersReducer,
+    traps: trapsReducer,
 });
