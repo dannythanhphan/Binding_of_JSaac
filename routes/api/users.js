@@ -95,10 +95,19 @@ router.post("/login", (req, res) => {
 
 router.get("/current", passport.authenticate("jwt", { session: false }),
     (req, res) => {
-        res.json({
-            id: req.user.id,
-            username: req.user.username,
-        });
+        User.findById(req.user.id).then(user => {
+            const payload = {
+                user: {
+                    username: user.username,
+                    id: user.id
+                },
+                characters: {}
+            };
+            user.characters.forEach(character => 
+                payload.characters[character.id] = character
+            )
+            return res.json(payload)
+        })
     }
 );
 

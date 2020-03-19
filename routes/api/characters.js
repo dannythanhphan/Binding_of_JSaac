@@ -1,30 +1,9 @@
 const express = require("express");
 const Character = require("../../models/Character");
-const Lobby = require('../../models/Lobby');
+const User = require("../../models/User");
 const validateCharacterCreation = require("../../validation/character_creation");
 const router = express.Router();
 const passport = require('passport');
-
-router.get('/user/:userId', (req, res) => {
-    Character.find({user: req.params.userId})
-    .then(characters => res.json(characters))
-    .catch(err => res.status(404).json({ noCharacters: "No characters found." }));
-});
-
-router.get('/:id', (req, res) => {
-    Character.findById(req.params.id)
-    .then(character => res.json(character))
-    .catch(err => res.status(404).json({ noCharacter: "No character found."}))
-});
-
-router.get('/lobby/:lobbykey', (req, res) => {
-    Lobby.find({lobbykey: req.params.lobbykey})
-    .then(lobby =>
-        Character.find({ _id: { $in: [lobby.player1, lobby.player2] } })
-        .then(characters => res.json(characters))
-        .catch(err => res.status(404).json("No characters in this lobby."))
-    ).catch(err => res.status(404),json("Lobby does not exist"));
-});
 
 router.post("/create", 
     passport.authenticate('jwt', { session: false }), 
@@ -35,30 +14,26 @@ router.post("/create",
             return res.status(400).json(errors);
         };
 
-        const newCharacter = new Character({
+        const newCharacter = {
             name: req.body.name,
-            user: req.user.id,
             characterSprite: req.body.characterSprite
-        })
+        }
 
-        newCharacter.save()
-        .then(character => res.json(character))
-        .catch(err => {
-            errors.creation = "Something went wrong.";
-            return res.status(400).json(errors);
-        })
+        User.findById(req.user.id).then(user => {
+            user.characters.push(newCharacter)
+            user.save().then(user => res.json(user))
+        }).catch(err => res.json("Something went wrong"));
 });
 
 router.delete("/death/:id", 
     passport.authenticate('jwt', { session: false }),
     (req, res) => {
-        dedCharacter = Character.findById(req.params.id);
-        dedCharacter.deleteOne()
-        .then(() => res.json({ dedCharacter: "Character has died." }))
-        .catch(err => {
-            errors.creation = "Something went wrong.";
-            return res.status(400).json(errors);
-        })
+        User.findById(req.user.id).then(user => {
+            user.characters = user.characters.filter(character => (
+                character._id != req.params.id
+            ));
+            user.save().then(user => res.json(user))
+        }).catch(err => res.json("Something went wrong"));
 });
 
 module.exports = router;

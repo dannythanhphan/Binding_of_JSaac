@@ -10,7 +10,7 @@ import { ProtectedRoute } from '../../util/route_util';
 
 class MainPage extends React.Component {
     componentDidMount() {
-        this.props.fetchCharacters(this.props.currentUser.id)
+        this.props.fetchCurrentUser();
     }
 
     componentDidUpdate(prevProps) {

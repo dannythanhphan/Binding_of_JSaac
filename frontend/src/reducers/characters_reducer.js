@@ -1,9 +1,13 @@
 import {
     RECEIVE_NEW_CHARACTER,
-    RECEIVE_MY_CHARACTERS,
-    RECEIVE_GAME_CHARACTERS,
     REMOVE_CHARACTER
 } from '../actions/character_actions';
+import {
+    RECEIVE_LOBBY,
+    REMOVE_LOBBY
+} from '../actions/lobby_actions';
+import { RECIEVE_USER } from '../actions/user_actions';
+import { RECEIVE_USER_LOGOUT } from '../actions/session_actions';
 
 const initialState = {
     myCharacters: {},
@@ -15,18 +19,8 @@ const charactersReducer = (state = initialState, action) => {
     let newState = Object.assign({}, state);
 
     switch (action.type) {
-        case RECEIVE_MY_CHARACTERS:
-            newState['myCharacters'] = {};
-            action.characters.data.forEach(character => (
-                newState['myCharacters'][character._id] = character
-            ))
-            return newState;
-
-        case RECEIVE_GAME_CHARACTERS:
-            newState['gameCharacters'] = {};
-            action.characters.data.forEach( character => (
-                newState['gameCharacters'][character._id] = character
-            ));
+        case RECIEVE_USER:
+            newState['myCharacters'] = action.payload.characters;
             return newState;
 
         case RECEIVE_NEW_CHARACTER:
@@ -39,6 +33,19 @@ const charactersReducer = (state = initialState, action) => {
         case REMOVE_CHARACTER:
             delete newState['myCharacters'][action.id]
             return newState;
+
+        case RECEIVE_LOBBY:
+            action.payload.characters.forEach(character => {
+                newState['gameCharacters'][character.id] = character;
+            });
+            return newState;
+
+        case REMOVE_LOBBY:
+            newState['gameCharacters'] = {};
+            return newState;
+
+        case RECEIVE_USER_LOGOUT:
+            return initialState;
     
         default:
             return state;

@@ -46,14 +46,15 @@ const CharacterSchema = new Schema({
         type: Number,
         default: 0,
     },
-    user: {
-        type: Schema.Types.ObjectId,
-        ref: 'users'
-    },
+    // user: {
+    //     type: Schema.Types.ObjectId,
+    //     ref: 'users'
+    // },
     characterSprite: {
         type: Number
     }
     // add items later, possibly add crits
 });
 
-module.exports = Character = mongoose.model('characters', CharacterSchema);
+// module.exports = Character = mongoose.model('characters', CharacterSchema);
+module.exports = Character = CharacterSchema;

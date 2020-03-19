@@ -11,7 +11,7 @@ const lobbyReducer = (state = initialState, action) => {
 
     switch (action.type) {
         case RECEIVE_LOBBY:
-            return action.lobby;
+            return action.payload.lobby;
 
         case REMOVE_LOBBY:
             return initialState;

@@ -1,10 +1,10 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
-// const User = require("../../models/User");
-const Character = require('../../models/Character');
+const User = require("../../models/User");
 const Lobby = require("../../models/Lobby");
 const validateLobbyCreationInput = require("../../validation/lobby-creation");
-const generateKey = require('../../util/generateKey');
+const generateKey = require('../../util');
+const buildLobbyJson = require('./json_util')
 const generateDungeon = require('../../util/generateDungeon')
 
 const jwt = require("jsonwebtoken");
@@ -31,7 +31,7 @@ router.post("/create/:characterId",
             });
 
             newLobby.save()
-            .then(lobby => res.json(lobby))
+            .then(lobby => buildLobbyJson(lobby, res))
             .catch(err => console.log(err));
         });
     }
@@ -47,7 +47,7 @@ router.post("/join/:id/:characterId",
                 return res.status(400).json({lobbyfull: 'This lobby is full!'})
             }
             else {
-                if (lobby.player1 && lobby.player1.toString() !== req.params.id) {
+                if (lobby.player1 && lobby.player1.toString() !== req.params.characterId) {
                     Lobby.findOneAndUpdate(
                         { lobbykey: req.params.id},
                         {
@@ -59,21 +59,21 @@ router.post("/join/:id/:characterId",
                             useFindAndModify: false
                         }
                     )
-                    .then( lobby => res.json(lobby) )
+                    .then( lobby => buildLobbyJson(lobby, res) )
                     .catch( err => console.log(err) );
                 }
-                else if (lobby.player2 && lobby.player2.toString() !== req.params.id) {
+                else if (lobby.player2 && lobby.player2.toString() !== req.params.characterId) {
                     Lobby.findOneAndUpdate(
                         { lobbykey: req.params.id},
                         {
-                            $set: { player1: req.user.id },
+                            $set: { player1: req.params.characterId },
                             $currentDate: { lastModified: true }
                         },
                         {
                             new: true,
                             useFindAndModify: false
                         }                    )
-                    .then( lobby => res.json(lobby) )
+                    .then( lobby => buildLobbyJson(lobby, res) )
                     .catch( err => console.log(err) );
                 }
             }
@@ -98,7 +98,7 @@ router.patch("/leave/:id",
                             new: true,
                             useFindAndModify: false
                         }                    )
-                    .then( lobby => res.json(lobby) )
+                    .then( lobby => buildLobbyJson(lobby, res) )
                     .catch( err => console.log(err) );
             }
             else if (lobby.player2 && lobby.player2.toString() === req.user.id) {
@@ -112,7 +112,7 @@ router.patch("/leave/:id",
                             new: true,
                             useFindAndModify: false
                         }                    )
-                    .then( lobby => res.json(lobby) )
+                    .then( lobby => buildLobbyJson(lobby, res) )
                     .catch( err => console.log(err) );
             }
             else {
@@ -123,5 +123,10 @@ router.patch("/leave/:id",
             nolobbiesfound: 'No lobbies with this key exist!' }));    
 });
 
+router.get("/:lobbykey", (req, res) => {
+    Lobby.findOne({lobbykey: req.params.lobbykey})
+    .then(lobby => buildLobbyJson(lobby, res))
+    .catch(err => console.log(err))
+});
 
 module.exports = router;

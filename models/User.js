@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Character = require('./Character');
+
 const UserSchema = new Schema({
     username: {
         type: String,
@@ -10,6 +12,7 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
+    characters: [Character],
     date: {
         type: Date,
         default: Date.now
