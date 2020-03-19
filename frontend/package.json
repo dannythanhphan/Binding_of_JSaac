@@ -19,7 +19,8 @@
     "react-scripts": "3.4.0",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "use-image": "^1.0.5"
   },
   "scripts": {
     "start": "react-scripts start",

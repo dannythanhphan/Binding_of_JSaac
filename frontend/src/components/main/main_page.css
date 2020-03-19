@@ -28,6 +28,7 @@
     justify-content: center;
     align-content: flex-start;
     overflow: scroll;
+
     overflow-y: auto;
     overflow-x: hidden;
     border-bottom-left-radius: 6px;

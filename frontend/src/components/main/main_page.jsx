@@ -74,6 +74,7 @@ class MainPage extends React.Component {
                 <Link to='/main'>
                     <img className="main-logo-image" src={logo} alt="logo" />
                 </Link>
+
                 <div className="main-character-select-side-bar">
                     {displayCharacters}
                 </div>

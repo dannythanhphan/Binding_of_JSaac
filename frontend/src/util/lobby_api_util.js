@@ -5,9 +5,9 @@ export const create = () => {
 };
 
 export const join = id => {
-  return axios.post(`/api/lobbies/join/${id}`);
+  return axios.patch(`/api/lobbies/join/${id}`);
 };
 
 export const leave = id => {
-  return axios.delete(`/api/lobbies/leave/${id}`);
+  return axios.patch(`/api/lobbies/leave/${id}`);
 };
