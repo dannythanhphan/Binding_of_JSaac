@@ -10,7 +10,6 @@ class HomePage extends React.Component {
                 <img className="home-logo-image" src={logo} alt="logo"/>
                 <div className="home-page-session-form">
                     <div className="home-page-welcome">
-                        {/* <p>Binding of JSaac</p> */}
                         <div className="home-page-session-buttons">
                             <Link to="/login" className="home-page-login-button">
                                 <button className="home-page-login-button-text">

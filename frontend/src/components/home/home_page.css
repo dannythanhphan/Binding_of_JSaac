@@ -16,7 +16,7 @@
 
 .home-page-session-form {
     position: absolute;
-    height: 170px;
+    height: 22%;
     top: 35%;
     left: 33%;
     width: 34%;
@@ -50,6 +50,7 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
+    z-index: 3;
 }
 
 .home-page-session-buttons button {

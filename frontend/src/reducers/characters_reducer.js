@@ -24,7 +24,10 @@ const charactersReducer = (state = initialState, action) => {
             return newState;
 
         case RECEIVE_NEW_CHARACTER:
-            newState['myCharacters'][action.character._id] = action.character;
+            if (!newState['myCharacters'][action.character.data._id]) {
+                newState['myCharacters'][action.character.data] = action.character;
+            } 
+
             return newState;
 
         case REMOVE_CHARACTER:

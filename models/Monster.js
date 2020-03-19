@@ -10,17 +10,17 @@ const MonsterSchema = new Schema({
         type: Number,
         default: 1,
     },
-    currentHP: {
+    totalHP: {
         type: Number,
         default: 100,
     },
-    totalHP: {
+    currentHP: {
         type: Number,
         default: 100,
     },
     meleeAttack: {
         type: Number,
-        default: 50,
+        default: 15,
     },
     meleeSpeed: {
         type: Number,
@@ -28,7 +28,7 @@ const MonsterSchema = new Schema({
     },
     rangedAttack: {
         type: Number,
-        default: 25,
+        default: 5,
     },
     rangedSpeed: {
         type: Number,
@@ -44,9 +44,17 @@ const MonsterSchema = new Schema({
     },
     intelligent: {
         type: Boolean,
-        default: false,
-    }
+        default: true,
+    },
+    xPos: {
+        type: Number,
+        required: true
+    },
+    yPos: {
+        type: Number,
+        required: true
+    },
     // add lobby and items later, possibly add crits
 });
 
-module.exports = Monster = mongoose.model('characters', MonsterSchema);
+module.exports = Monster = mongoose.model('monsters', MonsterSchema);
