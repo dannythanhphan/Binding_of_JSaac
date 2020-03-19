@@ -37,25 +37,25 @@ const generateFloor = level => {
     let leftExit, rightExit, topExit, bottomExit;
     for (let roomRow = 0; roomRow < FLOOR_SIZE; roomRow++) {
         for (let roomCol = 0; roomCol < FLOOR_SIZE; roomCol++) {
-            roomId = roomRow * FLOOR_SIZE;
+            position = roomRow * FLOOR_SIZE;
             width = ROOM_WIDTH;
             height = ROOM_HEIGHT;
-            leftExit = (roomCol === 0) ? -1 : roomId - 1;
-            rightExit = (roomCol === FLOOR_SIZE + 1) ? -1 : roomId + 1;
-            topExit = (roomRow === 0) ? -1: roomId - FLOOR_SIZE;
-            bottomExit = (roomRow === FLOOR_SIZE - 1) ? -1: roomId + FLOOR_SIZE;
+            leftExit = (roomCol === 0) ? -1 : position - 1;
+            rightExit = (roomCol === FLOOR_SIZE + 1) ? -1 : position + 1;
+            topExit = (roomRow === 0) ? -1: position - FLOOR_SIZE;
+            bottomExit = (roomRow === FLOOR_SIZE - 1) ? -1: position + FLOOR_SIZE;
             numMonsters = Math.floor(Math.random() * (5 + level));
             numTraps = Math.floor(Math.random() * (5 + level));
-            floor.rooms.push(generateRoom(roomId, width, height, leftExit, rightExit, topExit, bottomExit, numMonsters, numTraps, level))
+            floor.rooms.push(generateRoom(position, width, height, leftExit, rightExit, topExit, bottomExit, numMonsters, numTraps, level))
         }
     }
 
     return floor;
 }
 
-const generateRoom = (roomId, width, height, leftExit, rightExit, topExit, bottomExit, numMonsters, numTraps, level) => {
+const generateRoom = (position, width, height, leftExit, rightExit, topExit, bottomExit, numMonsters, numTraps, level) => {
     const room = new Room({
-        roomId: roomId,
+        position: position,
         width: width,
         height: height,
         leftExit: leftExit,
