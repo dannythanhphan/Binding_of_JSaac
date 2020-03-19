@@ -1,6 +1,4 @@
 import * as APIUtil from '../util/lobby_api_util';
-import jwt_decode from 'jwt-decode';
-import openSocket from 'socket.io-client';
 
 export const RECEIVE_LOBBY = "RECEIVE_LOBBY";
 export const REMOVE_LOBBY = "REMOVE_LOBBY";
@@ -24,7 +22,8 @@ export const receiveErrors = errors => ({
 export const leave = (id) => dispatch => {
     APIUtil.leave(id)
         .then(
-            res => { 
+            res => {
+                window.socket.emit('leave', res.data.lobbykey);
                 dispatch(leaveLobby());
             }
         )
@@ -37,11 +36,9 @@ export const join = (id) => dispatch => {
     APIUtil.join(id)
         .then(
             res => { 
-                const socket = openSocket("http://localhost:8000/lobby");
-                socket.on('connect', () => {
-                    socket.emit('room', res.data.lobbykey);
-                })
-                socket.on('changeLobbyData', (data) => {
+                window.socket.emit('room', res.data.lobbykey);
+
+                window.socket.on('changeLobbyData', (data) => {
                     console.log("Incoming message: ", data);
                 })
                 dispatch(receiveLobby(res));
@@ -56,12 +53,9 @@ export const create = () => dispatch => {
     APIUtil.create()
         .then(
             res => { 
-                const socket = openSocket("http://localhost:8000/lobby");
+                window.socket.emit('room', res.data.lobbykey);
 
-                socket.on('connect', () => {
-                    socket.emit('room', res.data.lobbykey);
-                })
-                socket.on('changeLobbyData', (data) => {
+                window.socket.on('changeLobbyData', (data) => {
                     console.log("Incoming message: ", data);
                 })
                 dispatch(receiveLobby(res.data));

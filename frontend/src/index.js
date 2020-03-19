@@ -5,7 +5,8 @@ import configureStore from './store/store';
 import jwt_decode from 'jwt-decode';
 import { setAuthToken } from './util/session_api_util';
 import { logout } from './actions/session_actions';
-import { create, join } from './actions/lobby_actions';
+import { create, join, leave } from './actions/lobby_actions';
+import openSocket from "socket.io-client";
 
 document.addEventListener('DOMContentLoaded', () => {
   let store;
@@ -30,8 +31,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     store = configureStore({});
   }
+  const socket = openSocket("http://localhost:8000/lobby");
+  window.socket = socket;
   window.create = create;
   window.join = join;
+  window.leave = leave;
   window.dispatch = store.dispatch;
 
   const root = document.getElementById('root');

@@ -51,7 +51,10 @@ router.patch("/join/:id",
                             $set: { player2: req.user.id },
                             $currentDate: { lastModified: true }
                         },
-                        {new: true}
+                        {
+                            new: true,
+                            useFindAndModify: false
+                        }
                     )
                     .then( lobby => res.json(lobby) )
                     .catch( err => console.log(err) );
@@ -63,8 +66,10 @@ router.patch("/join/:id",
                             $set: { player1: req.user.id },
                             $currentDate: { lastModified: true }
                         },
-                        {new: true}
-                    )
+                        {
+                            new: true,
+                            useFindAndModify: false
+                        }                    )
                     .then( lobby => res.json(lobby) )
                     .catch( err => console.log(err) );
                 }
@@ -86,8 +91,10 @@ router.patch("/leave/:id",
                             $unset: { player1: "" },
                             $currentDate: { lastModified: true }
                         },
-                        { new: true }
-                    )
+                        {
+                            new: true,
+                            useFindAndModify: false
+                        }                    )
                     .then( lobby => res.json(lobby) )
                     .catch( err => console.log(err) );
             }
@@ -98,8 +105,10 @@ router.patch("/leave/:id",
                             $unset: { player2: "" },
                             $currentDate: { lastModified: true }
                         },
-                        { new: true }
-                    )
+                        {
+                            new: true,
+                            useFindAndModify: false
+                        }                    )
                     .then( lobby => res.json(lobby) )
                     .catch( err => console.log(err) );
             }
