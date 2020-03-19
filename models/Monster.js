@@ -45,7 +45,15 @@ const MonsterSchema = new Schema({
     intelligent: {
         type: Boolean,
         default: false,
-    }
+    },
+    xPos: {
+        type: Number,
+        required: true
+    },
+    yPos: {
+        type: Number,
+        required: true
+    },
     // add lobby and items later, possibly add crits
 });
 

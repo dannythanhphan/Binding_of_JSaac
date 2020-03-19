@@ -1,23 +1,40 @@
-class Room {
-    constructor(selfId, leftId, rightId, topId, bottomId, numMonsters ) {
-        const TILE_SIZE = 100;
-        const NUM_TILES_WIDTH = 17;
-        const NUM_TILES_HEIGHT = 11;
-        const ROOM_WIDTH = TILE_SIZE * NUM_TILE_WIDTH;
-        const ROOM_HEIGHT = TILE_SIZE * NUM_TILE_HEIGHT;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const ROOM_WIDTH = 21;
+const ROOM_HEIGHT = 15;
+const TILE_SIZE = 100;
 
+const RoomSchema = new Schema({
+    roomId: {
+        type: Number,
+        required: true
+    },
+    width: {
+        type: Number,
+        required: true,
+        default: ROOM_WIDTH
+    },
+    height: {
+        type: Number,
+        required: true,
+        default: ROOM_HEIGHT
+    },    
+    leftExit: {
+        type: Boolean,
+        required: true
+    },
+    rightExit: {
+        type: Boolean,
+        required: true
+    },    
+    topExit: {
+        type: Boolean,
+        required: true
+    },
+    bottomExit: {
+        type: Boolean,
+        required: true
+    },
+});
 
-        this.roomWidth = ROOM_WIDTH;
-        this.roomHeight = ROOM_HEIGHT;
-        this.id = selfId;
-        this.leftId = leftId;
-        this.rightId = rightId;
-        this.topId = topId;
-        this.bottomId = bottomId;
-
-
-
-
-    }
-
-}
+module.exports = Room = mongoose.model('rooms', RoomSchema);
