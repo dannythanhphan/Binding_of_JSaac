@@ -30,7 +30,7 @@ router.post("/create/:characterId",
                 });
 
                 newLobby.save()
-                .then(lobby => res.json(lobby))
+                .then(lobby => buildLobbyJson(lobby, res))
                 .catch(err => console.log(err));
             }
         });
@@ -47,7 +47,7 @@ router.post("/join/:id/:characterId",
                 return res.status(400).json({lobbyfull: 'This lobby is full!'})
             }
             else {
-                if (lobby.player1 && lobby.player1.toString() !== req.params.id) {
+                if (lobby.player1 && lobby.player1.toString() !== req.params.characterId) {
                     Lobby.findOneAndUpdate(
                         { lobbykey: req.params.id},
                         {
@@ -59,21 +59,21 @@ router.post("/join/:id/:characterId",
                             useFindAndModify: false
                         }
                     )
-                    .then( lobby => res.json(lobby) )
+                    .then( lobby => buildLobbyJson(lobby, res) )
                     .catch( err => console.log(err) );
                 }
-                else if (lobby.player2 && lobby.player2.toString() !== req.params.id) {
+                else if (lobby.player2 && lobby.player2.toString() !== req.params.characterId) {
                     Lobby.findOneAndUpdate(
                         { lobbykey: req.params.id},
                         {
-                            $set: { player1: req.user.id },
+                            $set: { player1: req.params.characterId },
                             $currentDate: { lastModified: true }
                         },
                         {
                             new: true,
                             useFindAndModify: false
                         }                    )
-                    .then( lobby => res.json(lobby) )
+                    .then( lobby => buildLobbyJson(lobby, res) )
                     .catch( err => console.log(err) );
                 }
             }
@@ -98,7 +98,7 @@ router.patch("/leave/:id",
                             new: true,
                             useFindAndModify: false
                         }                    )
-                    .then( lobby => res.json(lobby) )
+                    .then( lobby => buildLobbyJson(lobby, res) )
                     .catch( err => console.log(err) );
             }
             else if (lobby.player2 && lobby.player2.toString() === req.user.id) {
@@ -112,7 +112,7 @@ router.patch("/leave/:id",
                             new: true,
                             useFindAndModify: false
                         }                    )
-                    .then( lobby => res.json(lobby) )
+                    .then( lobby => buildLobbyJson(lobby, res) )
                     .catch( err => console.log(err) );
             }
             else {
@@ -125,29 +125,8 @@ router.patch("/leave/:id",
 
 router.get("/:lobbykey", (req, res) => {
     Lobby.findOne({lobbykey: req.params.lobbykey})
-    .then(lobby => {
-        jsonObj = buildLobbyJson(lobby)
-        console.log("res", jsonObj)
-        res.json(jsonObj)
-    })
-    .catch(err => console.log(err));
-})
-        // const payload = { users: {}, characters: {}, lobby: lobby };
-        // User.find({"characters.id": { $in: [lobby.player1, lobby.player2]}})
-        // .then(users => {
-        //     // users = users.filter(user => user.characters.length > 0);
-        //     users.forEach(user => {
-        //         payload.users[user.id] = {
-        //             username: user.username,
-        //             id: user.id
-        //         };
-        //         user.characters.forEach(character => {
-        //             payload.characters[character.id] = character
-        //         });
-        //     })
-        //     res.json(payload)
-        // })
-//     }).catch(err => console.log(err))
-// });
+    .then(lobby => buildLobbyJson(lobby, res))
+    .catch(err => console.log(err))
+});
 
 module.exports = router;

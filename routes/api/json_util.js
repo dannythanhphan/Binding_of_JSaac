@@ -1,6 +1,6 @@
 const User = require('../../models/User');
 
-const buildLobbyJson = lobby => {
+const buildLobbyJson = (lobby, res) => {
     const payload = { users: {}, characters: {}, lobby };
     User.find({ "characters.id": { $in: [lobby.player1, lobby.player2] } })
     .then(users => {
@@ -15,7 +15,7 @@ const buildLobbyJson = lobby => {
             });
         })
         console.log('build', payload.users);
-        return payload;
+        return res.json(payload)
     })
     .catch(err => console.log(err))
 };
