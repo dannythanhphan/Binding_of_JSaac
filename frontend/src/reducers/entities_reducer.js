@@ -5,5 +5,9 @@ import lobbyReducer from './lobby_reducer';
 
 export default combineReducers({
     characters: charactersReducer,
-    lobby: lobbyReducer
+    lobby: lobbyReducer,
+    floors: floorsReducer,
+    rooms: roomsReducer,
+    monsters: monstersReducer,
+    traps: trapsReducer,
 });
