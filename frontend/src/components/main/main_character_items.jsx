@@ -1,8 +1,8 @@
 import React from 'react';
-import ava1 from './character_ava1.png'
-import ava2 from './character_ava2.png'
-import ava3 from './character_ava3.png'
-// import lvlFrame from './level_frame.png';
+import ava1 from './avatars/character_ava1.png'
+import ava2 from './avatars/character_ava2.png'
+import ava3 from './avatars/character_ava3.png'
+import { Link } from 'react-router-dom'
 
 class MainCharacterItems extends React.Component {
     render() {
@@ -21,41 +21,41 @@ class MainCharacterItems extends React.Component {
             )
         }
         return (
-            <div className="side-bar-character-box">
-                <div className="side-bar-character-image">
-                    {displayAvatar}
-                </div>
-                <div className="side-bar-character-info">
-                    <div className="character-name-level">
-                        <p className="character-name">{this.props.character.name}</p>
+            <Link to={`/main/${this.props.character._id}`} className="side-bar-character-box">
+                    <div className="side-bar-character-image">
+                        {displayAvatar}
                     </div>
-                    <div className="character-name-level">
-                        <p>Level: {this.props.character.level}</p>
+                    <div className="side-bar-character-info">
+                        <div className="character-name-level">
+                            <p className="character-name">{this.props.character.name}</p>
+                        </div>
+                        <div className="character-name-level">
+                            <p>Level: {this.props.character.level}</p>
+                        </div>
+                        <div className="side-bar-character-stats">
+                            <p className="character-stats">
+                                <img src="https://img.icons8.com/cotton/30/000000/like--v1.png" alt="heart"/>
+                                {this.props.character.totalHP}
+                            </p>
+                            <p className="character-stats">
+                                <img src="https://img.icons8.com/office/30/000000/sword.png" alt="sword" />
+                                {this.props.character.meleeAttack}
+                            </p>
+                            <p className="character-stats">
+                                <img src="https://img.icons8.com/cotton/30/000000/archers-bow.png" alt="bow" />
+                                {this.props.character.rangedAttack}
+                            </p>
+                            <p className="character-stats">
+                                <img src="https://img.icons8.com/color/30/000000/boots.png" alt="boots" />
+                                {this.props.character.movementSpeed}
+                            </p>
+                            <p className="character-stats">
+                                <img src="https://img.icons8.com/cotton/30/000000/shield.png" alt="shield" />
+                                {this.props.character.defense}
+                            </p>
+                        </div>
                     </div>
-                    <div className="side-bar-character-stats">
-                        <p className="character-stats">
-                            <img src="https://img.icons8.com/cotton/30/000000/like--v1.png"/>
-                            {this.props.character.totalHP}
-                        </p>
-                        <p className="character-stats">
-                            <img src="https://img.icons8.com/office/30/000000/sword.png"/>
-                            {this.props.character.meleeAttack}
-                        </p>
-                        <p className="character-stats">
-                            <img src="https://img.icons8.com/cotton/30/000000/archers-bow.png"/>
-                            {this.props.character.rangedAttack}
-                        </p>
-                        <p className="character-stats">
-                            <img src="https://img.icons8.com/color/30/000000/boots.png"/>
-                            {this.props.character.movementSpeed}
-                        </p>
-                        <p className="character-stats">
-                            <img src="https://img.icons8.com/cotton/30/000000/shield.png"/>
-                            {this.props.character.defense}
-                        </p>
-                    </div>
-                </div>
-            </div>
+            </Link>
         );
     }
 };
