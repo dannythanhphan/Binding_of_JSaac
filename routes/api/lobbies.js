@@ -11,6 +11,7 @@ const keys = require("../../config/keys");
 const passport = require("passport");
 
 const router = express.Router();
+const io = require('socket.io')();
 
 router.post("/create/:characterId", 
     passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -27,6 +28,7 @@ router.post("/create/:characterId",
                   player1: req.params.characterId,
                   active: true
                 });
+
                 newLobby.save()
                 .then(lobby => res.json(lobby))
                 .catch(err => console.log(err));
@@ -34,6 +36,7 @@ router.post("/create/:characterId",
         });
     }
 );
+
 
 router.post("/join/:id/:characterId", 
     passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -51,7 +54,10 @@ router.post("/join/:id/:characterId",
                             $set: { player2: req.params.characterId },
                             $currentDate: { lastModified: true }
                         },
-                        {new: true}
+                        {
+                            new: true,
+                            useFindAndModify: false
+                        }
                     )
                     .then( lobby => res.json(lobby) )
                     .catch( err => console.log(err) );
@@ -63,8 +69,10 @@ router.post("/join/:id/:characterId",
                             $set: { player1: req.user.id },
                             $currentDate: { lastModified: true }
                         },
-                        {new: true}
-                    )
+                        {
+                            new: true,
+                            useFindAndModify: false
+                        }                    )
                     .then( lobby => res.json(lobby) )
                     .catch( err => console.log(err) );
                 }
@@ -74,7 +82,7 @@ router.post("/join/:id/:characterId",
             nolobbiesfound: 'No lobbies with this key exist!' }));
 });
 
-router.delete("/leave/:id",
+router.patch("/leave/:id",
     passport.authenticate('jwt', { session: false }), (req, res) => {
     
     Lobby.findOne({lobbykey: req.params.id})
@@ -86,8 +94,10 @@ router.delete("/leave/:id",
                             $unset: { player1: "" },
                             $currentDate: { lastModified: true }
                         },
-                        { new: true }
-                    )
+                        {
+                            new: true,
+                            useFindAndModify: false
+                        }                    )
                     .then( lobby => res.json(lobby) )
                     .catch( err => console.log(err) );
             }
@@ -98,8 +108,10 @@ router.delete("/leave/:id",
                             $unset: { player2: "" },
                             $currentDate: { lastModified: true }
                         },
-                        { new: true }
-                    )
+                        {
+                            new: true,
+                            useFindAndModify: false
+                        }                    )
                     .then( lobby => res.json(lobby) )
                     .catch( err => console.log(err) );
             }
