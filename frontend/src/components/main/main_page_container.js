@@ -4,7 +4,7 @@ import MainPage from "./main_page";
 import { logout } from "../../actions/session_actions";
 
 const mapStateToProps = (state) => ({
-    characters: Object.values(state.entities.characters),
+    characters: Object.values(state.entities.characters.myCharacters),
     currentUser: state.session.user
 });
 

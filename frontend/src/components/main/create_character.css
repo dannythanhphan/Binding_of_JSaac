@@ -1,0 +1,105 @@
+.create-character-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+}
+
+.create-character-form {
+    margin-top: 5%;
+    height: 50%;
+    width: 100%;
+    text-align: center;
+}
+
+.create-character-name {
+    font-size: 22px;
+    display: flex;
+    justify-content: center;
+}
+
+.create-character-form input {
+    background-color: #EEEFF1;
+    border-radius: 5px;
+    margin-left: 1%;
+    margin-bottom: 1%;
+    padding-bottom: 0.5%;
+    padding-top: 0.5%;
+    padding-left: 1%;
+    outline: none;
+}
+
+.character-label {
+    font-size: 26px;
+    margin-top: 4px;
+}
+
+.fighter-title {
+    font-size: 30px;
+}
+
+.character-image-container {
+    width: 100%;
+    height: 30%;
+    display: flex;
+    justify-content: center;
+}
+
+.character-image-container img {
+    margin-top: 5%;
+    width: 9%;
+    height: 80%;
+
+    cursor: pointer;
+}
+
+.create-character-form img:hover {
+    box-shadow: 0 0 15px -2px black;
+    border-radius: 12px;
+}
+
+.create-button-container {
+    width: 100%;
+}
+
+.create-button {
+    margin-top: 5%;
+    background-color: transparent;
+    border: 2px solid rgb(62, 84, 114);
+    color: rgb(62, 84, 114);
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 6px;
+    padding: 1%;
+    transition-duration: 0.4s;
+}
+
+.create-button:hover {
+    background-color: rgb(62, 84, 114); 
+    color: white;
+}
+
+.radio-container {
+    margin-top: 3%;
+    width: 10%;
+    height: 80%;
+    margin-right: 5%;
+}
+
+[type=radio] {
+    position:absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+[type=radio] + img {
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+}
+
+[type=radio]:checked + img {
+    box-shadow: 0 0 15px -2px black;
+    border-radius: 12px;
+}
