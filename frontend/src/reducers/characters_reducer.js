@@ -17,16 +17,14 @@ const charactersReducer = (state = initialState, action) => {
     switch (action.type) {
         case RECEIVE_MY_CHARACTERS:
             newState['myCharacters'] = {};
-            Object.keys(action.characters.data)
-            .forEach(character => (
+            action.characters.data.forEach(character => (
                 newState['myCharacters'][character._id] = character
             ))
             return newState;
 
         case RECEIVE_GAME_CHARACTERS:
             newState['gameCharacters'] = {};
-            Object.keys(action.characters)
-            .forEach( character => (
+            action.characters.data.forEach( character => (
                 newState['gameCharacters'][character._id] = character
             ));
             return newState;
