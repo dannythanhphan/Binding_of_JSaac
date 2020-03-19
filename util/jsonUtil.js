@@ -1,4 +1,4 @@
-const User = require('../../models/User');
+const User = require('../models/User');
 
 const buildLobbyJson = (lobby, res) => {
     const payload = { users: {}, characters: {}, lobby };

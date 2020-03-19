@@ -3,8 +3,8 @@ const bcrypt = require("bcryptjs");
 const User = require("../../models/User");
 const Lobby = require("../../models/Lobby");
 const validateLobbyCreationInput = require("../../validation/lobby-creation");
-const generateKey = require('../../util');
-const buildLobbyJson = require('./json_util')
+const buildLobbyJson = require('../../util/jsonUtil')
+const generateKey = require('../../util/generateKey');
 const generateDungeon = require('../../util/generateDungeon')
 
 const jwt = require("jsonwebtoken");
