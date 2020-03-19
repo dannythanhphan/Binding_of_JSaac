@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const Monster = require('./Monster');
+const Trap = require('./Trap');
+
 const ROOM_WIDTH = 21;
 const ROOM_HEIGHT = 15;
 const TILE_SIZE = 100;
@@ -38,6 +40,9 @@ const RoomSchema = new Schema({
     },
     monsters: {
         type: [Monster.schema]
+    },
+    traps: {
+        type: [Trap.schema]
     }
 });
 

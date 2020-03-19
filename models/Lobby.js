@@ -33,7 +33,7 @@ const LobbySchema = new Schema({
     },
     dungeon: {
         type: [Dungeon.schema]
-    }
+    }   
 });
 
 module.exports = Lobby = mongoose.model('lobbies', LobbySchema);
