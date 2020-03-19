@@ -3,7 +3,9 @@ const Schema = mongoose.Schema;
 const Floor = require('./Floor');
 
 const DungeonSchema = new Schema({
-    floors: [Floor]
+    floors: {
+        type: [Floor.schema]
+    }
 });
 
-module.exports = Room = mongoose.model('rooms', RoomSchema);
+module.exports = Dungeon = mongoose.model('dungeons', DungeonSchema);

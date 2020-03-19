@@ -8,7 +8,9 @@ const FloorSchema = new Schema({
         required: true,
         default: 1
     },
-    rooms: [Room]
+    rooms: {
+        type: [Room.schema]
+    }
 });
 
-module.exports = Room = mongoose.model('rooms', RoomSchema);
+module.exports = Floor = mongoose.model('floors', FloorSchema);

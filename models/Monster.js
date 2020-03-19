@@ -57,4 +57,4 @@ const MonsterSchema = new Schema({
     // add lobby and items later, possibly add crits
 });
 
-module.exports = Monster = mongoose.model('characters', MonsterSchema);
+module.exports = Monster = mongoose.model('monsters', MonsterSchema);

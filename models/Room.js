@@ -36,7 +36,9 @@ const RoomSchema = new Schema({
         type: Boolean,
         required: true
     },
-    monsters: [Monster]
+    monsters: {
+        type: [Monster.schema]
+    }
 });
 
 module.exports = Room = mongoose.model('rooms', RoomSchema);

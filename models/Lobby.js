@@ -31,7 +31,9 @@ const LobbySchema = new Schema({
         type: Date,
         default: Date.now
     },
-    dungeon: Dungeon
+    dungeon: {
+        type: [Dungeon.schema]
+    }
 });
 
 module.exports = Lobby = mongoose.model('lobbies', LobbySchema);
