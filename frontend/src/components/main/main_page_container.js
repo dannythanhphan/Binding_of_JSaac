@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { fetchMyCharacters } from "../../actions/character_actions";
+import { fetchCharacters } from "../../actions/character_actions";
 import MainPage from "./main_page";
 import { logout } from "../../actions/session_actions";
 
@@ -9,7 +9,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchCharacters: (userId) => dispatch(fetchMyCharacters(userId)),
+    fetchCharacters: (userId) => dispatch(fetchCharacters(userId)),
     logout: () => dispatch(logout())
 });
 

@@ -11,3 +11,7 @@ export const join = id => {
 export const leave = id => {
   return axios.patch(`/api/lobbies/leave/${id}`);
 };
+
+export const getLobby = key => {
+  return axios.get(`/api/lobbies/${key}`)
+};

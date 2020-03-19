@@ -1,10 +1,10 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
-// const User = require("../../models/User");
-const Character = require('../../models/Character');
+const User = require("../../models/User");
 const Lobby = require("../../models/Lobby");
 const validateLobbyCreationInput = require("../../validation/lobby-creation");
 const generateKey = require('../../util');
+const buildLobbyJson = require('./json_util')
 
 const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
@@ -123,5 +123,31 @@ router.patch("/leave/:id",
             nolobbiesfound: 'No lobbies with this key exist!' }));    
 });
 
+router.get("/:lobbykey", (req, res) => {
+    Lobby.findOne({lobbykey: req.params.lobbykey})
+    .then(lobby => {
+        jsonObj = buildLobbyJson(lobby)
+        console.log("res", jsonObj)
+        res.json(jsonObj)
+    })
+    .catch(err => console.log(err));
+})
+        // const payload = { users: {}, characters: {}, lobby: lobby };
+        // User.find({"characters.id": { $in: [lobby.player1, lobby.player2]}})
+        // .then(users => {
+        //     // users = users.filter(user => user.characters.length > 0);
+        //     users.forEach(user => {
+        //         payload.users[user.id] = {
+        //             username: user.username,
+        //             id: user.id
+        //         };
+        //         user.characters.forEach(character => {
+        //             payload.characters[character.id] = character
+        //         });
+        //     })
+        //     res.json(payload)
+        // })
+//     }).catch(err => console.log(err))
+// });
 
 module.exports = router;

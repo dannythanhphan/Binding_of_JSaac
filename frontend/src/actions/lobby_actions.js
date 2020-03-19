@@ -8,10 +8,10 @@ export const leaveLobby = () => ({
     type: REMOVE_LOBBY
 });
 
-export const receiveLobby = lobby => {
+export const receiveLobby = payload => {
     return {
     type: RECEIVE_LOBBY,
-    lobby
+    payload
 }};
 
 export const receiveErrors = errors => ({
