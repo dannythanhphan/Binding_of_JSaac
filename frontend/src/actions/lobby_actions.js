@@ -59,6 +59,7 @@ export const create = (charId) => dispatch => {
                 // window.lobbykey = res.data.lobby.lobbykey
 
                 window.socket.on('changeLobbyData', (data) => {
+                    console.log("socket receives signal to retrieve")
                     return dispatch(retrieve(data.lobbykey));
                 })
                 return dispatch(receiveLobby(res.data));
@@ -71,6 +72,9 @@ export const create = (charId) => dispatch => {
 
 export const retrieve = key => dispatch => {
     return APIUtil.getLobby(key)
-    .then(payload => dispatch(receiveLobby(payload.data)))
+    .then(payload => {
+        console.log(payload.data.lobby)
+        return dispatch(receiveLobby(payload.data))
+    })
     .catch(err => dispatch(receiveErrors(err.response.data)))
 };

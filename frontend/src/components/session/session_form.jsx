@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 import './session.css'
-import logo from '../home/logo.png'
+import logo from '../../assets/logo.png'
 
 class SessionForm extends React.Component {
     constructor(props) {

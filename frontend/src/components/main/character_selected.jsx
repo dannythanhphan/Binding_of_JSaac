@@ -1,8 +1,8 @@
 import React from 'react';
 import { Stage, Layer, Sprite } from 'react-konva';
-import mustacheMan from './animations/character_animations1.jpg';
-import thief from './animations/character_animations2.png';
-import superWoman from './animations/character_animations3.png';
+import mustacheMan from '../../assets/animations/character_animations1.jpg';
+import thief from '../../assets/animations/character_animations2.png';
+import superWoman from '../../assets/animations/character_animations3.png';
 import { Redirect } from 'react-router';
 
 class CharacterSelected extends React.Component {
@@ -37,7 +37,7 @@ class CharacterSelected extends React.Component {
     createLobby(e) {
         e.preventDefault();
         this.props.create(this.props.character._id).then( 
-            (lobby) => this.props.history.push(`/main/lobby/${lobby.payload.lobby.lobbykey}`));
+            (res) => this.props.history.push(`/main/lobby/${res.payload.lobby.lobbykey}`));
     }
 
     joinLobby(e) {
@@ -46,7 +46,7 @@ class CharacterSelected extends React.Component {
             (res) => {
                 if (res.type === 'RECEIVE_LOBBY') {
                     this.closeModal();
-                    this.props.history.push('/main/lobby');
+                    this.props.history.push(`/main/lobby/${res.payload.lobby.lobbykey}`);
                 }
             });
     }

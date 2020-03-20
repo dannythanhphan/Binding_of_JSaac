@@ -1,7 +1,7 @@
 import React from 'react';
 import './home_page.css'
 import { Link } from 'react-router-dom';
-import logo from './logo.png'
+import logo from '../../assets/logo.png'
 
 class HomePage extends React.Component {
     render() {
