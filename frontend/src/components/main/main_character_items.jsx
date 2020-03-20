@@ -1,7 +1,7 @@
 import React from 'react';
-import ava1 from './avatars/character_ava1.png'
-import ava2 from './avatars/character_ava2.png'
-import ava3 from './avatars/character_ava3.png'
+import ava1 from '../../assets/avatars/character_ava1.png'
+import ava2 from '../../assets/avatars/character_ava2.png'
+import ava3 from '../../assets/avatars/character_ava3.png'
 import { Link, withRouter } from 'react-router-dom'
 
 class MainCharacterItems extends React.Component {
