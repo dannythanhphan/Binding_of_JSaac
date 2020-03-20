@@ -1,11 +1,11 @@
 import axios from "axios";
 
-export const create = () => {
-  return axios.post("/api/lobbies/create");
+export const create = (charId) => {
+  return axios.post(`/api/lobbies/create/${charId}`);
 };
 
-export const join = id => {
-  return axios.patch(`/api/lobbies/join/${id}`);
+export const join = (id, charId) => {
+  return axios.patch(`/api/lobbies/join/${id}/${charId}`);
 };
 
 export const leave = id => {

@@ -3,18 +3,15 @@ import {
     REMOVE_LOBBY
 } from '../actions/lobby_actions';
 
-const initialState = {};
 
-const lobbyReducer = (state = initialState, action) => {
-    Object.freeze(state);
-    const newState = Object.assign({}, state);
+const lobbyReducer = (state = {}, action) => {
 
     switch (action.type) {
         case RECEIVE_LOBBY:
             return action.payload.lobby;
 
         case REMOVE_LOBBY:
-            return initialState;
+            return state;
     
         default:
             return state;
