@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const Room = require('./Room');
+const Exit = require('./Exit');
 
 const FloorSchema = new Schema({
     level: {
@@ -10,6 +11,9 @@ const FloorSchema = new Schema({
     },
     rooms: {
         type: [Room.schema]
+    },
+    exit: {
+        type: Exit.schema
     }
 });
 
