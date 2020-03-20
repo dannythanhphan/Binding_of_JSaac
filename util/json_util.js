@@ -58,8 +58,7 @@ const buildLobbyJson = (lobby, res) => {
             })
         })
     });
-
-    User.find({ "characters.id": { $in: [lobby.player1, lobby.player2] } })
+    User.find({ "characters._id": { $in: [lobby.player1, lobby.player2] } })
     .then(users => {
         users = users.filter(user => user.characters.length > 0);
         users.forEach(user => {
@@ -71,7 +70,6 @@ const buildLobbyJson = (lobby, res) => {
                 payload.characters[character.id] = character
             });
         })
-        console.log('build', payload.users);
         return res.json(payload)
     })
     .catch(err => console.log(err))
