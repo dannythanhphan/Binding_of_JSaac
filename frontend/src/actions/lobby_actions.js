@@ -41,7 +41,7 @@ export const join = (id, charId) => dispatch => {
                 // window.socket.on('changeLobbyData', (data) => {
                 //     console.log("Incoming message: ", data);
                 // })
-                dispatch(receiveLobby(res));
+                dispatch(receiveLobby(res.data));
             }
         )
         .catch(

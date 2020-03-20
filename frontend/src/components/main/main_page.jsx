@@ -10,6 +10,14 @@ import logo from '../home/logo.png';
 import { ProtectedRoute } from '../../util/route_util';
 
 class MainPage extends React.Component {
+    constructor(props) {
+        super(props);
+        this.props = props;
+        this.state = {lobbyModal: false};
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+        this.joinLobby = this.joinLobby.bind(this);
+    }
     componentDidMount() {
         this.props.fetchCurrentUser();
     }
@@ -19,7 +27,41 @@ class MainPage extends React.Component {
             this.props.fetchCurrentUser();
         }
     }
+    joinLobby(e) {
+        e.preventDefault();
+    }
 
+    openModal() {
+        this.setState({
+            lobbyModal: true
+        })
+    }
+
+    closeModal() {
+        this.setState({
+            lobbyModal: false
+        })
+    }
+
+    renderModal() {
+        if (this.state.lobbyModal) {
+            return (
+                <div className="modal-screen">
+                    <div className="lobby-modal">
+                        <h2>Enter the Lobby Key of the Lobby you wish to join</h2>
+                        <input type="text"/>
+                        <div>
+                            <button onClick={this.joinLobby}>Join Lobby</button>
+                            <button onClick={this.closeModal}>Cancel</button>
+                        </div>
+                    </div>
+
+                </div>
+            )
+        } else {
+            return null;
+        }
+    }
     render() {
         const { characters, logout, receiveGameCharacter } = this.props
         const displayCharacters = (characters.length > 0) ? (
@@ -65,9 +107,9 @@ class MainPage extends React.Component {
                             <Link to="/main/create" className="redirect-buttons">
                                 New Character
                             </Link>
-                            <Link to="/main/lobby" className="redirect-buttons">
+                            <div className="redirect-buttons" onClick={this.openModal}>
                                 Start Game
-                            </Link>
+                            </div>
                         </div>
                         <button onClick={logout} className="logout-button">Sign Out</button>
                     </div>
@@ -83,6 +125,7 @@ class MainPage extends React.Component {
                 <div className="main-character-select-side-bar">
                     {displayCharacters}
                 </div>
+                {this.renderModal()}
             </div>
         );
     }
