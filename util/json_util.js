@@ -71,7 +71,7 @@ const buildLobbyJson = (lobby, res) => {
                 payload.characters[character.id] = character
             });
         })
-        console.log('build', payload.users);
+        console.log('build', payload.users, payload.characters);
         return res.json(payload)
     })
     .catch(err => console.log(err))
