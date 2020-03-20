@@ -13,6 +13,7 @@ const mapDispatchToProps = (dispatch) => ({
     fetchCurrentUser: () => dispatch(fetchCurrentUser()),
     logout: () => dispatch(logout()),
     receiveGameCharacter: character => dispatch(receiveGameCharacter(character)),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainPage)
