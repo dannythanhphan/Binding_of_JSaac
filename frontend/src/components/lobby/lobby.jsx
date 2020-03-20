@@ -68,11 +68,12 @@ class LobbyMain extends React.Component {
                         </div>
                     </div>
                     <div className="lobby-player2-info">
-                        {/* <div className="lobby-player2-username">
-                            {lobby.player2.name}
+                        <div className="lobby-player2-username">
+                            JustTakeIt
+                            {/* {lobby.player2.name} */}
                         </div>
                         <div className="lobby-player2-char-model">
-                            <Stage width={200} height={300}>
+                            {/* <Stage width={200} height={300}>
                                 <Layer>
                                     <Sprite 
                                         x={50}
@@ -91,9 +92,9 @@ class LobbyMain extends React.Component {
                                         }
                                     />
                                 </Layer>
-                            </Stage>
-                        </div> */}
-                        hi
+                            </Stage> */}
+                            hi
+                        </div>
                     </div>
                 </div>
             </div>

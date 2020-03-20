@@ -26,12 +26,12 @@
 .player1-player2-container {
     display: flex;
     justify-content: space-evenly;
-    width: 100%;
+    margin-left: 10%;
+    width: 80%;
     height: 100%;
 }
 
 .lobby-player1-info {
-    background-color: turquoise;
     flex: 1;
     margin-top: 5%;
     height: 100%;
@@ -46,7 +46,6 @@
 }
 
 .lobby-player1-char-model {
-    background-color: wheat;
     height: 80%;
     display: flex;
     justify-content: center;
@@ -54,6 +53,22 @@
 }
 
 .lobby-player2-info {
-    background-color: thistle;
-    flex: 1
+    flex: 1;
+    margin-top: 5%;
+    height: 100%;
+}
+
+.lobby-player2-username {
+    display: flex;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.lobby-player2-char-model {
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    margin-top: 8%;
 }
