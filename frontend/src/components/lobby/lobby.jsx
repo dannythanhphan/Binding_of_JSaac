@@ -7,9 +7,11 @@ import { Stage, Layer, Sprite } from 'react-konva';
 import animationDetails from './animation_details';
 
 class LobbyMain extends React.Component {
-    // componentDidMount() {
-    //     this.props.fetchLobby(this.props.match.params.lobbykey)
-    // }
+    componentDidMount() {
+        if (localStorage.lobbykey) {
+            this.props.fetchLobby(localStorage.lobbykey);
+        }
+    }
 
     // componentDidUpdate(prevProps) {
     //     if (Object.keys(prevProps.lobby).length !== Object.keys(this.props.lobby).length) {

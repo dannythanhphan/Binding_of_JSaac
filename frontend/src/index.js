@@ -11,28 +11,32 @@ import openSocket from "socket.io-client";
 document.addEventListener('DOMContentLoaded', () => {
   let store;
 
-  // if (localStorage.jwtToken) {
-  //   setAuthToken(localStorage.jwtToken);
+  if (localStorage.jwtToken) {
+    setAuthToken(localStorage.jwtToken);
 
-  //   const decodedUser = jwt_decode(localStorage.jwtToken);
+    const decodedUser = jwt_decode(localStorage.jwtToken);
 
-  //   const preloadedState = { session: { isAuthenticated: true, user: decodedUser } };
+    const preloadedState = { session: { isAuthenticated: true, user: decodedUser } };
 
-  //   store = configureStore(preloadedState);
+    store = configureStore(preloadedState);
 
-  //   const currentTime = Date.now() / 1000;
+    const currentTime = Date.now() / 1000;
 
-  //   if (decodedUser.exp < currentTime) {
+    if (decodedUser.exp < currentTime) {
 
-  //     store.dispatch(logout());
-  //     window.location.href = '/';
-  //   }
-  // } else {
-
+      store.dispatch(logout());
+      window.location.href = '/';
+    }
+  } else {
+    
     store = configureStore({});
-  // }
+  }
+
   const socket = openSocket("http://localhost:8000/lobby");
   window.socket = socket;
+  if (localStorage.lobbykey) {
+    window.socket.emit('room', localStorage.lobbykey);
+  }
   window.create = create;
   window.join = join;
   window.leave = leave;

@@ -24,6 +24,7 @@ export const leave = (id) => dispatch => {
         .then(
             res => {
                 window.socket.emit('leave', res.data.lobbykey);
+                localStorage.removeItem('lobbykey');
                 dispatch(leaveLobby());
             }
         )
@@ -37,7 +38,7 @@ export const join = (id, charId) => dispatch => {
         .then(
             res => { 
                 window.socket.emit('room', res.data.lobby.lobbykey);
-                // window.lobbykey = res.data.lobbykey
+                localStorage.setItem('lobbykey', res.data.lobby.lobbykey);
 
 
                 window.socket.on('changeLobbyData', (data) => {
@@ -56,6 +57,7 @@ export const create = (charId) => dispatch => {
         .then(
             res => { 
                 window.socket.emit('room', res.data.lobby.lobbykey);
+                localStorage.setItem('lobbykey', res.data.lobby.lobbykey);
                 // window.lobbykey = res.data.lobby.lobbykey
 
                 window.socket.on('changeLobbyData', (data) => {
