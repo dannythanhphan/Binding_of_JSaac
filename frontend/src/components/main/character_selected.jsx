@@ -3,9 +3,87 @@ import { Stage, Layer, Sprite } from 'react-konva';
 import mustacheMan from './animations/character_animations1.jpg';
 import thief from './animations/character_animations2.png';
 import superWoman from './animations/character_animations3.png';
-
+import { Redirect } from 'react-router';
 
 class CharacterSelected extends React.Component {
+    constructor(props) {
+        super(props);
+        this.props = props;
+        this.state = {
+            x: 10,
+            y: 0,
+            lobbyModal: false,
+            lobbykey: ''
+        }
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+        this.joinLobby = this.joinLobby.bind(this);
+        this.createLobby = this.createLobby.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+    };
+
+    handleDelete(charId) {
+        if (window.confirm('Are you sure you wish to delete this item?')) {
+            this.props.deleteCharacter(charId)
+            .then(() => this.props.history.push('/main'))
+        }
+
+    }
+    handleChange(e) {
+        const currentState = Object.assign({}, this.state);
+        currentState.lobbykey = e.target.value;
+        this.setState(currentState);
+    }
+    createLobby(e) {
+        e.preventDefault();
+        this.props.create(this.props.character._id).then( 
+            (lobby) => this.props.history.push(`/main/lobby/${lobby.payload.lobby.lobbykey}`));
+    }
+
+    joinLobby(e) {
+        e.preventDefault();
+        this.props.join(this.state.lobbykey, this.props.character._id).then(
+            (res) => {
+                if (res.type === 'RECEIVE_LOBBY') {
+                    this.closeModal();
+                    this.props.history.push('/main/lobby');
+                }
+            });
+    }
+
+    openModal() {
+        const currentState = Object.assign({}, this.state);
+        currentState.lobbyModal = true;
+        this.setState(currentState);
+    }
+
+    closeModal() {
+        const currentState = Object.assign({}, this.state);
+        currentState.lobbyModal = false;
+        this.setState(currentState);
+    }
+
+    renderModal() {
+        const errors = Object.values(this.props.errors).join(", ");
+        if (this.state.lobbyModal) {
+            return (
+                <div className="modal-screen">
+                    <div className="lobby-modal">
+                        <h2>Enter the Lobby Key of the Lobby you wish to join</h2>
+                        <input type="text" onChange={this.handleChange} />
+                        <p>{errors}</p>
+                        <div>
+                            <button onClick={this.joinLobby}>Join Lobby</button>
+                            <button onClick={this.closeModal}>Cancel</button>
+                        </div>
+                    </div>
+
+                </div>
+            )
+        } else {
+            return null;
+        }
+    }
 
     render () {
         let running;
@@ -158,10 +236,23 @@ class CharacterSelected extends React.Component {
                                 animations={running}
                                 frameRate={frames}
                                 frameIndex={0}
-                                ref={(node => {if(node && !node.isRunning()) node.start()})}
+                                ref={(node => {
+                                        if(node && !node.isRunning()) {
+                                            // setInterval(function() {node.move({x: (20 % 200), y: 0})}, 48)
+                                            node.start()
+                                        }
+                                    })
+                                }
                             />
                         </Layer>
                     </Stage>
+                </div>
+                <div className="character-selected-delete-button-container">
+                    <button onClick={() => this.handleDelete(character._id)} className="character-selected-delete-button">
+                        Delete Character
+                    </button>
+                    <button onClick={this.openModal}>Join Existing Lobby</button>
+                    <button onClick={this.createLobby}>Create New Lobby</button>
                 </div>
             </div>
         ) : (
@@ -170,6 +261,7 @@ class CharacterSelected extends React.Component {
         return(
             <div>
                 {displayCharacter}
+                {this.renderModal()}
             </div>
         );
     }
