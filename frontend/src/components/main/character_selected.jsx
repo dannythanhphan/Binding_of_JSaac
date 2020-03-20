@@ -46,7 +46,7 @@ class CharacterSelected extends React.Component {
             (res) => {
                 if (res.type === 'RECEIVE_LOBBY') {
                     this.closeModal();
-                    this.props.history.push('/main/lobby');
+                    this.props.history.push(`/main/lobby/${res.payload.lobby.lobbykey}`);
                 }
             });
     }

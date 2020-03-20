@@ -103,57 +103,6 @@ class LobbyMain extends React.Component {
             player1Frames = player1Info.frames
         }
 
-<<<<<<< HEAD
-        if (lobby && lobby.player2) {
-            let player2Info = animationDetails(gameCharacters[lobby.player2].characterSprite)
-            player2Running = player2Info.running
-            switch (player2Info.imageObj) {
-                case "mustacheMan":
-                    player2ImageObj.src = mustacheMan
-                    break;
-                case "thief":
-                    player2ImageObj.src = thief
-                    break;
-                case "superWoman":
-                    player2ImageObj.src = superWoman
-                    break;
-            }
-            player2Frames = player2Info.frames
-        }
-
-        const displayCharacterModel2 = (lobby && lobby.player2) ? (
-            <div className="lobby-player2-info">
-                <div className="lobby-player2-username">
-                    {gameCharacters[lobby.player2].name}
-                </div>
-                <div className="lobby-player2-char-model">
-                    <Stage width={200} height={300}>
-                        <Layer>
-                            <Sprite 
-                                x={50}
-                                y={50}
-                                image={player2ImageObj}
-                                animation='running'
-                                animations={player2Running}
-                                frameRate={player2Frames}
-                                frameIndex={0}
-                                ref={(node => {
-                                        if(node && !node.isRunning()) {
-                                            // setInterval(function() {node.move({x: (20 % 200), y: 0})}, 48)
-                                            node.start()
-                                        }
-                                    })
-                                }
-                            />
-                        </Layer>
-                    </Stage>
-                </div>
-            </div>
-        ) : (
-            null
-        )
-=======
->>>>>>> 6685c1191f3b21ef306657b6f539db337054546d
 
         const displayCharacterModels = (Object.values(gameCharacters).length > 0) ? (
             <div className="lobby-players-container">
@@ -191,11 +140,6 @@ class LobbyMain extends React.Component {
                         </div>
                         {this.renderPlayer2()}
                     </div>
-<<<<<<< HEAD
-                    {displayCharacterModel2}
-=======
-
->>>>>>> 6685c1191f3b21ef306657b6f539db337054546d
                 </div>
             </div>
         ) : (
