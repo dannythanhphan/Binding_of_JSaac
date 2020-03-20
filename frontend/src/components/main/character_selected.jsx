@@ -183,6 +183,11 @@ class CharacterSelected extends React.Component {
         return(
             <div>
                 {displayCharacter}
+                <div className="character-selected-delete-button-container">
+                    <button className="character-selected-delete-button">
+                        Delete Character
+                    </button>
+                </div>
             </div>
         );
     }
