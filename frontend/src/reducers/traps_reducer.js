@@ -4,7 +4,7 @@ const trapsReducer = (state = {}, action) => {
 
     switch (action.type) {
         case RECEIVE_LOBBY:
-            return action.traps;
+            return action.payload.traps;
 
         case REMOVE_LOBBY:
             return state;

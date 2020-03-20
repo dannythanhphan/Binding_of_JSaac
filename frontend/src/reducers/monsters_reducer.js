@@ -4,7 +4,7 @@ const monstersReducer = (state = {}, action) => {
 
     switch (action.type) {
         case RECEIVE_LOBBY:
-            return action.monsters;
+            return action.payload.monsters;
 
         case REMOVE_LOBBY:
             return state;

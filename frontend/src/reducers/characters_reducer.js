@@ -35,9 +35,7 @@ const charactersReducer = (state = initialState, action) => {
             return newState;
 
         case RECEIVE_LOBBY:
-            action.payload.characters.forEach(character => {
-                newState['gameCharacters'][character.id] = character;
-            });
+            newState['gameCharacters'] = action.payload.characters;
             return newState;
 
         case REMOVE_LOBBY:
