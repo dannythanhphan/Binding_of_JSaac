@@ -6,6 +6,7 @@ const buildLobbyJson = (lobby, res) => {
         id: lobby.id,
         lobbykey: lobby.lobbykey,
         player1: lobby.player1,
+        player2: lobby.player2
     }
     payload.dungeon = {
         id: lobby.dungeon.id,
