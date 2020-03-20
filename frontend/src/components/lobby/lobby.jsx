@@ -43,8 +43,8 @@ class LobbyMain extends React.Component {
                             pewpew
                             {/* {lobby.player1.name} */}
                         </div>
-                        {/* <div className="lobby-player1-char-model">
-                            <Stage width={200} height={300}>
+                        <div className="lobby-player1-char-model">
+                            {/* <Stage width={200} height={300}>
                                 <Layer>
                                     <Sprite 
                                         x={50}
@@ -63,9 +63,9 @@ class LobbyMain extends React.Component {
                                         }
                                     />
                                 </Layer>
-                            </Stage>
-                        </div> */}
-                        hi
+                            </Stage> */}
+                            hi
+                        </div>
                     </div>
                     <div className="lobby-player2-info">
                         {/* <div className="lobby-player2-username">

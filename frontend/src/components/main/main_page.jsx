@@ -69,9 +69,9 @@ class MainPage extends React.Component {
                             <Link to="/main/create" className="redirect-buttons">
                                 New Character
                             </Link>
-                            <div className="redirect-buttons">
+                            <Link to="/main/lobby" className="redirect-buttons">
                                 Start Game
-                            </div>
+                            </Link>
                         </div>
                         <button onClick={logout} className="logout-button">Sign Out</button>
                     </div>

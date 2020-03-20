@@ -1,7 +1,6 @@
 .lobby-players-container {
     width: 100%;
     height: 500px;
-    background-color: lightsalmon;
 }
 
 .lobby-key-info {
@@ -33,11 +32,25 @@
 
 .lobby-player1-info {
     background-color: turquoise;
-    flex: 1
+    flex: 1;
+    margin-top: 5%;
+    height: 100%;
 }
 
 .lobby-player1-username {
-    
+    display: flex;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.lobby-player1-char-model {
+    background-color: wheat;
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    margin-top: 8%;
 }
 
 .lobby-player2-info {

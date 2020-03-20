@@ -37,7 +37,7 @@ router.post("/create/:characterId",
 );
 
 
-router.post("/join/:id/:characterId", 
+router.patch("/join/:id/:characterId", 
     passport.authenticate('jwt', { session: false }), (req, res) => {
 
     Lobby.findOne({lobbykey: req.params.id})
