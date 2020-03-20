@@ -8,8 +8,8 @@ export const join = (id, charId) => {
   return axios.patch(`/api/lobbies/join/${id}/${charId}`);
 };
 
-export const leave = id => {
-  return axios.patch(`/api/lobbies/leave/${id}`);
+export const leave = (id, charId) => {
+  return axios.patch(`/api/lobbies/leave/${id}/${charId}`);
 };
 
 export const getLobby = key => {

@@ -10,8 +10,7 @@ const mapStateToProps = state => {
 }};
 
 const mapDispatchToProps = dispatch => ({
-    leaveLobby: id => dispatch(leave(id)),
-    joinLobby: id => dispatch(join(id)),
+    leaveLobby: (id, charId) => dispatch(leave(id, charId)),
     createLobby: () => dispatch(create()),
     fetchLobby: key => dispatch(retrieve(key)),
 });

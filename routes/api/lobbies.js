@@ -84,12 +84,12 @@ router.patch("/join/:id/:characterId",
             nolobbiesfound: 'No lobbies with this key exist!' }));
 });
 
-router.patch("/leave/:id",
+router.patch("/leave/:id/:characterId",
     passport.authenticate('jwt', { session: false }), (req, res) => {
     
     Lobby.findOne({lobbykey: req.params.id})
         .then(lobby => {
-            if (lobby.player1 && lobby.player1.toString() === req.user.id) {
+            if (lobby.player1 && lobby.player1.toString() === req.params.characterId) {
                     Lobby.findOneAndUpdate(
                         { lobbykey: req.params.id},
                         {
@@ -103,7 +103,7 @@ router.patch("/leave/:id",
                     .then( lobby => buildLobbyJson(lobby, res) )
                     .catch( err => console.log(err) );
             }
-            else if (lobby.player2 && lobby.player2.toString() === req.user.id) {
+            else if (lobby.player2 && lobby.player2.toString() === req.params.characterId) {
                     Lobby.findOneAndUpdate(
                         { lobbykey: req.params.id},
                         {

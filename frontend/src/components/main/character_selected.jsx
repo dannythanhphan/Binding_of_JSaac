@@ -35,20 +35,47 @@ class CharacterSelected extends React.Component {
         this.setState(currentState);
     }
     createLobby(e) {
+        const { createLobby, leaveLobby } = this.props;
         e.preventDefault();
-        this.props.create(this.props.character._id).then( 
-            (res) => this.props.history.push(`/main/lobby/${res.payload.lobby.lobbykey}`));
+        if (localStorage.lobbykey) {
+            leaveLobby(localStorage.lobbykey, localStorage.lobbycharacter)
+                .then((res) => {
+                    if (res.type === 'REMOVE_LOBBY') {
+                        createLobby(this.props.character._id).then(
+                            (res) => this.props.history.push(`/main/lobby`));
+                    }
+                });
+        } else {
+            createLobby(this.props.character._id).then( 
+                (res) => this.props.history.push(`/main/lobby`));
+        }
     }
 
     joinLobby(e) {
+        const { joinLobby, leaveLobby } = this.props;
         e.preventDefault();
-        this.props.join(this.state.lobbykey, this.props.character._id).then(
+        if (localStorage.lobbykey) {
+            leaveLobby(localStorage.lobbykey, localStorage.lobbycharacter)
+                .then((res) => {
+                    if (res.type === 'REMOVE_LOBBY') {
+                        joinLobby(this.state.lobbykey, this.props.character._id).then(
+                            (res) => {
+                                if (res.type === 'RECEIVE_LOBBY') {
+                                    this.closeModal();
+                                    this.props.history.push(`/main/lobby`);
+                                }
+                            });
+                    }
+                });
+        } else {
+        joinLobby(this.state.lobbykey, this.props.character._id).then(
             (res) => {
                 if (res.type === 'RECEIVE_LOBBY') {
                     this.closeModal();
-                    this.props.history.push(`/main/lobby/${res.payload.lobby.lobbykey}`);
+                    this.props.history.push(`/main/lobby`);
                 }
             });
+        }
     }
 
     openModal() {
