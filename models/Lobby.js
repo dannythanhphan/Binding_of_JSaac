@@ -8,23 +8,11 @@ const LobbySchema = new Schema({
     },
     player2: {
         type: Schema.Types.ObjectId,
-        ref: 'characters'
-    },
-    // lobbyname: {
-    //     type: String,
-    //     required: true,
-    //     index: true
-    // },
-    // active: {
-    //     type: Boolean,
-    //     required: true
+        required: true
     // },
     lobbykey: {
         type: String,
         required: true,
-        index: true
-    },
-    password: {
         type: String,
     },
     date: {
