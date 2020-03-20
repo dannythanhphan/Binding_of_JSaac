@@ -39,10 +39,6 @@ class LobbyMain extends React.Component {
             player2Frames = player2Info.frames
         }
 
-        console.log(lobby.player2)
-        if (lobby.player2) {
-            console.log("why isn't this working")
-        }
         if (lobby.player2) {
         return (
             <div className="lobby-player2-info">
@@ -80,11 +76,9 @@ class LobbyMain extends React.Component {
 
     render() {
         const { lobby, gameCharacters } = this.props;
-        // console.log(gameCharacters)
         let player1Running;
         let player1ImageObj = new Image();
         let player1Frames = 0;
-
         if (lobby && lobby.player1) {
             debugger
             let player1Info = animationDetails(gameCharacters[lobby.player1].characterSprite)
