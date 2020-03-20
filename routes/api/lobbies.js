@@ -22,7 +22,6 @@ router.post("/create/:characterId",
             if (lobby) {
                 lobbykey = generateKey(6);
             }
-
             const newLobby = new Lobby({
                 lobbykey: lobbykey,
                 player1: req.params.characterId,
