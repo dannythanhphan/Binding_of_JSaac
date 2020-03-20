@@ -78,7 +78,7 @@ class MainPage extends React.Component {
                     {displayInstructions}
                     <ProtectedRoute path="/main/:characterId" component={CharacterSelectedContainer} />
                     <ProtectedRoute path="/main/create" component={CreateCharacterContainer}/>
-                    <ProtectedRoute path="/main/lobby" component={LobbyContainer} />
+                    <ProtectedRoute path="/main/lobby/:lobbykey" component={LobbyContainer} />
                 </div>
                 <Link to='/main'>
                     <img className="main-logo-image" src={logo} alt="logo" />

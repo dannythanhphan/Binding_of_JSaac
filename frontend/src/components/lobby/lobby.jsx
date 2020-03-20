@@ -1,38 +1,47 @@
 import React from 'react';
 import './lobby.css';
-// import mustacheMan from '../main/animations/character_animations1.jpg';
-// import thief from '../main/animations/character_animations2.png';
-// import superWoman from '../main/animations/character_animations3.png';
-// import { Stage, Layer, Sprite } from 'react-konva';
-// import animationDetails from './animation_details';
+import mustacheMan from '../main/animations/character_animations1.jpg';
+import thief from '../main/animations/character_animations2.png';
+import superWoman from '../main/animations/character_animations3.png';
+import { Stage, Layer, Sprite } from 'react-konva';
+import animationDetails from './animation_details';
 
 class LobbyMain extends React.Component {
+    componentDidMount() {
+        this.props.fetchLobby(this.props.match.params.lobbykey)
+    }
+
+    componentDidUpdate(prevProps) {
+        if (Object.keys(prevProps.lobby).length !== Object.keys(this.props.lobby).length) {
+            this.props.fetchLobby(this.props.lobby.lobbykey)
+        }
+    }
 
     render() {
-        const { lobby } = this.props;
-        // let player1Running;
-        // let player2Running;
-        // let player1ImageObj = new Image();
-        // let player2ImageObj = new Image();
-        // let player1Frames = 0;
-        // let player2Frames = 0;
+        const { lobby, gameCharacters } = this.props;
+        let player1Running;
+        let player2Running;
+        let player1ImageObj = new Image();
+        let player2ImageObj = new Image();
+        let player1Frames = 0;
+        let player2Frames = 0;
 
-        // if (lobby && lobby.player1) {
-        //     let player1Info = animationDetails(lobby.player1.characterSprite)
-        //     player1Running = player1Info.running
-        //     switch (player1Info.imageObj) {
-        //         case "mustacheMan":
-        //             player1ImageObj.src = mustacheMan
-        //             break;
-        //         case "thief":
-        //             player1ImageObj.src = thief
-        //             break;
-        //         case "superWoman":
-        //             player1ImageObj.src = superWoman
-        //             break;
-        //     }
-        //     player1Frames = player1Info.frames
-        // }
+        if (lobby && lobby.player1) {
+            let player1Info = animationDetails(gameCharacters[lobby.player1].characterSprite)
+            player1Running = player1Info.running
+            switch (player1Info.imageObj) {
+                case "mustacheMan":
+                    player1ImageObj.src = mustacheMan
+                    break;
+                case "thief":
+                    player1ImageObj.src = thief
+                    break;
+                case "superWoman":
+                    player1ImageObj.src = superWoman
+                    break;
+            }
+            player1Frames = player1Info.frames
+        }
 
         // if (lobby && lobby.player2) {
         //     let player2Info = animationDetails(lobby.player2.characterSprite)
@@ -51,7 +60,7 @@ class LobbyMain extends React.Component {
         //     player2Frames = player2Info.frames
         // }
 
-        const displayCharacterModels = (lobby) ? (
+        const displayCharacterModels = (Object.values(gameCharacters).length > 0) ? (
             <div className="lobby-players-container">
                 <div className="lobby-key-info">
                     <p className="lobby-key-title">Lobby Key</p>
@@ -61,10 +70,10 @@ class LobbyMain extends React.Component {
                 <div className="player1-player2-container">
                     <div className="lobby-player1-info">
                         <div className="lobby-player1-username">
-                            {lobby.player1}
+                            {gameCharacters[lobby.player1].name}
                         </div>
                         <div className="lobby-player1-char-model">
-                            {/* <Stage width={200} height={300}>
+                            <Stage width={200} height={300}>
                                 <Layer>
                                     <Sprite 
                                         x={50}
@@ -83,8 +92,7 @@ class LobbyMain extends React.Component {
                                         }
                                     />
                                 </Layer>
-                            </Stage> */}
-                            hi
+                            </Stage>
                         </div>
                     </div>
                     <div className="lobby-player2-info">
