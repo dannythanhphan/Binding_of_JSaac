@@ -10,6 +10,10 @@ import logo from '../home/logo.png';
 import { ProtectedRoute } from '../../util/route_util';
 
 class MainPage extends React.Component {
+    constructor(props) {
+        super(props);
+        this.props = props;
+    }
     componentDidMount() {
         this.props.fetchCurrentUser();
     }
@@ -65,9 +69,9 @@ class MainPage extends React.Component {
                             <Link to="/main/create" className="redirect-buttons">
                                 New Character
                             </Link>
-                            <Link to="/main/lobby" className="redirect-buttons">
+                            <div className="redirect-buttons">
                                 Start Game
-                            </Link>
+                            </div>
                         </div>
                         <button onClick={logout} className="logout-button">Sign Out</button>
                     </div>

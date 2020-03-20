@@ -8,10 +8,18 @@ import { Redirect } from 'react-router';
 class CharacterSelected extends React.Component {
     constructor(props) {
         super(props);
+        this.props = props;
         this.state = {
             x: 10,
             y: 0,
+            lobbyModal: false,
+            lobbykey: ''
         }
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+        this.joinLobby = this.joinLobby.bind(this);
+        this.createLobby = this.createLobby.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     };
 
     handleDelete(charId) {
@@ -21,7 +29,52 @@ class CharacterSelected extends React.Component {
         }
 
     }
+    handleChange(e) {
+        const currentState = Object.assign({}, this.state);
+        currentState.lobbykey = e.target.value;
+        this.setState(currentState);
+    }
+    createLobby(e) {
+        e.preventDefault();
+        this.props.create(this.props.character._id);
+    }
 
+    joinLobby(e) {
+        e.preventDefault();
+        this.props.join(this.state.lobbykey, this.props.character._id);
+    }
+
+    openModal() {
+        const currentState = Object.assign({}, this.state);
+        currentState.lobbyModal = true;
+        this.setState(currentState);
+    }
+
+    closeModal() {
+        const currentState = Object.assign({}, this.state);
+        currentState.lobbyModal = false;
+        this.setState(currentState);
+    }
+
+    renderModal() {
+        if (this.state.lobbyModal) {
+            return (
+                <div className="modal-screen">
+                    <div className="lobby-modal">
+                        <h2>Enter the Lobby Key of the Lobby you wish to join</h2>
+                        <input type="text" onChange={this.handleChange} />
+                        <div>
+                            <button onClick={this.joinLobby}>Join Lobby</button>
+                            <button onClick={this.closeModal}>Cancel</button>
+                        </div>
+                    </div>
+
+                </div>
+            )
+        } else {
+            return null;
+        }
+    }
     render () {
         let running;
         let imageObj = new Image();
@@ -191,6 +244,8 @@ class CharacterSelected extends React.Component {
                     {/* <button  onClick={() => { if (window.confirm('Are you sure you wish to delete this item?')) this.props.deleteCharacter(character._id) } }>
                                 Delete
                     </button> */}
+                    <button onClick={this.openModal}>Join Existing Lobby</button>
+                    <button onClick={this.createLobby}>Create New Lobby</button>
                 </div>
             </div>
         ) : (
@@ -199,7 +254,7 @@ class CharacterSelected extends React.Component {
         return(
             <div>
                 {displayCharacter}
-
+                {this.renderModal()}
             </div>
         );
     }
