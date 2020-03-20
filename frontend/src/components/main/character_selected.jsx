@@ -3,7 +3,7 @@ import { Stage, Layer, Sprite } from 'react-konva';
 import mustacheMan from './animations/character_animations1.jpg';
 import thief from './animations/character_animations2.png';
 import superWoman from './animations/character_animations3.png';
-
+import { Redirect } from 'react-router';
 
 class CharacterSelected extends React.Component {
     constructor(props) {
@@ -13,6 +13,14 @@ class CharacterSelected extends React.Component {
             y: 0,
         }
     };
+
+    handleDelete(charId) {
+        if (window.confirm('Are you sure you wish to delete this item?')) {
+            this.props.deleteCharacter(charId)
+            .then(() => this.props.history.push('/main'))
+        }
+
+    }
 
     render () {
         let running;
@@ -176,6 +184,14 @@ class CharacterSelected extends React.Component {
                         </Layer>
                     </Stage>
                 </div>
+                <div className="character-selected-delete-button-container">
+                    <button onClick={() => this.handleDelete(character._id)} className="character-selected-delete-button">
+                        Delete Character
+                    </button>
+                    {/* <button  onClick={() => { if (window.confirm('Are you sure you wish to delete this item?')) this.props.deleteCharacter(character._id) } }>
+                                Delete
+                    </button> */}
+                </div>
             </div>
         ) : (
             null
@@ -183,11 +199,7 @@ class CharacterSelected extends React.Component {
         return(
             <div>
                 {displayCharacter}
-                <div className="character-selected-delete-button-container">
-                    <button className="character-selected-delete-button">
-                        Delete Character
-                    </button>
-                </div>
+
             </div>
         );
     }
