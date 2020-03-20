@@ -21,6 +21,9 @@ const LobbySchema = new Schema({
     },
     dungeon: {
         type: Dungeon.schema
+    },
+    location: {
+        
     }
 });
 
