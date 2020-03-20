@@ -8,8 +8,8 @@ const LobbySchema = new Schema({
     },
     player2: {
         type: Schema.Types.ObjectId,
-        required: true
-    // },
+      
+    // },  
     lobbykey: {
         type: String,
         required: true,
@@ -18,7 +18,7 @@ const LobbySchema = new Schema({
     date: {
         type: Date,
         default: Date.now
-    },
+}   },
     dungeon: {
         type: Dungeon.schema
     }
