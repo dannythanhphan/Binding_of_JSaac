@@ -1,0 +1,46 @@
+.lobby-players-container {
+    width: 100%;
+    height: 500px;
+    background-color: lightsalmon;
+}
+
+.lobby-key-info {
+    width: 100%;
+}
+
+.lobby-key-title {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    font-size: 40px;
+    margin-top: 20px;
+}
+
+.lobby-key {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.player1-player2-container {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 100%;
+}
+
+.lobby-player1-info {
+    background-color: turquoise;
+    flex: 1
+}
+
+.lobby-player1-username {
+    
+}
+
+.lobby-player2-info {
+    background-color: thistle;
+    flex: 1
+}
