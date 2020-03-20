@@ -1,6 +1,7 @@
 import {
     RECEIVE_NEW_CHARACTER,
-    REMOVE_CHARACTER
+    REMOVE_CHARACTER, 
+    RECEIVE_GAME_CHARACTER
 } from '../actions/character_actions';
 import {
     RECEIVE_LOBBY,
@@ -27,11 +28,16 @@ const charactersReducer = (state = initialState, action) => {
             if (!newState['myCharacters'][action.character.data._id]) {
                 newState['myCharacters'][action.character.data] = action.character;
             } 
-
             return newState;
 
         case REMOVE_CHARACTER:
             delete newState['myCharacters'][action.id]
+            return newState;
+
+        case RECEIVE_GAME_CHARACTER:
+            newState['gameCharacters'] = {
+                [action.character._id]: action.character,
+            };
             return newState;
 
         case RECEIVE_LOBBY:
