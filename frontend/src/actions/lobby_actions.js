@@ -19,13 +19,14 @@ export const receiveErrors = errors => ({
     errors
 });
 
-export const leave = (id) => dispatch => {
-    APIUtil.leave(id)
+export const leave = (id, charId) => dispatch => {
+    return APIUtil.leave(id, charId)
         .then(
             res => {
                 window.socket.emit('leave', res.data.lobbykey);
                 localStorage.removeItem('lobbykey');
-                dispatch(leaveLobby());
+                localStorage.removeItem('lobbycharacter');
+                return dispatch(leaveLobby());
             }
         )
         .catch(
@@ -39,6 +40,7 @@ export const join = (id, charId) => dispatch => {
             res => { 
                 window.socket.emit('room', res.data.lobby.lobbykey);
                 localStorage.setItem('lobbykey', res.data.lobby.lobbykey);
+                localStorage.setItem('lobbycharacter', res.data.lobby.player2)
 
 
                 window.socket.on('changeLobbyData', (data) => {
@@ -58,10 +60,11 @@ export const create = (charId) => dispatch => {
             res => { 
                 window.socket.emit('room', res.data.lobby.lobbykey);
                 localStorage.setItem('lobbykey', res.data.lobby.lobbykey);
+                localStorage.setItem('lobbycharacter', res.data.lobby.player1)
+
                 // window.lobbykey = res.data.lobby.lobbykey
 
                 window.socket.on('changeLobbyData', (data) => {
-                    console.log("socket receives signal to retrieve")
                     return dispatch(retrieve(data.lobbykey));
                 })
                 return dispatch(receiveLobby(res.data));
@@ -75,7 +78,6 @@ export const create = (charId) => dispatch => {
 export const retrieve = key => dispatch => {
     return APIUtil.getLobby(key)
     .then(payload => {
-        console.log(payload.data.lobby)
         return dispatch(receiveLobby(payload.data))
     })
     .catch(err => dispatch(receiveErrors(err.response.data)))

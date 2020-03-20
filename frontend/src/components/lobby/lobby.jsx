@@ -13,6 +13,18 @@ class LobbyMain extends React.Component {
         }
     }
 
+    leaveLobby(e) {
+        e.preventDefault();
+        if (localStorage.lobbykey) {
+            this.props.leaveLobby(localStorage.lobbykey, localStorage.lobbycharacter)
+            .then( (res) => {
+                if (res.type === 'REMOVE_LOBBY') {
+                    this.props.history.push('/main')
+                }
+            });
+        }
+    }
+
     // componentDidUpdate(prevProps) {
     //     if (Object.keys(prevProps.lobby).length !== Object.keys(this.props.lobby).length) {
     //         this.props.fetchLobby(this.props.lobby.lobbykey)
@@ -138,8 +150,8 @@ class LobbyMain extends React.Component {
                 <div className="player1-player2-container">
                     {this.renderPlayer1()}
                     {this.renderPlayer2()}
-
                 </div>
+                <button onClick={this.leaveLobby.bind(this)}>Leave Lobby</button>
             </div>
         ) : (
             null
