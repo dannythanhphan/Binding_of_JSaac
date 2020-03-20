@@ -5,6 +5,7 @@ import LobbyMain from './lobby';
 const mapStateToProps = state => ({
     gameCharacters: state.entities.characters.gameCharacters,
     lobby: state.entities.lobby,
+    characters: state.entities.characters
 });
 
 const mapDispatchToProps = dispatch => ({
