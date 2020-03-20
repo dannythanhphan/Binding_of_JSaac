@@ -32,8 +32,8 @@ export const leave = (id) => dispatch => {
         )
 };
 
-export const join = (id) => dispatch => {
-    APIUtil.join(id)
+export const join = (id, charId) => dispatch => {
+    APIUtil.join(id, charId)
         .then(
             res => { 
                 window.socket.emit('room', res.data.lobbykey);
@@ -49,15 +49,16 @@ export const join = (id) => dispatch => {
         )
 };
 
-export const create = () => dispatch => {
-    APIUtil.create()
+export const create = (charId) => dispatch => {
+    APIUtil.create(charId)
         .then(
             res => { 
-                window.socket.emit('room', res.data.lobbykey);
+                console.log(res)
+                // window.socket.emit('room', res.data.lobbykey);
 
-                window.socket.on('changeLobbyData', (data) => {
-                    console.log("Incoming message: ", data);
-                })
+                // window.socket.on('changeLobbyData', (data) => {
+                //     console.log("Incoming message: ", data);
+                // })
                 dispatch(receiveLobby(res.data));
             }
         )

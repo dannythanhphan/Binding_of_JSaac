@@ -4,7 +4,7 @@ const floorsReducer = (state = {}, action) => {
 
     switch (action.type) {
         case RECEIVE_LOBBY:
-            return action.floors;
+            return action.payload.floors;
 
         case REMOVE_LOBBY:
             return state;

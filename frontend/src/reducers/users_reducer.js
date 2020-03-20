@@ -14,10 +14,7 @@ const usersReducer = (state = {}, action) => {
             return newState;
             
         case RECEIVE_LOBBY:
-            action.payload.users.forEach(user => {
-                newState[user.id] = user
-            });
-            return newState;
+            return action.payload.users;
     
         case REMOVE_LOBBY:
             return {};
