@@ -36,12 +36,19 @@ class CharacterSelected extends React.Component {
     }
     createLobby(e) {
         e.preventDefault();
-        this.props.create(this.props.character._id);
+        this.props.create(this.props.character._id).then( 
+            () => this.props.history.push('/main/lobby'));
     }
 
     joinLobby(e) {
         e.preventDefault();
-        this.props.join(this.state.lobbykey, this.props.character._id);
+        this.props.join(this.state.lobbykey, this.props.character._id).then(
+            (res) => {
+                if (res.type === 'RECEIVE_LOBBY') {
+                    this.closeModal();
+                    this.props.history.push('/main/lobby');
+                }
+            });
     }
 
     openModal() {
@@ -57,12 +64,14 @@ class CharacterSelected extends React.Component {
     }
 
     renderModal() {
+        const errors = Object.values(this.props.errors).join(", ");
         if (this.state.lobbyModal) {
             return (
                 <div className="modal-screen">
                     <div className="lobby-modal">
                         <h2>Enter the Lobby Key of the Lobby you wish to join</h2>
                         <input type="text" onChange={this.handleChange} />
+                        <p>{errors}</p>
                         <div>
                             <button onClick={this.joinLobby}>Join Lobby</button>
                             <button onClick={this.closeModal}>Cancel</button>

@@ -5,7 +5,8 @@ import { join, create } from '../../actions/lobby_actions';
 
 
 const mapStateToProps = (state, ownProps) => ({
-    character: state.entities.characters.myCharacters[ownProps.match.params.characterId]
+    character: state.entities.characters.myCharacters[ownProps.match.params.characterId],
+    errors: state.errors.lobbies
 });
 
 const mapDispatchToProps = (dispatch) => ({

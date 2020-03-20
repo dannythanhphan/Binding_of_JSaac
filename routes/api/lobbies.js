@@ -59,8 +59,9 @@ router.patch("/join/:id/:characterId",
                         }
                     )
                     .then( lobby => buildLobbyJson(lobby, res) )
-                    .catch( err => console.log(err) );
-                }
+                    .catch(err => res.status(404).json({
+                        lobbieserror: 'Joining lobby failed'
+                    }) );                }
                 else if (lobby.player2 && lobby.player2.toString() !== req.params.characterId) {
                     Lobby.findOneAndUpdate(
                         { lobbykey: req.params.id},
@@ -73,7 +74,9 @@ router.patch("/join/:id/:characterId",
                             useFindAndModify: false
                         }                    )
                     .then( lobby => buildLobbyJson(lobby, res) )
-                    .catch( err => console.log(err) );
+                    .catch(err => res.status(404).json({
+                        lobbieserror: 'Joining lobby failed'
+                    }) );
                 }
             }
         })
