@@ -9,7 +9,7 @@ import './lobby.css';
 class LobbyMain extends React.Component {
 
     render() {
-        const { lobby } = this.props
+        const { lobby } = this.props;
         // let player1Running;
         // let player2Running;
         // let player1ImageObj = new Image();
@@ -56,13 +56,12 @@ class LobbyMain extends React.Component {
                 <div className="lobby-key-info">
                     <p className="lobby-key-title">Lobby Key</p>
                     <br/>
-                    <p className="lobby-key">{lobby.lobbykey}Ab1U8L</p>
+                    <p className="lobby-key">{lobby.lobbykey}</p>
                 </div>
                 <div className="player1-player2-container">
                     <div className="lobby-player1-info">
                         <div className="lobby-player1-username">
-                            pewpew
-                            {/* {lobby.player1.name} */}
+                            {lobby.player1}
                         </div>
                         <div className="lobby-player1-char-model">
                             {/* <Stage width={200} height={300}>
@@ -90,8 +89,7 @@ class LobbyMain extends React.Component {
                     </div>
                     <div className="lobby-player2-info">
                         <div className="lobby-player2-username">
-                            JustTakeIt
-                            {/* {lobby.player2.name} */}
+                            {(lobby.player2) ? lobby.player2 : ''}
                         </div>
                         <div className="lobby-player2-char-model">
                             {/* <Stage width={200} height={300}>

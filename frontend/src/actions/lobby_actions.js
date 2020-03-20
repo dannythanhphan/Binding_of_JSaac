@@ -40,9 +40,9 @@ export const join = (id, charId) => dispatch => {
                 // window.lobbykey = res.data.lobbykey
 
 
-                // window.socket.on('changeLobbyData', (data) => {
-                //     console.log("Incoming message: ", data);
-                // })
+                window.socket.on('changeLobbyData', (data) => {
+                    return dispatch(retrieve(data.lobbykey));
+                })
                 return dispatch(receiveLobby(res.data));
             }
         )
@@ -58,9 +58,9 @@ export const create = (charId) => dispatch => {
                 window.socket.emit('room', res.data.lobby.lobbykey);
                 // window.lobbykey = res.data.lobby.lobbykey
 
-                // window.socket.on('changeLobbyData', (data) => {
-                //     console.log("Incoming message: ", data);
-                // })
+                window.socket.on('changeLobbyData', (data) => {
+                    return dispatch(retrieve(data.lobbykey));
+                })
                 return dispatch(receiveLobby(res.data));
             }
         )
@@ -70,7 +70,7 @@ export const create = (charId) => dispatch => {
 };
 
 export const retrieve = key => dispatch => {
-    APIUtil.getLobby(key)
-    .then(payload => dispatch(receiveLobby(payload)))
+    return APIUtil.getLobby(key)
+    .then(payload => dispatch(receiveLobby(payload.data)))
     .catch(err => dispatch(receiveErrors(err.response.data)))
 };
