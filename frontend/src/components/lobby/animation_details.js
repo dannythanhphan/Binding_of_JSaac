@@ -2,7 +2,7 @@ const animationDetails = (spriteValue) => {
     switch (spriteValue) {
         case 1:
             return {
-                imageObj: mustacheMan,
+                imageObj: "mustacheMan",
                 frames: 30,
                 running: {
                     running: [
@@ -32,7 +32,7 @@ const animationDetails = (spriteValue) => {
             }
         case 2:
             return {
-                imageObj: thief,
+                imageObj: "thief",
                 frames: 60,
                 running: {
                     running: [
@@ -85,7 +85,7 @@ const animationDetails = (spriteValue) => {
     
         case 3:
             return {
-                imageObj: superWoman,
+                imageObj: "superWoman",
                 frames: 60,
                 running: {
                     running: [

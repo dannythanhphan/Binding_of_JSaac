@@ -36,7 +36,7 @@ class CharacterSelected extends React.Component {
     }
     createLobby(e) {
         e.preventDefault();
-        this.props.create(this.props.character._id);
+        this.props.create(this.props.character._id)
     }
 
     joinLobby(e) {
@@ -75,6 +75,7 @@ class CharacterSelected extends React.Component {
             return null;
         }
     }
+
     render () {
         let running;
         let imageObj = new Image();
@@ -241,9 +242,6 @@ class CharacterSelected extends React.Component {
                     <button onClick={() => this.handleDelete(character._id)} className="character-selected-delete-button">
                         Delete Character
                     </button>
-                    {/* <button  onClick={() => { if (window.confirm('Are you sure you wish to delete this item?')) this.props.deleteCharacter(character._id) } }>
-                                Delete
-                    </button> */}
                     <button onClick={this.openModal}>Join Existing Lobby</button>
                     <button onClick={this.createLobby}>Create New Lobby</button>
                 </div>
