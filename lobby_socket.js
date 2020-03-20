@@ -20,9 +20,9 @@ const watchLobbies = () => {
 
     })
 
-    // changeStream.on("change", change => {
-    //     lobby.to(change.fullDocument.lobbykey).emit("changeLobbyData", change);
-    // });
+    changeStream.on("change", change => {
+        lobby.to(change.fullDocument.lobbykey).emit("changeLobbyData", change.fullDocument);
+    });
 
 };
 

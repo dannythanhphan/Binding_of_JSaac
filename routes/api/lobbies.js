@@ -37,7 +37,7 @@ router.post("/create/:characterId",
 );
 
 
-router.post("/join/:id/:characterId", 
+router.patch("/join/:id/:characterId", 
     passport.authenticate('jwt', { session: false }), (req, res) => {
 
     Lobby.findOne({lobbykey: req.params.id})
@@ -59,8 +59,9 @@ router.post("/join/:id/:characterId",
                         }
                     )
                     .then( lobby => buildLobbyJson(lobby, res) )
-                    .catch( err => console.log(err) );
-                }
+                    .catch(err => res.status(404).json({
+                        lobbieserror: 'Joining lobby failed'
+                    }) );                }
                 else if (lobby.player2 && lobby.player2.toString() !== req.params.characterId) {
                     Lobby.findOneAndUpdate(
                         { lobbykey: req.params.id},
@@ -73,7 +74,9 @@ router.post("/join/:id/:characterId",
                             useFindAndModify: false
                         }                    )
                     .then( lobby => buildLobbyJson(lobby, res) )
-                    .catch( err => console.log(err) );
+                    .catch(err => res.status(404).json({
+                        lobbieserror: 'Joining lobby failed'
+                    }) );
                 }
             }
         })
