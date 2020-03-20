@@ -7,7 +7,7 @@ const ROOM_WIDTH = 21;
 const ROOM_HEIGHT = 15;
 
 const RoomSchema = new Schema({
-    roomId: {
+    position: {
         type: Number,
         required: true
     },
