@@ -65,3 +65,9 @@ export const create = () => dispatch => {
             err => dispatch(receiveErrors(err.response.data))
         )
 };
+
+export const retrieve = key => dispatch => {
+    APIUtil.getLobby(key)
+    .then(payload => dispatch(receiveLobby(payload)))
+    .catch(err => dispatch(receiveErrors(err.response.data)))
+};

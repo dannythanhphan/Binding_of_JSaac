@@ -4,6 +4,7 @@ import './main_page.css';
 // import { Route } from 'react-router';
 import CharacterSelectedContainer from './character_selected_container';
 import CreateCharacterContainer from './create_character_container';
+import LobbyContainer from '../lobby/lobby_container';
 import { Link } from 'react-router-dom';
 import logo from '../home/logo.png';
 import { ProtectedRoute } from '../../util/route_util';
@@ -69,7 +70,7 @@ class MainPage extends React.Component {
                     {displayInstructions}
                     <ProtectedRoute path="/main/:characterId" component={CharacterSelectedContainer} />
                     <ProtectedRoute path="/main/create" component={CreateCharacterContainer}/>
-
+                    <ProtectedRoute path="/lobby" component={LobbyContainer} />
                 </div>
                 <Link to='/main'>
                     <img className="main-logo-image" src={logo} alt="logo" />
