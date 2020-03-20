@@ -1,8 +1,8 @@
 import React from 'react';
 import './lobby.css';
-import mustacheMan from '../main/animations/character_animations1.jpg';
-import thief from '../main/animations/character_animations2.png';
-import superWoman from '../main/animations/character_animations3.png';
+import mustacheMan from '../../assets/animations/character_animations1.jpg';
+import thief from '../../assets/animations/character_animations2.png';
+import superWoman from '../../assets/animations/character_animations3.png';
 import { Stage, Layer, Sprite } from 'react-konva';
 import animationDetails from './animation_details';
 

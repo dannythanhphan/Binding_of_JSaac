@@ -1,7 +1,7 @@
 import React from 'react';
-import ava1 from './avatars/character_ava1.png';
-import ava2 from './avatars/character_ava2.png';
-import ava3 from './avatars/character_ava3.png';
+import ava1 from '../../assets/avatars/character_ava1.png';
+import ava2 from '../../assets/avatars/character_ava2.png';
+import ava3 from '../../assets/avatars/character_ava3.png';
 import './create_character.css';
 
 class CreateCharacter extends React.Component {

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Stage, Layer, Sprite } from 'react-konva';
-import mustacheMan from './animations/character_animations1.jpg';
-import thief from './animations/character_animations2.png';
-import superWoman from './animations/character_animations3.png';
+import mustacheMan from '../../assets/animations/character_animations1.jpg';
+import thief from '../../assets/animations/character_animations2.png';
+import superWoman from '../../assets/animations/character_animations3.png';
 import { Redirect } from 'react-router';
 
 class CharacterSelected extends React.Component {

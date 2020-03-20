@@ -6,7 +6,7 @@ import CharacterSelectedContainer from './character_selected_container';
 import CreateCharacterContainer from './create_character_container';
 import LobbyContainer from '../lobby/lobby_container';
 import { Link } from 'react-router-dom';
-import logo from '../home/logo.png';
+import logo from '../../assets/logo.png';
 import { ProtectedRoute } from '../../util/route_util';
 
 class MainPage extends React.Component {
