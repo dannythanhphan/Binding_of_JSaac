@@ -21,10 +21,14 @@ class MainPage extends React.Component {
     }
 
     render() {
-        const { characters, logout } = this.props
-        const displayCharacters = (Object.values(characters).length > 0) ? (
+        const { characters, logout, receiveGameCharacter } = this.props
+        const displayCharacters = (characters.length > 0) ? (
             characters.map((character) => {
-                return <MainCharacterItems key={Math.random()} character={character} />
+                return <MainCharacterItems 
+                    key={Math.random()} 
+                    character={character} 
+                    receiveGameCharacter={receiveGameCharacter}
+                />
             })
         ) : (
             null
@@ -61,7 +65,7 @@ class MainPage extends React.Component {
                             <Link to="/main/create" className="redirect-buttons">
                                 New Character
                             </Link>
-                            <Link to="/main/lobby" className="redirect-buttons">
+                            <Link to="main/lobby" className="redirect-buttons">
                                 Start Game
                             </Link>
                         </div>
@@ -70,7 +74,7 @@ class MainPage extends React.Component {
                     {displayInstructions}
                     <ProtectedRoute path="/main/:characterId" component={CharacterSelectedContainer} />
                     <ProtectedRoute path="/main/create" component={CreateCharacterContainer}/>
-                    <ProtectedRoute path="/main/lobby" component={LobbyContainer} />
+                    <ProtectedRoute path="main/lobby" component={LobbyContainer} />
                 </div>
                 <Link to='/main'>
                     <img className="main-logo-image" src={logo} alt="logo" />

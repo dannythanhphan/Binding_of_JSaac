@@ -7,11 +7,9 @@ class LobbyMain extends React.Component {
 
     render() {
         return (
-            <div>
-                <h1>{this.props.lobby.lobbykey}</h1>
-                {this.props.characters.forEach(character => (
-                    this.characterDisplay(character)
-                ))}
+            <div className="lobby-game-select">
+                <button>New Game</button>
+                <button>Existing Game</button>
             </div>
         )
     }
