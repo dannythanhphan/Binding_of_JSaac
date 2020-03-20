@@ -6,6 +6,13 @@ import superWoman from './animations/character_animations3.png';
 
 
 class CharacterSelected extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            x: 10,
+            y: 0,
+        }
+    };
 
     render () {
         let running;
@@ -158,7 +165,13 @@ class CharacterSelected extends React.Component {
                                 animations={running}
                                 frameRate={frames}
                                 frameIndex={0}
-                                ref={(node => {if(node && !node.isRunning()) node.start()})}
+                                ref={(node => {
+                                        if(node && !node.isRunning()) {
+                                            // setInterval(function() {node.move({x: (20 % 200), y: 0})}, 48)
+                                            node.start()
+                                        }
+                                    })
+                                }
                             />
                         </Layer>
                     </Stage>

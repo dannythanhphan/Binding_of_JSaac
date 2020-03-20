@@ -61,7 +61,7 @@ class MainPage extends React.Component {
                             <Link to="/main/create" className="redirect-buttons">
                                 New Character
                             </Link>
-                            <Link to="/lobby" className="redirect-buttons">
+                            <Link to="/main/lobby" className="redirect-buttons">
                                 Start Game
                             </Link>
                         </div>
@@ -70,7 +70,7 @@ class MainPage extends React.Component {
                     {displayInstructions}
                     <ProtectedRoute path="/main/:characterId" component={CharacterSelectedContainer} />
                     <ProtectedRoute path="/main/create" component={CreateCharacterContainer}/>
-                    <ProtectedRoute path="/lobby" component={LobbyContainer} />
+                    <ProtectedRoute path="/main/lobby" component={LobbyContainer} />
                 </div>
                 <Link to='/main'>
                     <img className="main-logo-image" src={logo} alt="logo" />
