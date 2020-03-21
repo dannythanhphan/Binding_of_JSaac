@@ -1,53 +1,53 @@
 import React from 'react';
-import room0 from '../../assets/rooms/0.png';
-import room1 from '../../assets/rooms/1.png';
-import room2 from '../../assets/rooms/2.png';
-import room3 from '../../assets/rooms/3.png';
-import room4 from '../../assets/rooms/4.png';
-import room5 from '../../assets/rooms/5.png';
-import room6 from '../../assets/rooms/6.png';
-import room7 from '../../assets/rooms/7.png';
-import room8 from '../../assets/rooms/8.png';
-import room9 from '../../assets/rooms/9.png';
-import room10 from '../../assets/rooms/10.png';
-import room11 from '../../assets/rooms/11.png';
-import room12 from '../../assets/rooms/12.png';
-import room13 from '../../assets/rooms/13.png';
-import room14 from '../../assets/rooms/14.png';
-import room15 from '../../assets/rooms/15.png';
+import monster from '../../assets/monsters/golem/0_Golem_Walking_000.png'
+import { Stage, Layer, Image, Sprite } from 'react-konva';
+import RoomSelector from './room_selector';
 
 class Room extends React.Component {
+    componentDidMount() {
+        this.props.fetchLobby("wHpYtU")
+    }
 
     render() {
-        const images = {
-            0: room0,
-            1: room1,
-            2: room2,
-            3: room3,
-            4: room4,
-            5: room5,
-            6: room6,
-            7: room7,
-            8: room8,
-            9: room9,
-            10: room10,
-            11: room11,
-            12: room12,
-            13: room13,
-            14: room14,
-            15: room15,
-        };
-
         let { room, characters } = this.props;
-        let roomImg = images[room.position];
-        let sprites = characters.map(character => (
-            <div key={Math.random()}>A sprite component should live here!</div>
-        ));
+        let roomImg;
+        let sprites;
 
+        let monsterImg = new window.Image();
+        monsterImg.src = monster
+        if (room) {
+            roomImg = RoomSelector(room.position);
+            sprites = characters.map(character => (
+                <div key={Math.random()}>
+                     {/* <Sprite
+                         x={500}
+                         y={400}
+                         image={<img src={monster} alt={"golem"} />}
+                     /> */}
+                </div>
+            ));
+            
+        }
+        
         return (
             <div className="room-main">
-                <img className="room-tile" src={roomImg} />
-                {sprites}
+                    <Stage width={1088} height={704}>
+                        <Layer>
+                            <Image image={roomImg}> 
+                            
+                            </Image>
+                                <Image
+                                    x={1088 / 14}
+                                    y={0}
+                                    image={monsterImg}
+                                    width={100}
+                                    height={100}
+                                />
+                        </Layer>
+                        {/* <Layer>
+                            <Image image={<img src={monster} alt="golem" />} />
+                        </Layer> */}
+                    </Stage>
             </div>
         )
     }
