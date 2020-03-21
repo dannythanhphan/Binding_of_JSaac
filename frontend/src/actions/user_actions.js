@@ -1,9 +1,9 @@
 import * as APIUtil from '../util/session_api_util';
 
-export const RECIEVE_USER = 'RECIEVE_USER';
+export const RECEIVE_USER = 'RECEIVE_USER';
 
 export const receiveUser = payload => ({
-    type: RECIEVE_USER,
+    type: RECEIVE_USER,
     payload
 });
 
