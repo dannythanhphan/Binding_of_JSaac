@@ -1,5 +1,6 @@
 const Dungeon = require('../models/Dungeon');
 const Floor = require('../models/Floor');
+const Exit = require('../models/Exit');
 const Room = require('../models/Room');
 const Monster = require('../models/Monster');
 const Trap = require('../models/Trap');
@@ -8,8 +9,8 @@ const Trap = require('../models/Trap');
 //Dungeon Parameters
 const NUM_FLOORS = 5;               //Number of floors in the dungeon
 const FLOOR_SIZE = 4;               //The length and width for number of rooms per floor
-const ROOM_WIDTH = 21;              //How many "tiles" there are per width in a room
-const ROOM_HEIGHT = 15;             //How many "tiles" there are per height in a room
+const ROOM_WIDTH = 17;              //How many "tiles" there are per width in a room
+const ROOM_HEIGHT = 11;             //How many "tiles" there are per height in a room
 
 const MONSTER_BASE_HP = 100;        //Monster hp at level 1
 const MONSTER_HP_SCALAR = 25;       //Monsters get 25 more hp per level
@@ -22,17 +23,29 @@ const TRAP_DAMAGE = 20;             //How much damage traps do
 
 
 const generateDungeon = () => {
-    const dungeon = new Dungeon()
+    const dungeon = new Dungeon();
+    const numRooms = FLOOR_SIZE * FLOOR_SIZE;
+    let location, xPos, yPos;
     for (let level = 0; level < NUM_FLOORS; level++) {
-        dungeon.floors.push(generateFloor(level));
+        if (level !== NUM_FLOORS - 1) {
+            location = Math.floor(Math.random() * numRooms);
+            xPos = Math.floor(Math.random() * ROOM_WIDTH);
+            yPos = Math.floor(Math.random() * ROOM_HEIGHT);
+        }
+        else {
+            location = -1;
+            xPos = -1;
+            yPos = -1;
+        }
+        dungeon.floors.push(generateFloor(level, location, xPos, yPos));
     }
-
     return dungeon;
 }
 
-const generateFloor = level => {
+const generateFloor = (level, location, xPos, yPos) => {
     const floor = new Floor({
-        level: level
+        level: level,
+        exit: generateExit(location, xPos, yPos)
     });
     let leftExit, rightExit, topExit, bottomExit;
     for (let roomRow = 0; roomRow < FLOOR_SIZE; roomRow++) {
@@ -51,6 +64,15 @@ const generateFloor = level => {
     }
 
     return floor;
+}
+
+const generateExit = (location, xPos, yPos) => {
+    const exit = new Exit({
+        location: location,
+        xPos: xPos,
+        yPos: yPos
+    })
+    return exit;
 }
 
 const generateRoom = (position, width, height, leftExit, rightExit, topExit, bottomExit, numMonsters, numTraps, level) => {

@@ -28,6 +28,7 @@ router.post("/create/:characterId",
                 active: true,
                 dungeon: generateDungeon()
             });
+            newLobby.locations.push({character: req.params.characterId});
 
             newLobby.save()
             .then(lobby => buildLobbyJson(lobby, res))

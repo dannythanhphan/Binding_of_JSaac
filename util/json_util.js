@@ -1,7 +1,7 @@
 const User = require('../models/User');
 
 const buildLobbyJson = (lobby, res) => {
-    const payload = { users: {}, characters: {}, lobby: {}, dungeon: {}, floors: {}, rooms: {}, monsters: {}, traps: {}};
+    const payload = { users: {}, characters: {}, locations: {}, lobby: {}, dungeon: {}, floors: {}, exits: {}, rooms: {}, monsters: {}, traps: {}};
     payload.lobby = {
         id: lobby.id,
         lobbykey: lobby.lobbykey,
@@ -16,7 +16,13 @@ const buildLobbyJson = (lobby, res) => {
             id: floor.id,
             dungeonId: lobby.dungeon.id,
             level: floor.level
-        } 
+        }
+        payload.exits[floor.exit.id] = {
+            floorId: floor.id,
+            location: floor.exit.location,
+            xPos: floor.exit.xPos,
+            yPos: floor.exit.yPos
+        }
         floor.rooms.forEach(room => {
             payload.rooms[room.id] = {
                 id: room.id,
@@ -58,6 +64,21 @@ const buildLobbyJson = (lobby, res) => {
             })
         })
     });
+
+    for (let i = 0; i < lobby.locations.length; i++) {
+        if ((lobby.player1 && lobby.player1.id.equals(lobby.locations[i].character.id)) ||
+            (lobby.player2 && lobby.player2.id.equals(lobby.locations[i].character.id)))
+        {
+            payload.locations[lobby.locations[i].character.toString()] = {
+                character: lobby.locations[i].character.toString(),
+                floor: lobby.locations[i].floor,
+                room: lobby.locations[i].room,
+                xPos: lobby.locations[i].xPos,
+                yPos: lobby.locations[i].yPos
+            }
+        } 
+    }
+
     User.find({ "characters._id": { $in: [lobby.player1, lobby.player2] } })
     .then(users => {
         users = users.filter(user => user.characters.length > 0);
@@ -69,6 +90,7 @@ const buildLobbyJson = (lobby, res) => {
             user.characters.forEach(character => {
                 payload.characters[character.id] = character
             });
+            
         })
         return res.json(payload)
     })

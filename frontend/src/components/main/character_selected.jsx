@@ -37,6 +37,7 @@ class CharacterSelected extends React.Component {
     createLobby(e) {
         const { createLobby, leaveLobby } = this.props;
         e.preventDefault();
+        console.log(localStorage)
         if (localStorage.lobbykey) {
             leaveLobby(localStorage.lobbykey, localStorage.lobbycharacter)
                 .then((res) => {
