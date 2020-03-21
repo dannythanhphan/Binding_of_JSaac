@@ -18,6 +18,7 @@ const buildLobbyJson = (lobby, res) => {
             level: floor.level
         }
         payload.exits[floor.exit.id] = {
+            floorId: floor.id,
             location: floor.exit.location,
             xPos: floor.exit.xPos,
             yPos: floor.exit.yPos
