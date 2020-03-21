@@ -1,7 +1,7 @@
 const User = require('../models/User');
 
 const buildLobbyJson = (lobby, res) => {
-    const payload = { users: {}, characters: {}, lobby: {}, dungeon: {}, floors: {}, exits: {}, rooms: {}, monsters: {}, traps: {}};
+    const payload = { users: {}, characters: {}, locations: {}, lobby: {}, dungeon: {}, floors: {}, exits: {}, rooms: {}, monsters: {}, traps: {}};
     payload.lobby = {
         id: lobby.id,
         lobbykey: lobby.lobbykey,
@@ -63,12 +63,13 @@ const buildLobbyJson = (lobby, res) => {
             })
         })
     });
+
     for (let i = 0; i < lobby.locations.length; i++) {
-        if ((lobby.player1 && lobby.player1 === lobby.locations[i].character) ||
-            (lobby.player2 && lobby.player2 === lobby.locations[i].character))
+        if ((lobby.player1 && lobby.player1.id.equals(lobby.locations[i].character.id)) ||
+            (lobby.player2 && lobby.player2.id.equals(lobby.locations[i].character.id)))
         {
-            payload.locations[lobby.locations[i].character] = {
-                character: lobby.locations[i].character,
+            payload.locations[lobby.locations[i].character.toString()] = {
+                character: lobby.locations[i].character.toString(),
                 floor: lobby.locations[i].floor,
                 room: lobby.locations[i].room,
                 xPos: lobby.locations[i].xPos,
