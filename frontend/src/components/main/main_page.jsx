@@ -26,6 +26,7 @@ class MainPage extends React.Component {
     }
 
     render() {
+        
         const { characters, logout, receiveGameCharacter } = this.props
         const displayCharacters = (characters.length > 0) ? (
             characters.map((character) => {

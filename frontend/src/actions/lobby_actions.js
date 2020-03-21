@@ -20,12 +20,12 @@ export const receiveErrors = errors => ({
 });
 
 export const leave = (id, charId) => dispatch => {
+    window.socket.emit('leave', localStorage.lobbykey);
+    localStorage.removeItem('lobbykey');
+    localStorage.removeItem('lobbycharacter');
     return APIUtil.leave(id, charId)
         .then(
             res => {
-                window.socket.emit('leave', res.data.lobbykey);
-                localStorage.removeItem('lobbykey');
-                localStorage.removeItem('lobbycharacter');
                 return dispatch(leaveLobby());
             }
         )
