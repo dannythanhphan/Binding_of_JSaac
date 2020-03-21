@@ -7,6 +7,9 @@ import floorsReducer from "./floors_reducer";
 import roomsReducer from "./rooms_reducer";
 import monstersReducer from "./monsters_reducer";
 import trapsReducer from "./traps_reducer";
+import locationsReducer from "./locations_reducer";
+import exitsReducer from "./exits_reducer";
+
 
 export default combineReducers({
     users: usersReducer,
@@ -16,4 +19,6 @@ export default combineReducers({
     rooms: roomsReducer,
     monsters: monstersReducer,
     traps: trapsReducer,
+    locations: locationsReducer,
+    exits: exitsReducer
 });

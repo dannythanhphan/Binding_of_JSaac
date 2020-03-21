@@ -1,13 +1,6 @@
-import {
-    RECEIVE_NEW_CHARACTER,
-    REMOVE_CHARACTER, 
-    RECEIVE_GAME_CHARACTER
-} from '../actions/character_actions';
-import {
-    RECEIVE_LOBBY,
-    REMOVE_LOBBY
-} from '../actions/lobby_actions';
-import { RECIEVE_USER } from '../actions/user_actions';
+import { RECEIVE_NEW_CHARACTER, REMOVE_CHARACTER, RECEIVE_GAME_CHARACTER } from '../actions/character_actions';
+import { RECEIVE_LOBBY, REMOVE_LOBBY } from '../actions/lobby_actions';
+import { RECEIVE_USER } from '../actions/user_actions';
 import { RECEIVE_USER_LOGOUT } from '../actions/session_actions';
 
 const initialState = {
@@ -20,7 +13,7 @@ const charactersReducer = (state = initialState, action) => {
     let newState = Object.assign({}, state);
 
     switch (action.type) {
-        case RECIEVE_USER:
+        case RECEIVE_USER:
             newState['myCharacters'] = action.payload.characters;
             return newState;
 

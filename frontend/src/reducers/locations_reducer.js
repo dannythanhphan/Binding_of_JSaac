@@ -1,10 +1,10 @@
 import { RECEIVE_LOBBY, REMOVE_LOBBY } from "../actions/lobby_actions";
 
-const floorsReducer = (state = {}, action) => {
+const locationsReducer = (state = {}, action) => {
     Object.freeze(state);
     switch (action.type) {
         case RECEIVE_LOBBY:
-            return action.payload.floors;
+            return action.payload.locations;
 
         case REMOVE_LOBBY:
             return {};
@@ -14,4 +14,4 @@ const floorsReducer = (state = {}, action) => {
   }
 };
 
-export default floorsReducer;
+export default locationsReducer;
