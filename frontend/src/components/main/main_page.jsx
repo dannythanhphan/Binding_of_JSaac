@@ -8,6 +8,7 @@ import LobbyContainer from '../lobby/lobby_container';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import { ProtectedRoute } from '../../util/route_util';
+import RoomContainer from '../game/room_container';
 
 class MainPage extends React.Component {
     constructor(props) {
@@ -69,7 +70,7 @@ class MainPage extends React.Component {
                             <Link to="/main/create" className="redirect-buttons">
                                 New Character
                             </Link>
-                            <Link to="/main/lobby" className="redirect-buttons">
+                            <Link to="/main/game" className="redirect-buttons">
                                 Start Game
                             </Link>
                         </div>
@@ -79,6 +80,7 @@ class MainPage extends React.Component {
                     <ProtectedRoute path="/main/:characterId" component={CharacterSelectedContainer} />
                     <ProtectedRoute path="/main/create" component={CreateCharacterContainer}/>
                     <ProtectedRoute path="/main/lobby/" component={LobbyContainer} />
+                    <ProtectedRoute path="/main/game" component={RoomContainer} />
                 </div>
                 <Link to='/main'>
                     <img className="main-logo-image" src={logo} alt="logo" />
