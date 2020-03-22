@@ -8,8 +8,6 @@ import animationDetails from './animation_details';
 
 class LobbyMain extends React.Component {
     componentDidMount() {
-        console.log(localStorage);
-        console.log(this.props)
         if (localStorage.lobbykey && Object.keys(this.props.lobby).length === 0) {
             this.props.fetchLobby(localStorage.lobbykey);
         }
