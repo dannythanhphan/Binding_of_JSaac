@@ -4,6 +4,7 @@ import mustacheMan from '../../assets/animations/character_animations1.jpg';
 import thief from '../../assets/animations/character_animations2.png';
 import superWoman from '../../assets/animations/character_animations3.png';
 import { Redirect } from 'react-router';
+import loading from '../../assets/animations/loading.gif';
 
 class CharacterSelected extends React.Component {
     constructor(props) {
@@ -107,6 +108,24 @@ class CharacterSelected extends React.Component {
 
                 </div>
             )
+        } else {
+            return null;
+        }
+    }
+
+    renderLoadingModal() {
+        const { ui } = this.props;
+        const text = (ui.loading) ? "Loading" : "Leaving";
+        if (ui.loading || ui.leaving) {
+            return (
+                <div className="modal-screen">
+                    <div className="loading-modal">
+                        <h1>{text} Lobby...</h1>
+                        <img src={loading} />
+                    </div>
+                </div>
+            )
+
         } else {
             return null;
         }
@@ -289,6 +308,7 @@ class CharacterSelected extends React.Component {
             <div>
                 {displayCharacter}
                 {this.renderModal()}
+                {this.renderLoadingModal()}
             </div>
         );
     }
