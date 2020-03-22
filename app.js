@@ -9,7 +9,6 @@ const characters = require("./routes/api/characters");
 const monsters = require("./routes/api/monsters");
 const bodyParser = require('body-parser');
 const passport = require('passport');
-
 const path = require("path");
 if (process.env.NODE_ENV === "production") {
     app.use(express.static("frontend/build"));
