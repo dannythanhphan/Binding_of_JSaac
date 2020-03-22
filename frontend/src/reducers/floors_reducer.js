@@ -1,4 +1,5 @@
 import { RECEIVE_LOBBY, REMOVE_LOBBY } from "../actions/lobby_actions";
+import { RECEIVE_USER_LOGOUT } from '../actions/session_actions';
 
 const floorsReducer = (state = {}, action) => {
     Object.freeze(state);
@@ -7,6 +8,9 @@ const floorsReducer = (state = {}, action) => {
             return action.payload.floors;
 
         case REMOVE_LOBBY:
+            return {};
+
+        case RECEIVE_USER_LOGOUT:
             return {};
 
         default:

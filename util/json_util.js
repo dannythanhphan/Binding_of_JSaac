@@ -49,7 +49,7 @@ const buildLobbyJson = (lobby, res) => {
                     defense: monster.defense,
                     intelligence: monster.intelligence,
                     xPos: monster.xPos,
-                    yPos: monster.ypos
+                    yPos: monster.yPos
                 }
             })
             room.traps.forEach(trap => {

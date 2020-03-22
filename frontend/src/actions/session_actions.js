@@ -21,6 +21,8 @@ export const receiveErrors = errors => ({
 
 export const logout = () => dispatch => {
     localStorage.removeItem('jwtToken');
+    localStorage.removeItem('lobbykey');
+    localStorage.removeItem('lobbycharacter');
     APIUtil.setAuthToken(false);
     dispatch(logoutUser());
 };

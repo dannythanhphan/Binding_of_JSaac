@@ -14,6 +14,9 @@ export const startRemovingLobby = () => ({
     type: START_REMOVING_LOBBY
 });
 
+const io = require('socket.io-client');
+const socket = process.env.NODE_ENV === 'production' ? io() : io('http://localhost:5000');
+
 export const leaveLobby = () => ({
     type: REMOVE_LOBBY
 });
@@ -30,8 +33,7 @@ export const receiveErrors = errors => ({
 });
 
 export const leave = (id, charId) => dispatch => {
-    dispatch(startRemovingLobby());
-    window.socket.emit('leave', localStorage.lobbykey);
+    socket.emit('leave', localStorage.lobbykey);
     localStorage.removeItem('lobbykey');
     localStorage.removeItem('lobbycharacter');
     return APIUtil.leave(id, charId)
@@ -50,12 +52,13 @@ export const join = (id, charId) => dispatch => {
     return APIUtil.join(id, charId)
         .then(
             res => { 
-                window.socket.emit('room', res.data.lobby.lobbykey);
+                console.log('emit join room')
+                socket.emit('room', res.data.lobby.lobbykey);
                 localStorage.setItem('lobbykey', res.data.lobby.lobbykey);
-                localStorage.setItem('lobbycharacter', res.data.lobby.player2)
+                localStorage.setItem('lobbycharacter', charId)
 
-
-                window.socket.on('changeLobbyData', (data) => {
+                socket.on('changeLobbyData', (data) => {
+                    console.log('lobby data changed')
                     return dispatch(retrieve(data.lobbykey));
                 })
                 return dispatch(receiveLobby(res.data));
@@ -71,13 +74,14 @@ export const create = (charId) => dispatch => {
     return APIUtil.create(charId)
         .then(
             res => { 
-                window.socket.emit('room', res.data.lobby.lobbykey);
+                console.log('emit create room')
+                socket.emit('room', res.data.lobby.lobbykey);
                 localStorage.setItem('lobbykey', res.data.lobby.lobbykey);
                 localStorage.setItem('lobbycharacter', res.data.lobby.player1)
 
                 // window.lobbykey = res.data.lobby.lobbykey
 
-                window.socket.on('changeLobbyData', (data) => {
+                socket.on('changeLobbyData', (data) => {
                     return dispatch(retrieve(data.lobbykey));
                 })
                 return dispatch(receiveLobby(res.data));
