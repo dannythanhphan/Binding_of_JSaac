@@ -3,6 +3,16 @@ import * as APIUtil from '../util/lobby_api_util';
 export const RECEIVE_LOBBY = "RECEIVE_LOBBY";
 export const REMOVE_LOBBY = "REMOVE_LOBBY";
 export const RECEIVE_LOBBY_ERRORS = "RECEIVE_LOBBY_ERRORS";
+export const START_LOADING_LOBBY = "START_LOADING_LOBBY"
+export const START_REMOVING_LOBBY = "START_REMOVING_LOBBY"
+
+export const startLoadingLobby = () => ({
+    type: START_LOADING_LOBBY
+});
+
+export const startRemovingLobby = () => ({
+    type: START_REMOVING_LOBBY
+});
 
 const io = require('socket.io-client');
 const socket = process.env.NODE_ENV === 'production' ? io() : io('http://localhost:5000');
@@ -38,6 +48,7 @@ export const leave = (id, charId) => dispatch => {
 };
 
 export const join = (id, charId) => dispatch => {
+    dispatch(startLoadingLobby());
     return APIUtil.join(id, charId)
         .then(
             res => { 
@@ -59,6 +70,7 @@ export const join = (id, charId) => dispatch => {
 };
 
 export const create = (charId) => dispatch => {
+    dispatch(startLoadingLobby());
     return APIUtil.create(charId)
         .then(
             res => { 

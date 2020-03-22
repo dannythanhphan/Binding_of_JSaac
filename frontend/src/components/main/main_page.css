@@ -234,8 +234,36 @@ ul {
     right: 0;
     width: 100%;
     height: 100%;
-    z-index: 2;
-    background-color: rgba(0,0,0,.4);
+    z-index: 3;
+    background-color: rgba(0,0,0,.6);
+}
+
+.loading-modal {
+    z-index: 3;
+    background-color: white;
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 533px;
+    height: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px;
+}
+
+.loading-modal > h1 {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.loading-modal > img {
+    height: 300px;
+    width: 533px;
 }
 
 .lobby-modal {
@@ -243,7 +271,7 @@ ul {
     margin: auto;
     background-color: #EEEFF1;
     filter: opacity(90%);
-    z-index: 2;
+    z-index: 3;
     width: 400px;
     height: 300px;
     left: 0;
