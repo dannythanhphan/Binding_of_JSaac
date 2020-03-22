@@ -16,37 +16,100 @@ class DisplayCharacters extends React.Component {
             characterYPos: (this.props.positionY === 9) ? (this.props.positionY * 64) : ((this.props.positionY * 64) + 64),
             frames: 0
         }
+
+        this.move = this.move.bind(this);
     }
 
-    componentDidMount() {
-        let that = this;
+    KeyboardController(keys, repeat) {
+        let timers = {};
+        document.onkeydown = (event) => {
+            let key = event.keyCode;
+            if (!(key in keys)) {
+                return true;
+            }
+            if (!(key in timers)) {
+                timers[key] = null;
+                keys[key]();
+                if (repeat !== 0) {
+                    timers[key] = setInterval(keys[key], repeat);
+                }
+            }
+            return false;
+        }
+
+        document.onkeyup = (event) => {
+            let key = event.keyCode;
+            if (key in timers) {
+                if (timers[key] !== null) {
+                    clearInterval(timers[key]);
+                }
+                delete timers[key];
+            }
+        }
+        window.onblur = function() {
+            for (let key in timers) {
+                if (timers[key] !== null) {
+                    clearInterval(timers[key]);
+                }
+            }
+            timers = {};
+        }
+
+    }
+
+    move(dir) {
         let maxFramesPerCharacter = {
             1: 21,
             2: 42,
             3: 42
         }
-
         let maxFrames = maxFramesPerCharacter[this.props.character.characterSprite]
+        let currentState = Object.assign({}, this.state)
+        switch(dir) {
+            case "up":
+                currentState.characterYPos = currentState.characterYPos - 5;
+                break;
+            case "down":
+                currentState.characterYPos = currentState.characterYPos + 5;
+                break;
+            case "left":
+                currentState.characterXPos = currentState.characterXPos - 5;
+                break;
+            case "right":
+                currentState.characterXPos = currentState.characterXPos + 5;
+                break;
+            default:
+                break;
+        }
+        currentState.frames = (currentState.frames === maxFrames) ? 0 : currentState.frames + 1;
+        this.setState(currentState);
+    }
+    componentDidMount() {
+        this.KeyboardController({
+            87: () => {this.move("up")},
+            83: () => {this.move("down")},
+            65: () => {this.move("left")},
+            68: () => {this.move("right")},
+        }, 50)
 
-        window.addEventListener("keydown", function(e) {
-            if (e.keyCode === 87) {
-                that.setState({ characterYPos: that.state.characterYPos - 5 })
-                that.setState({ frames: (that.state.frames === maxFrames) ? 0 : that.state.frames + 1})
-            } else if (e.keyCode === 83) {
-                that.setState({ characterYPos: that.state.characterYPos + 5 })
-                that.setState({ frames: (that.state.frames === maxFrames) ? 0 : that.state.frames + 1})
-            }
+        // window.addEventListener("keydown", function(e) {
+        //     if (e.keyCode === 87) {
 
-            if (e.keyCode === 65) {
-                that.setState({ characterXPos: that.state.characterXPos - 5 })
-                that.setState({ frames: (that.state.frames === maxFrames) ? 0 : that.state.frames + 1})
-            } else if (e.keyCode === 68) {
-                that.setState({ characterXPos: that.state.characterXPos + 5 })
-                that.setState({ frames: (that.state.frames === maxFrames) ? 0 : that.state.frames + 1})
-            }
-            e.preventDefault();
-            e.stopPropagation();
-        })
+        //     } else if (e.keyCode === 83) {
+        //         that.setState({ characterYPos: that.state.characterYPos + 5 })
+        //         that.setState({ frames: (that.state.frames === maxFrames) ? 0 : that.state.frames + 1})
+        //     }
+
+        //     if (e.keyCode === 65) {
+        //         that.setState({ characterXPos: that.state.characterXPos - 5 })
+        //         that.setState({ frames: (that.state.frames === maxFrames) ? 0 : that.state.frames + 1})
+        //     } else if (e.keyCode === 68) {
+        //         that.setState({ characterXPos: that.state.characterXPos + 5 })
+        //         that.setState({ frames: (that.state.frames === maxFrames) ? 0 : that.state.frames + 1})
+        //     }
+        //     e.preventDefault();
+        //     e.stopPropagation();
+        // })
     }
 
     render() {

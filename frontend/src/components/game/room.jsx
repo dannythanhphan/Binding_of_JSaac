@@ -7,7 +7,7 @@ import DisplayCharacters from './user_movement.js';
 
 class Room extends React.Component {
     componentDidMount() {
-        this.props.fetchLobby("ukNbhl")
+        this.props.fetchLobby(localStorage.lobbykey)
     }
 
     render() {
