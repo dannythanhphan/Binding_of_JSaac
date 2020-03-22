@@ -1,0 +1,83 @@
+.session-page-session-form {
+    position: absolute;
+    /* height: 170px; */
+    top: 35%;
+    left: 33%;
+    width: 34%;
+    border-radius: 8px;
+}
+
+.session-page-session-form:before {
+    content: "";
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: #EEEFF1;
+    filter: opacity(70%);
+    border-radius: 0 0 8px 8px;
+}
+
+.session-form {
+    margin-top: 16%;
+    text-align: center;
+    font-size: 16px;
+    height: 50%;
+    font-weight: bold;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    z-index: 5;
+}
+
+.session-form label {
+    font-size: 18px;
+    display: block;
+}
+
+.session-form input {
+    border-radius: 5px;
+    padding: 5px;
+    margin-left: 10px;
+    margin-top: -3px;
+    width: 60%;
+    background-color: #EEEFF1;
+    float: right;
+}
+
+.session-login-signup-buttons {
+    margin-top: 10%;
+    margin-bottom: 20px;
+    display: flex;
+    align-content: space-between;
+}
+
+.session-login-signup-buttons button,
+.session-login-signup-buttons a {
+    font-size: 18px;
+    background-color: transparent;
+    border: 2px solid rgb(62, 84, 114);
+    color:rgb(62, 84, 114);
+    transition-duration: 0.4s;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 4px;
+    width: 150px;
+}
+
+.session-login-signup-buttons button {
+    margin-right: 5%;
+}
+
+.session-login-signup-buttons a {
+    text-decoration: none;
+    padding: 2.1% 0%;
+    margin-right: 0;
+}
+
+.session-login-signup-buttons button:hover,
+.session-login-signup-buttons a:hover {
+    background-color: rgb(62, 84, 114); 
+    color: white;
+}
