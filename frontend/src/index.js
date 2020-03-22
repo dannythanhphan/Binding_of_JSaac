@@ -6,7 +6,10 @@ import jwt_decode from 'jwt-decode';
 import { setAuthToken } from './util/session_api_util';
 import { logout } from './actions/session_actions';
 import { create, join, leave } from './actions/lobby_actions';
-import openSocket from "socket.io-client";
+
+const io = require('socket.io-client');
+const socket = process.env.NODE_ENV === 'production' ? io() : io('http://localhost:5000');
+
 
 document.addEventListener('DOMContentLoaded', () => {
   let store;
@@ -32,8 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
     store = configureStore({});
   }
 
-  const socket = openSocket("http://localhost:8000/lobby");
   window.socket = socket;
+
   if (localStorage.lobbykey) {
     window.socket.emit('room', localStorage.lobbykey);
   }

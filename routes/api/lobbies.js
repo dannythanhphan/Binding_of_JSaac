@@ -11,7 +11,6 @@ const keys = require("../../config/keys");
 const passport = require("passport");
 
 const router = express.Router();
-const io = require('socket.io')();
 
 router.post("/create/:characterId", 
     passport.authenticate('jwt', { session: false }), (req, res) => {
