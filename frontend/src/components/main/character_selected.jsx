@@ -68,7 +68,8 @@ class CharacterSelected extends React.Component {
                     }
                 });
         } else {
-        joinLobby(this.state.lobbykey, this.props.character._id).then(
+
+        this.props.joinLobby(this.state.lobbykey, this.props.character._id).then(
             (res) => {
                 if (res.type === 'RECEIVE_LOBBY') {
                     this.closeModal();

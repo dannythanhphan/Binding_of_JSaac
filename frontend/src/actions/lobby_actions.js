@@ -40,7 +40,7 @@ export const join = (id, charId) => dispatch => {
             res => { 
                 window.socket.emit('room', res.data.lobby.lobbykey);
                 localStorage.setItem('lobbykey', res.data.lobby.lobbykey);
-                localStorage.setItem('lobbycharacter', res.data.lobby.player2)
+                localStorage.setItem('lobbycharacter', charId)
 
 
                 window.socket.on('changeLobbyData', (data) => {

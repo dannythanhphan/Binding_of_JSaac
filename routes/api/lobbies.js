@@ -40,7 +40,6 @@ router.post("/create/:characterId",
 
 router.patch("/join/:id/:characterId", 
     passport.authenticate('jwt', { session: false }), (req, res) => {
-
     Lobby.findOne({lobbykey: req.params.id})
         .then(lobby => {
             if (lobby.player1 && lobby.player2) {
@@ -48,37 +47,20 @@ router.patch("/join/:id/:characterId",
             }
             else {
                 if (lobby.player1 && lobby.player1.toString() !== req.params.characterId) {
-                    Lobby.findOneAndUpdate(
-                        { lobbykey: req.params.id},
-                        {
-                            $set: { player2: req.params.characterId },
-                            $currentDate: { lastModified: true }
-                        },
-                        {
-                            new: true,
-                            useFindAndModify: false
-                        }
-                    )
+                    lobby.player2 = req.params.characterId;
+                    lobby.save()
                     .then( lobby => buildLobbyJson(lobby, res) )
                     .catch(err => res.status(404).json({
                         lobbieserror: 'Joining lobby failed'
                     }) );                }
-                else if (lobby.player2 && lobby.player2.toString() !== req.params.characterId) {
-                    Lobby.findOneAndUpdate(
-                        { lobbykey: req.params.id},
-                        {
-                            $set: { player1: req.params.characterId },
-                            $currentDate: { lastModified: true }
-                        },
-                        {
-                            new: true,
-                            useFindAndModify: false
-                        }                    )
+                else if (!lobby.player2 || lobby.player2 && lobby.player2.toString() !== req.params.characterId) {
+                    lobby.player1 = req.params.characterId;
+                    lobby.save()
                     .then( lobby => buildLobbyJson(lobby, res) )
                     .catch(err => res.status(404).json({
                         lobbieserror: 'Joining lobby failed'
-                    }) );
-                }
+                    }));
+                }        
             }
         })
         .catch(err => res.status(404).json({
