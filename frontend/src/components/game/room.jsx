@@ -1,9 +1,9 @@
 import React from 'react';
-import monster from '../../assets/monsters/golem/0_Golem_Walking_000.png'
 import { Stage, Layer, Image } from 'react-konva';
 import RoomSelector from './room_selector';
 import * as TrapsHelper from './traps.js'
 import * as MonsterHelper from './monsters.js';
+import { DisplayCharacters } from './user_movement.js';
 
 class Room extends React.Component {
     componentDidMount() {
@@ -11,28 +11,33 @@ class Room extends React.Component {
     }
 
     render() {
-        let { room, characters, locations, traps, monsters } = this.props;
+        let { room, lobby, characters, locations, traps, monsters } = this.props;
         let roomImg;
-        let sprites;
+        let spriteInRoom;
         let trapsInRoom;
         let monstersInRoom;
 
-        let monsterImg = new window.Image();
-        monsterImg.src = monster;
-
         if (locations) {
             roomImg = RoomSelector(locations.room);
-            sprites = characters.map(character => (
-                <div key={Math.random()}>
-                     {/* <Sprite
-                         x={500}
-                         y={400}
-                         image={<img src={monster} alt={"golem"} />}
-                     /> */}
-                </div>
-            ));
+            for (let i = 0; i < 2; i++) {
+                if (characters[i]._id === lobby.player1) {
+                    spriteInRoom = DisplayCharacters(characters[i], locations.xPos, locations.yPos)
+                    break;
+                } else {
+                    spriteInRoom = DisplayCharacters(characters[i], locations.xPos, locations.yPos)
+                    break;
+                }
+                
+            }
+            // spriteInRoom = characters.map(character => {
+            //     if (character._id === lobby.player1) {
+            //         DisplayCharacters(character, locations.xPos, locations.yPos)
+            //     } else {
+            //         DisplayCharacters(character, locations.xPos, locations.yPos)
+            //     }
+            // });
             let roomNumber = room[(locations.room % 16) * locations.floor]
-            // let roomNumber = room[1]
+            // let roomNumber = room[12]
             trapsInRoom = TrapsHelper.GetTraps(roomNumber.id, traps).map(trap => (
                 TrapsHelper.displayTraps(trap)
             ))
@@ -45,11 +50,27 @@ class Room extends React.Component {
         // rooms 15x9, 960 x 576
         // rooms 17x11 with walls, 1088 x 704
         // -128 
+        
+        // document.getElementById("check").addEventListener('keydown', function(e) {
+        //     if (e.keyCode === 37) {
+        //       spriteInRoom.props.x(spriteInRoom.props.x() - 4);
+        //     } else if (e.keyCode === 38) {
+        //       spriteInRoom.props.y(spriteInRoom.props.y() - 4);
+        //     } else if (e.keyCode === 39) {
+        //       spriteInRoom.props.x(spriteInRoom.props.x() + 4);
+        //     } else if (e.keyCode === 40) {
+        //       spriteInRoom.props.y(spriteInRoom.props.y() + 4);
+        //     } else {
+        //       return;
+        //     }
+        // });
+        // debugger
         return (
             <div className="room-main">
                     <Stage width={1088} height={704}>
                         <Layer>
                             <Image image={roomImg} />
+                            {spriteInRoom}
                             {monstersInRoom}
                             {trapsInRoom}
                         </Layer>

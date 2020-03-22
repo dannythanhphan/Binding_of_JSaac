@@ -7,7 +7,8 @@ const mapStateToProps = state => ({
     characters: Object.values(state.entities.characters.gameCharacters),
     locations: Object.values(state.entities.locations)[0],
     traps: Object.values(state.entities.traps),
-    monsters: Object.values(state.entities.monsters)
+    monsters: Object.values(state.entities.monsters),
+    lobby: state.entities.lobby
 });
 
 const mapDispatchToProps = dispatch => ({
