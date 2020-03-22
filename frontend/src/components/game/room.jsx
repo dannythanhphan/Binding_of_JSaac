@@ -3,7 +3,7 @@ import { Stage, Layer, Image } from 'react-konva';
 import RoomSelector from './room_selector';
 import * as TrapsHelper from './traps.js'
 import * as MonsterHelper from './monsters.js';
-import { DisplayCharacters } from './user_movement.js';
+import DisplayCharacters from './user_movement.js';
 
 class Room extends React.Component {
     componentDidMount() {
@@ -21,10 +21,12 @@ class Room extends React.Component {
             roomImg = RoomSelector(locations.room);
             for (let i = 0; i < 2; i++) {
                 if (characters[i]._id === lobby.player1) {
-                    spriteInRoom = DisplayCharacters(characters[i], locations.xPos, locations.yPos)
+                    // spriteInRoom = DisplayCharacters(characters[i], locations.xPos, locations.yPos)
+                    spriteInRoom = <DisplayCharacters character={characters[i]} positionX={locations.xPos}  positionY={locations.yPos} />
                     break;
                 } else {
-                    spriteInRoom = DisplayCharacters(characters[i], locations.xPos, locations.yPos)
+                    spriteInRoom = <DisplayCharacters character={characters[i]} positionX={locations.xPos}  positionY={locations.yPos} />
+                    // spriteInRoom = DisplayCharacters(characters[i], locations.xPos, locations.yPos)
                     break;
                 }
                 
@@ -51,20 +53,6 @@ class Room extends React.Component {
         // rooms 17x11 with walls, 1088 x 704
         // -128 
         
-        // document.getElementById("check").addEventListener('keydown', function(e) {
-        //     if (e.keyCode === 37) {
-        //       spriteInRoom.props.x(spriteInRoom.props.x() - 4);
-        //     } else if (e.keyCode === 38) {
-        //       spriteInRoom.props.y(spriteInRoom.props.y() - 4);
-        //     } else if (e.keyCode === 39) {
-        //       spriteInRoom.props.x(spriteInRoom.props.x() + 4);
-        //     } else if (e.keyCode === 40) {
-        //       spriteInRoom.props.y(spriteInRoom.props.y() + 4);
-        //     } else {
-        //       return;
-        //     }
-        // });
-        // debugger
         return (
             <div className="room-main">
                     <Stage width={1088} height={704}>
