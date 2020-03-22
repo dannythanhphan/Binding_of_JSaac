@@ -32,7 +32,7 @@ class Room extends React.Component {
                 </div>
             ));
             let roomNumber = room[(locations.room % 16) * locations.floor]
-            // let roomNumber = room[15]
+            // let roomNumber = room[1]
             trapsInRoom = TrapsHelper.GetTraps(roomNumber.id, traps).map(trap => (
                 TrapsHelper.displayTraps(trap)
             ))
