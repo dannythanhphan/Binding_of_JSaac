@@ -8,6 +8,8 @@ import { join, create, leave } from "../../actions/lobby_actions";
 import NavBar from "./nav_bar";
 
 const mapStateToProps = (state) => ({
+    errors: state.errors.lobbies,
+    ui: state.ui,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -18,4 +20,4 @@ const mapDispatchToProps = (dispatch) => ({
     logout: () => dispatch(logout()),
 });
 
-export default connect(null, mapDispatchToProps)(NavBar)
+export default withRouter(connect(null, mapDispatchToProps)(NavBar));

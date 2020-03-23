@@ -9,25 +9,13 @@ import animationDetails from './animation_details';
 class LobbyMain extends React.Component {
     componentDidMount() {
         if (localStorage.lobbykey && Object.keys(this.props.lobby).length === 0) {
-            this.props.fetchLobby(localStorage.lobbykey);
-        }
-    }
-
-    leaveLobby(e) {
-        e.preventDefault();
-        if (localStorage.lobbykey) {
-            this.props.leaveLobby(localStorage.lobbykey, localStorage.lobbycharacter)
-            .then( (res) => {
-                if (res.type === 'REMOVE_LOBBY') {
-                    this.props.history.push('/main')
-                }
-            });
+            this.props.retrieve(localStorage.lobbykey);
         }
     }
 
     // componentDidUpdate(prevProps) {
     //     if (Object.keys(prevProps.lobby).length !== Object.keys(this.props.lobby).length) {
-    //         this.props.fetchLobby(this.props.lobby.lobbykey)
+    //         this.props.retrieve(this.props.lobby.lobbykey)
     //     }
     // }
     renderPlayer1() {
@@ -151,7 +139,6 @@ class LobbyMain extends React.Component {
                     {this.renderPlayer1()}
                     {this.renderPlayer2()}
                 </div>
-                <button onClick={this.leaveLobby.bind(this)}>Leave Lobby</button>
             </div>
         ) : (
             null
