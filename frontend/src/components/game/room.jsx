@@ -32,10 +32,10 @@ class Room extends React.Component {
                 
             }
 
-            // let roomNumber = room[(locations.room % 16) * locations.floor]
+            let roomNumber = room[(locations.room % 16) * locations.floor]
 
             // // uncomment the line below if you want to test each room
-            let roomNumber = room[12] 
+            // let roomNumber = room[12] 
 
             trapsInRoom = TrapsHelper.GetTraps(roomNumber.id, traps).map(trap => (
                 TrapsHelper.displayTraps(trap)
