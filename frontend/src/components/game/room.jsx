@@ -11,6 +11,7 @@ class Room extends React.Component {
     }
 
     render() {
+        if (Object.keys(this.props.lobby).length === 0) return null;
         let { room, lobby, characters, locations, traps, monsters } = this.props;
         let roomImg;
         let spriteInRoom;
@@ -18,6 +19,7 @@ class Room extends React.Component {
         let monstersInRoom;
 
         if (locations) {
+
             roomImg = RoomSelector(locations.room);
             for (let i = 0; i < 2; i++) {
                 if (characters[i]._id === lobby.player1) {

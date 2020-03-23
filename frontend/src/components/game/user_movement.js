@@ -57,6 +57,11 @@ class DisplayCharacters extends React.Component {
 
     }
 
+    componentWillUnmount() {
+        document.onkeydown = null;
+        document.onkeyup = null;
+    }
+
     move(dir) {
         let maxFramesPerCharacter = {
             1: 21,
@@ -85,6 +90,14 @@ class DisplayCharacters extends React.Component {
         this.setState(currentState);
     }
     componentDidMount() {
+        if (localStorage.lobbykey) {
+            window.socket.on("receiveDungeon", data => {
+                // console.log(data);
+            })
+            setInterval(() => {
+                window.socket.emit("dungeonRefresh", localStorage.lobbykey, this.state);
+            }, 1000)
+        }
         this.KeyboardController({
             87: () => {this.move("up")},
             83: () => {this.move("down")},

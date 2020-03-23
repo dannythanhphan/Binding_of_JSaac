@@ -88,9 +88,6 @@ const buildLobbyJson = (lobby, res) => {
                 id: user.id
             };
             user.characters.forEach(character => {
-                payload.characters[character.id] = character
-            });
-            user.characters.forEach(character => {
                 if (character.id === lobby.player1.toString() ||
                     (lobby.player2 && lobby.player2.toString() === character.id)) {
                     payload.characters[character.id] = character
