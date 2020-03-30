@@ -2,7 +2,6 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const User = require("../../models/User");
 const Lobby = require("../../models/Lobby");
-const validateLobbyCreationInput = require("../../validation/lobby-creation");
 const buildLobbyJson = require('../../util/json_util')
 const generateKey = require('../../util/generate_key');
 const generateDungeon = require('../../util/generate_dungeon')
@@ -12,7 +11,6 @@ const keys = require("../../config/keys");
 const passport = require("passport");
 
 const router = express.Router();
-const io = require('socket.io')();
 
 router.post("/create/:characterId", 
     passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -40,45 +38,40 @@ router.post("/create/:characterId",
 
 router.patch("/join/:id/:characterId", 
     passport.authenticate('jwt', { session: false }), (req, res) => {
-
     Lobby.findOne({lobbykey: req.params.id})
         .then(lobby => {
             if (lobby.player1 && lobby.player2) {
                 return res.status(400).json({lobbyfull: 'This lobby is full!'})
             }
             else {
+                let found = false;
                 if (lobby.player1 && lobby.player1.toString() !== req.params.characterId) {
-                    Lobby.findOneAndUpdate(
-                        { lobbykey: req.params.id},
-                        {
-                            $set: { player2: req.params.characterId },
-                            $currentDate: { lastModified: true }
-                        },
-                        {
-                            new: true,
-                            useFindAndModify: false
-                        }
-                    )
+                    lobby.player2 = req.params.characterId;
+                    for (let i = 0; i < lobby.locations.length; i++) {
+                        if (req.params.characterId === lobby.locations[i].character._id.toString())
+                            found = true;
+                    }
+                    if (!found)
+                        lobby.locations.push({character: req.params.characterId});
+                    lobby.save()
                     .then( lobby => buildLobbyJson(lobby, res) )
                     .catch(err => res.status(404).json({
                         lobbieserror: 'Joining lobby failed'
                     }) );                }
-                else if (lobby.player2 && lobby.player2.toString() !== req.params.characterId) {
-                    Lobby.findOneAndUpdate(
-                        { lobbykey: req.params.id},
-                        {
-                            $set: { player1: req.params.characterId },
-                            $currentDate: { lastModified: true }
-                        },
-                        {
-                            new: true,
-                            useFindAndModify: false
-                        }                    )
+                else if (!lobby.player2 || lobby.player2 && lobby.player2.toString() !== req.params.characterId) {
+                    lobby.player1 = req.params.characterId;
+                    for (let i = 0; i < lobby.locations.length; i++) {
+                        if (req.params.characterId === lobby.locations[i].character._id.toString())
+                            found = true;
+                    }
+                    if (!found)
+                        lobby.locations.push({character: req.params.characterId});
+                    lobby.save()
                     .then( lobby => buildLobbyJson(lobby, res) )
                     .catch(err => res.status(404).json({
                         lobbieserror: 'Joining lobby failed'
-                    }) );
-                }
+                    }));
+                }        
             }
         })
         .catch(err => res.status(404).json({

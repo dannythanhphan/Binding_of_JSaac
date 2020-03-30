@@ -1,10 +1,11 @@
 import React from 'react';
 import MainCharacterItems from './main_character_items';
 import './main_page.css';
-// import { Route } from 'react-router';
+import { Switch, Route } from 'react-router';
 import CharacterSelectedContainer from './character_selected_container';
 import CreateCharacterContainer from './create_character_container';
 import LobbyContainer from '../lobby/lobby_container';
+import NavBarContainer from './nav_bar_container';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import { ProtectedRoute } from '../../util/route_util';
@@ -39,6 +40,7 @@ class MainPage extends React.Component {
         ) : (
             null
         )
+        const nullEle = null;
 
         const displayInstructions = (this.props.match.isExact) ? (
             <div className="welcome-instructions">
@@ -77,6 +79,7 @@ class MainPage extends React.Component {
                         </div>
                         <button onClick={logout} className="logout-button">Sign Out</button>
                     </div>
+                    <NavBarContainer />
                     {displayInstructions}
                     <ProtectedRoute path="/main/:characterId" component={CharacterSelectedContainer} />
                     <ProtectedRoute path="/main/create" component={CreateCharacterContainer}/>
@@ -86,10 +89,17 @@ class MainPage extends React.Component {
                 <Link to='/main'>
                     <img className="main-logo-image" src={logo} alt="logo" />
                 </Link>
-
-                <div className="main-character-select-side-bar">
-                    {displayCharacters}
-                </div>
+                
+                <Switch>
+                    <Route path="/main/lobby">
+                        {nullEle}
+                    </Route>
+                    <Route path="/main/">
+                        <div className="main-character-select-side-bar">
+                            {displayCharacters}
+                        </div>
+                    </Route>
+                </Switch>
             </div>
         );
     }

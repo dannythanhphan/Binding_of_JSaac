@@ -1,4 +1,5 @@
 import { OPEN_MODAL, CLOSE_MODAL } from '../actions/modal_actions';
+import { RECEIVE_USER_LOGOUT } from '../actions/session_actions';
 
 const initialState = {
     modal: null
@@ -15,6 +16,9 @@ const modalReducer = (state = initialState, action) => {
 
         case CLOSE_MODAL:
             return initialState;
+
+        case RECEIVE_USER_LOGOUT:
+            return {};
     
         default:
             return state;
