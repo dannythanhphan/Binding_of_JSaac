@@ -1,10 +1,11 @@
 import React from 'react';
 import MainCharacterItems from './main_character_items';
 import './main_page.css';
-// import { Route } from 'react-router';
+import { Switch, Route } from 'react-router';
 import CharacterSelectedContainer from './character_selected_container';
 import CreateCharacterContainer from './create_character_container';
 import LobbyContainer from '../lobby/lobby_container';
+import NavBarContainer from './nav_bar_container';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import { ProtectedRoute } from '../../util/route_util';
@@ -25,7 +26,7 @@ class MainPage extends React.Component {
     }
 
     render() {
-        const { characters, logout, receiveGameCharacter } = this.props
+        const { characters, receiveGameCharacter } = this.props
         const displayCharacters = (characters.length > 0) ? (
             characters.map((character) => {
                 return <MainCharacterItems 
@@ -37,6 +38,7 @@ class MainPage extends React.Component {
         ) : (
             null
         )
+        const nullEle = null;
 
         const displayInstructions = (this.props.match.isExact) ? (
             <div className="welcome-instructions">
@@ -64,17 +66,7 @@ class MainPage extends React.Component {
         return (
             <div className="main-page">
                 <div className="main-character-info">
-                    <div className="ui-buttons">
-                        <div className="redirect-buttons-container">
-                            <Link to="/main/create" className="redirect-buttons">
-                                New Character
-                            </Link>
-                            <Link to="/main/lobby" className="redirect-buttons">
-                                Start Game
-                            </Link>
-                        </div>
-                        <button onClick={logout} className="logout-button">Sign Out</button>
-                    </div>
+                    <NavBarContainer />
                     {displayInstructions}
                     <ProtectedRoute path="/main/:characterId" component={CharacterSelectedContainer} />
                     <ProtectedRoute path="/main/create" component={CreateCharacterContainer}/>
@@ -83,10 +75,17 @@ class MainPage extends React.Component {
                 <Link to='/main'>
                     <img className="main-logo-image" src={logo} alt="logo" />
                 </Link>
-
-                <div className="main-character-select-side-bar">
-                    {displayCharacters}
-                </div>
+                
+                <Switch>
+                    <Route path="/main/lobby">
+                        {nullEle}
+                    </Route>
+                    <Route path="/main/">
+                        <div className="main-character-select-side-bar">
+                            {displayCharacters}
+                        </div>
+                    </Route>
+                </Switch>
             </div>
         );
     }

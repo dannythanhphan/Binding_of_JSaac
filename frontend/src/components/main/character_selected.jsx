@@ -13,106 +13,8 @@ class CharacterSelected extends React.Component {
         this.state = {
             x: 10,
             y: 0,
-            lobbyModal: false,
-            lobbykey: ''
         }
-        this.openModal = this.openModal.bind(this);
-        this.closeModal = this.closeModal.bind(this);
-        this.joinLobby = this.joinLobby.bind(this);
-        this.createLobby = this.createLobby.bind(this);
-        this.handleChange = this.handleChange.bind(this);
     };
-
-    handleDelete(charId) {
-        if (window.confirm('Are you sure you wish to delete this item?')) {
-            this.props.deleteCharacter(charId)
-            .then(() => this.props.history.push('/main'))
-        }
-
-    }
-    handleChange(e) {
-        const currentState = Object.assign({}, this.state);
-        currentState.lobbykey = e.target.value;
-        this.setState(currentState);
-    }
-    createLobby(e) {
-        const { createLobby, leaveLobby } = this.props;
-        e.preventDefault();
-        if (localStorage.lobbykey) {
-            leaveLobby(localStorage.lobbykey, localStorage.lobbycharacter)
-                .then((res) => {
-                    if (res.type === 'REMOVE_LOBBY') {
-                        createLobby(this.props.character._id).then(
-                            (res) => this.props.history.push(`/main/lobby`));
-                    }
-                });
-        } else {
-            createLobby(this.props.character._id).then( 
-                (res) => this.props.history.push(`/main/lobby`));
-        }
-    }
-
-    joinLobby(e) {
-        const { joinLobby, leaveLobby } = this.props;
-        e.preventDefault();
-        if (localStorage.lobbykey) {
-            leaveLobby(localStorage.lobbykey, localStorage.lobbycharacter)
-                .then((res) => {
-                    if (res.type === 'REMOVE_LOBBY') {
-                        joinLobby(this.state.lobbykey, this.props.character._id).then(
-                            (res) => {
-                                if (res.type === 'RECEIVE_LOBBY') {
-                                    this.closeModal();
-                                    this.props.history.push(`/main/lobby`);
-                                }
-                            });
-                    }
-                });
-        } else {
-
-        this.props.joinLobby(this.state.lobbykey, this.props.character._id).then(
-            (res) => {
-                if (res.type === 'RECEIVE_LOBBY') {
-                    this.closeModal();
-                    this.props.history.push(`/main/lobby`);
-                }
-            });
-        }
-    }
-
-    openModal() {
-        const currentState = Object.assign({}, this.state);
-        currentState.lobbyModal = true;
-        this.setState(currentState);
-    }
-
-    closeModal() {
-        const currentState = Object.assign({}, this.state);
-        currentState.lobbyModal = false;
-        this.setState(currentState);
-    }
-
-    renderModal() {
-        const errors = Object.values(this.props.errors).join(", ");
-        if (this.state.lobbyModal) {
-            return (
-                <div className="modal-screen">
-                    <div className="lobby-modal">
-                        <h2>Enter the Lobby Key of the Lobby you wish to join</h2>
-                        <input type="text" onChange={this.handleChange} />
-                        <p>{errors}</p>
-                        <div>
-                            <button onClick={this.joinLobby}>Join Lobby</button>
-                            <button onClick={this.closeModal}>Cancel</button>
-                        </div>
-                    </div>
-
-                </div>
-            )
-        } else {
-            return null;
-        }
-    }
 
     renderLoadingModal() {
         const { ui } = this.props;
@@ -294,13 +196,6 @@ class CharacterSelected extends React.Component {
                         </Layer>
                     </Stage>
                 </div>
-                <div className="character-selected-delete-button-container">
-                    <button onClick={() => this.handleDelete(character._id)} className="character-selected-delete-button">
-                        Delete Character
-                    </button>
-                    <button onClick={this.openModal}>Join Existing Lobby</button>
-                    <button onClick={this.createLobby}>Create New Lobby</button>
-                </div>
             </div>
         ) : (
             null
@@ -308,7 +203,6 @@ class CharacterSelected extends React.Component {
         return(
             <div>
                 {displayCharacter}
-                {this.renderModal()}
                 {this.renderLoadingModal()}
             </div>
         );

@@ -134,6 +134,8 @@
 .ui-buttons {
     background-color: white;
     display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
     padding-top: 0.7%;
     padding-bottom: 0.7%;
@@ -158,16 +160,18 @@
 }
 
 .redirect-buttons-container {
-    width: 40%;
+    width: 50%;
     height: 100%;
     display: flex;
+    align-items: center;
     justify-content: center;
     position: relative;
-    left: 30%;
-    top: 10px;
+    left: 25%;
 }
 
 .redirect-buttons {
+    background-color: inherit;
+    border: 0px;
     text-decoration: none;
     color:rgb(62, 84, 114);
     cursor: pointer;
@@ -208,7 +212,6 @@
     display: flex;
     justify-content: center;
     margin-bottom: 10%;
-    color: 
 }
 
 .instructions {
