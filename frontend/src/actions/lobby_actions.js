@@ -33,11 +33,7 @@ export const receiveErrors = errors => ({
 });
 
 export const leave = (id, charId) => dispatch => {
-<<<<<<< HEAD
     window.socket.emit('leave', localStorage.lobbykey);
-=======
-    socket.emit('leave', localStorage.lobbykey);
->>>>>>> staging
     localStorage.removeItem('lobbykey');
     localStorage.removeItem('lobbycharacter');
     return APIUtil.leave(id, charId)

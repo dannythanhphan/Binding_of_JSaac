@@ -68,17 +68,6 @@ class MainPage extends React.Component {
         return (
             <div className="main-page">
                 <div className="main-character-info">
-                    <div className="ui-buttons">
-                        <div className="redirect-buttons-container">
-                            <Link to="/main/create" className="redirect-buttons">
-                                New Character
-                            </Link>
-                            <Link to="/main/game" className="redirect-buttons">
-                                Start Game
-                            </Link>
-                        </div>
-                        <button onClick={logout} className="logout-button">Sign Out</button>
-                    </div>
                     <NavBarContainer />
                     {displayInstructions}
                     <ProtectedRoute path="/main/:characterId" component={CharacterSelectedContainer} />
