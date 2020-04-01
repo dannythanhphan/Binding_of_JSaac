@@ -377,7 +377,6 @@ class DisplayCharacters extends React.Component {
                 }
                 break;
         }
-
         return (
             <Sprite
                 id="check"

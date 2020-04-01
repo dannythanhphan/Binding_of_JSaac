@@ -12,6 +12,8 @@ class Room extends React.Component {
 
     render() {
         if (Object.keys(this.props.lobby).length === 0) return null;
+        console.log(this.props)
+
         let { room, lobby, characters, locations, traps, monsters } = this.props;
         let roomImg;
         let spriteInRoom;
@@ -21,7 +23,7 @@ class Room extends React.Component {
         if (locations) {
 
             roomImg = RoomSelector(locations.room);
-            for (let i = 0; i < 2; i++) {
+            for (let i = 0; i < characters.length; i++) {
                 if (characters[i]._id === lobby.player1) {
                     spriteInRoom = <DisplayCharacters character={characters[i]} positionX={locations.xPos}  positionY={locations.yPos} />
                     break;
@@ -29,8 +31,8 @@ class Room extends React.Component {
                     spriteInRoom = <DisplayCharacters character={characters[i]} positionX={locations.xPos}  positionY={locations.yPos} />
                     break;
                 }
-                
             }
+
 
             let roomNumber = room[(locations.room % 16) * locations.floor]
 
@@ -64,7 +66,7 @@ class Room extends React.Component {
                         <Layer>
                             <Image image={roomImg} />
                             {spriteInRoom}
-                            {monstersInRoom}
+                            {/* {monstersInRoom} */}
                             {trapsInRoom}
                         </Layer>
                     </Stage>

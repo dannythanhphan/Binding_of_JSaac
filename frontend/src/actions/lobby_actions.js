@@ -74,7 +74,6 @@ export const create = (charId) => dispatch => {
     return APIUtil.create(charId)
         .then(
             res => { 
-                console.log('emit create room')
                 socket.emit('room', res.data.lobby.lobbykey);
                 localStorage.setItem('lobbykey', res.data.lobby.lobbykey);
                 localStorage.setItem('lobbycharacter', res.data.lobby.player1)
