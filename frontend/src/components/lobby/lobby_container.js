@@ -1,17 +1,14 @@
 import { connect } from 'react-redux';
-import { leave, join, create, retrieve } from '../../actions/lobby_actions';
+import { retrieve } from '../../actions/lobby_actions';
 import LobbyMain from './lobby';
 
-const mapStateToProps = state => {
-    return {
+const mapStateToProps = state => ({
     gameCharacters: state.entities.characters.gameCharacters,
     lobby: state.entities.lobby,
-}};
+});
 
 const mapDispatchToProps = dispatch => ({
-    leaveLobby: (id, charId) => dispatch(leave(id, charId)),
-    createLobby: () => dispatch(create()),
-    fetchLobby: key => dispatch(retrieve(key)),
+    retrieve: key => dispatch(retrieve(key)),
 });
 
 export default connect(
