@@ -8,7 +8,6 @@ class DisplayCharacters extends React.Component {
     constructor(props) {
         super(props);
         this.props = props;
-        console.log(this.props);
 
         this.move = this.move.bind(this);
     }

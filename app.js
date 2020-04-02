@@ -50,6 +50,10 @@ io.on('connection', (socket) => {
         socket.leave(room);
     })
 
+    socket.on('dungeonRefresh', data => {
+        io.to(data.room).emit("receiveDungeon", data.char);
+    })
+
 })
 
 const Lobby = require("./models/Lobby");

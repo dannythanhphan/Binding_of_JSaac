@@ -35,7 +35,6 @@ class Room extends React.Component {
             otherCharacter.yPixel = otherCharacter.yPos * 64;
             delete otherCharacter.character;
         }
-
         this.state = {currentCharacter, otherCharacter};
         this.childSetState = this.childSetState.bind(this);
     }
@@ -45,9 +44,6 @@ class Room extends React.Component {
         if (state._id === localStorage.lobbycharacter) {
             currentState.currentCharacter = state;
         }
-        // else {
-        //     currentState.otherChar = state;
-        // }
         this.setState(currentState);
     }
 
@@ -55,18 +51,21 @@ class Room extends React.Component {
         if (localStorage.lobbykey && Object.keys(this.props.lobby).length === 0) {
             this.props.fetchLobby(localStorage.lobbykey)
         }
+        // Change update speed 30fps for now
         setInterval(() => {
             window.socket.emit("dungeonRefresh", 
             {
                 room: localStorage.lobbykey, 
-                client: localStorage.lobbycharacter, 
-                state: this.state});
-        }, 1000)
+                char: this.state.currentCharacter
+            });
+        }, 1000 / 30)
+
         window.socket.on("receiveDungeon", data => {
-            // let currentState = Object.assign({}, this.state);
-            // currentState.otherChar = data.currentChar;
-            // this.setState(currentState);
-            console.log(data);
+            if (data._id !== localStorage.lobbycharacter) {
+                let currentState = Object.assign({}, this.state);
+                currentState.otherCharacter = data;
+                this.setState(currentState);
+            }
         })
     }
 
@@ -81,7 +80,7 @@ class Room extends React.Component {
         let monstersInRoom;
         if (this.state.otherCharacter) {
             otherChar = <DisplayCharacters
-                state={this.state.otherCharsvyrt}
+                char={this.state.otherCharacter}
                 movement={false}
                 childSetState={this.childSetState}
             />
