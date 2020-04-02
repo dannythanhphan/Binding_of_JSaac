@@ -7,13 +7,8 @@ import { Sprite } from 'react-konva';
 class DisplayCharacters extends React.Component {
     constructor(props) {
         super(props);
-        
-        // this.state = {
-        //     characterXPos: (this.props.positionX === 15) ? (this.props.positionX * 64) : ((this.props.positionX * 64) + 64),
-        //     characterYPos: (this.props.positionY === 9) ? (this.props.positionY * 64) : ((this.props.positionY * 64) + 64),
-        //     frames: 0,
-        //     animation: "runningRight"
-        // }
+        this.props = props;
+        console.log(this.props);
 
         this.move = this.move.bind(this);
     }
@@ -66,28 +61,32 @@ class DisplayCharacters extends React.Component {
             2: 42,
             3: 42
         }
-        let maxFrames = maxFramesPerCharacter[this.props.character.characterSprite]
-        let currentState = Object.assign({}, this.props.state)
+        let maxFrames = maxFramesPerCharacter[this.props.char.characterSprite]
+        let currentState = Object.assign({}, this.props.char)
         switch(dir) {
             case "up":
-                currentState.characterYPos = currentState.characterYPos - 5;
+                currentState.yPixel = currentState.yPixel - 8;
+                currentState.yPos = Math.round(currentState.yPixel / 64); 
                 break;
             case "down":
-                currentState.characterYPos = currentState.characterYPos + 5;
+                currentState.yPixel = currentState.yPixel + 8;
+                currentState.yPos = Math.round(currentState.yPixel / 64); 
                 break;
             case "left":
-                currentState.characterXPos = currentState.characterXPos - 5;
+                currentState.xPixel = currentState.xPixel - 8;
+                currentState.xPos = Math.round(currentState.xPixel / 64); 
                 currentState.animation = "runningLeft"
                 break;
             case "right":
-                currentState.characterXPos = currentState.characterXPos + 5;
+                currentState.xPixel = currentState.xPixel + 8;
+                currentState.xPos = Math.round(currentState.xPixel / 64); 
                 currentState.animation = "runningRight"
                 break;
             default:
                 break;
         }
         currentState.frames = (currentState.frames === maxFrames) ? 0 : currentState.frames + 1;
-        this.props.childSetState(currentState, this.props.movement);
+        this.props.childSetState(currentState);
 
     }
     componentDidMount() {
@@ -106,7 +105,7 @@ class DisplayCharacters extends React.Component {
         let frames;
         let running;
 
-        switch (this.props.character.characterSprite) {
+        switch (this.props.char.characterSprite) {
             case 1:
                 characterImg.src = mustacheMan
                 frames = 20
@@ -356,13 +355,13 @@ class DisplayCharacters extends React.Component {
         return (
             <Sprite
                 id="check"
-                x={this.props.state.characterXPos}
-                y={this.props.state.characterYPos}
+                x={this.props.char.xPixel}
+                y={this.props.char.yPixel}
                 image={characterImg}
-                animation={this.props.state.animation}
+                animation={this.props.char.animation}
                 animations={running}
                 frameRate={60}
-                frameIndex={this.props.state.frames}
+                frameIndex={this.props.char.frames}
 
                 scaleX={0.5}
                 scaleY={0.5}

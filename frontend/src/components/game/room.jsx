@@ -11,46 +11,43 @@ class Room extends React.Component {
         this.props = props;
         let currentCharacter;
         let otherCharacter;
-        const { locations } = this.props;
-        for (let i = 0; i < locations.length; i++) {
-            if (locations[i].character === localStorage.lobbycharacter) {
-                currentCharacter = locations[i];
+        const { locations, characters } = this.props;
+        for (let i = 0; i < characters.length; i++) {
+            if (characters[i]._id === localStorage.lobbycharacter) {
+                currentCharacter = characters[i];
             }
             else {
-                otherCharacter = locations[i];
+                otherCharacter = characters[i];
             }
         }
-        let tempState = {
-            currentChar: {
-                characterXPos: currentCharacter.xPos * 64,
-                characterYPos: currentCharacter.yPos * 64,
-                frames: 0,
-                animation: "runningRight"
-            },
-            otherChar: {},
-            currentLocation: currentCharacter
-        }
+        currentCharacter = Object.assign(currentCharacter, locations[currentCharacter._id])
+        currentCharacter.frames = 0;
+        currentCharacter.animation = "runningRight";
+        currentCharacter.xPixel = currentCharacter.xPos * 64;
+        currentCharacter.yPixel = currentCharacter.yPos * 64;
+        delete currentCharacter.character;
+
         if (otherCharacter) {
-            tempState.otherChar = {
-                characterXPos: otherCharacter.xPos * 64,
-                characterYPos: otherCharacter.yPos * 64,
-                frames: 0,
-                animation: "runningRight"
-            }
+            otherCharacter = Object.assign(otherCharacter, locations[otherCharacter._id])
+            otherCharacter.frames = 0;
+            otherCharacter.animation = "runningRight";
+            otherCharacter.xPixel = otherCharacter.xPos * 64;
+            otherCharacter.yPixel = otherCharacter.yPos * 64;
+            delete otherCharacter.character;
         }
 
-        this.state = tempState;
+        this.state = {currentCharacter, otherCharacter};
         this.childSetState = this.childSetState.bind(this);
     }
 
-    childSetState(state, currentChar) {
+    childSetState(state) {
         let currentState = Object.assign({}, this.state);
-        if (currentChar) {
-            currentState.currentChar = state;
+        if (state._id === localStorage.lobbycharacter) {
+            currentState.currentCharacter = state;
         }
-        else {
-            currentState.otherChar = state;
-        }
+        // else {
+        //     currentState.otherChar = state;
+        // }
         this.setState(currentState);
     }
 
@@ -60,7 +57,10 @@ class Room extends React.Component {
         }
         setInterval(() => {
             window.socket.emit("dungeonRefresh", 
-            {room: localStorage.lobbykey, state: this.state});
+            {
+                room: localStorage.lobbykey, 
+                client: localStorage.lobbycharacter, 
+                state: this.state});
         }, 1000)
         window.socket.on("receiveDungeon", data => {
             // let currentState = Object.assign({}, this.state);
@@ -79,29 +79,22 @@ class Room extends React.Component {
         let otherChar;
         let trapsInRoom;
         let monstersInRoom;
-        
-        if (locations.length !== 0) {
-            roomImg = RoomSelector(this.state.currentLocation.room);
-            for (let i = 0; i < characters.length; i++) {
-                if (characters[i]._id === localStorage.lobbycharacter) {
-                    currentChar = <DisplayCharacters 
-                    character={characters[i]} 
-                    state={this.state.currentChar}
-                    movement={true}
-                    childSetState={this.childSetState}
-                    />
-                } else {
-                    otherChar = <DisplayCharacters 
-                    character={characters[i]} 
-                    state={this.state.otherChar}
-                    movement={false}
-                    childSetState={this.childSetState}
-                    />
-                }
-            }
+        if (this.state.otherCharacter) {
+            otherChar = <DisplayCharacters
+                state={this.state.otherCharsvyrt}
+                movement={false}
+                childSetState={this.childSetState}
+            />
+        }
+        if (this.state.currentCharacter) {
+            roomImg = RoomSelector(this.state.currentCharacter.room);
+            currentChar = <DisplayCharacters 
+                char={this.state.currentCharacter}
+                movement={true}
+                childSetState={this.childSetState}
+                />
 
-
-            let roomNumber = room[(this.state.currentLocation.room % 16) * this.state.currentLocation.floor]
+            let roomNumber = room[(this.state.currentCharacter.room % 16) * this.state.currentCharacter.floor];
 
             // // uncomment the line below if you want to test each room
             // let roomNumber = room[12] 
