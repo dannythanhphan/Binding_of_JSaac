@@ -91,14 +91,6 @@ class DisplayCharacters extends React.Component {
 
     }
     componentDidMount() {
-        if (localStorage.lobbykey) {
-            window.socket.on("receiveDungeon", data => {
-                // console.log(data);
-            })
-            setInterval(() => {
-                window.socket.emit("dungeonRefresh", localStorage.lobbykey, this.state);
-            }, 1000)
-        }
         if (this.props.movement) {
             this.KeyboardController({
                 87: () => {this.move("up")},

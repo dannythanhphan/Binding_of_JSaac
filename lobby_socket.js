@@ -10,17 +10,19 @@ const watchLobbies = () => {
 
 
     lobby.on('connection', (socket) => {
+        console.log("why does nothing work")
         socket.on('room', room => {
             socket.join(room);
+        })
+        
+        socket.on('dungeonRefresh', data => {
+            lobby.to(data.room).emit("receiveDungeon", data.state);
         })
 
         socket.on('leave', room => {
             socket.leave(room);
         })
 
-        socket.on('dungeonRefresh', (room, data) => {
-            lobby.to(room).emit("receiveDungeon", data);
-        })
 
     })
 

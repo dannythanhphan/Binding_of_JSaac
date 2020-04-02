@@ -58,6 +58,16 @@ class Room extends React.Component {
         if (localStorage.lobbykey && Object.keys(this.props.lobby).length === 0) {
             this.props.fetchLobby(localStorage.lobbykey)
         }
+        setInterval(() => {
+            window.socket.emit("dungeonRefresh", 
+            {room: localStorage.lobbykey, state: this.state});
+        }, 1000)
+        window.socket.on("receiveDungeon", data => {
+            // let currentState = Object.assign({}, this.state);
+            // currentState.otherChar = data.currentChar;
+            // this.setState(currentState);
+            console.log(data);
+        })
     }
 
     render() {
