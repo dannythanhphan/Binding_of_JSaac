@@ -115,7 +115,13 @@ class Room extends React.Component {
             }
 
             monstersInRoom = monsterCountPerRoom.map(monster => (
-                monstersInRoom = <DisplayMonsters monster={monster} positionX={monster.xPos} positionY={monster.yPos} />
+                monstersInRoom = <DisplayMonsters 
+                monster={monster} 
+                positionX={monster.xPos} 
+                positionY={monster.yPos}
+                playerX={this.state.currentCharacter.xPixel}
+                playerY={this.state.currentCharacter.yPixel}
+                />
             ))
         }
         // tiles are 64 x 64
@@ -126,15 +132,15 @@ class Room extends React.Component {
         
         return (
             <div className="room-main">
-                    <Stage width={1088} height={704}>
-                        <Layer>
-                            <Image image={roomImg} />
-                            {currentChar}
-                            {otherChar}
-                            {/* {monstersInRoom} */}
-                            {trapsInRoom}
-                        </Layer>
-                    </Stage>
+                <Stage width={1088} height={704}>
+                    <Layer>
+                        <Image image={roomImg} />
+                        {currentChar}
+                        {otherChar}
+                        {monstersInRoom}
+                        {trapsInRoom}
+                    </Layer>
+                </Stage>
             </div>
         )
     }
