@@ -52,7 +52,7 @@ class Room extends React.Component {
             this.props.fetchLobby(localStorage.lobbykey)
         }
         // Change update speed 30fps for now
-        setInterval(() => {
+        window.interval = setInterval(() => {
             window.socket.emit("dungeonRefresh", 
             {
                 room: localStorage.lobbykey, 
@@ -67,6 +67,11 @@ class Room extends React.Component {
                 this.setState(currentState);
             }
         })
+    }
+
+    componentWillUnmount() {
+        // still need to figure this out
+        window.clearInterval(window.interval);
     }
 
     render() {
