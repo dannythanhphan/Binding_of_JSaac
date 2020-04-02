@@ -8,12 +8,12 @@ class DisplayCharacters extends React.Component {
     constructor(props) {
         super(props);
         
-        this.state = {
-            characterXPos: (this.props.positionX === 15) ? (this.props.positionX * 64) : ((this.props.positionX * 64) + 64),
-            characterYPos: (this.props.positionY === 9) ? (this.props.positionY * 64) : ((this.props.positionY * 64) + 64),
-            frames: 0,
-            animation: "runningRight"
-        }
+        // this.state = {
+        //     characterXPos: (this.props.positionX === 15) ? (this.props.positionX * 64) : ((this.props.positionX * 64) + 64),
+        //     characterYPos: (this.props.positionY === 9) ? (this.props.positionY * 64) : ((this.props.positionY * 64) + 64),
+        //     frames: 0,
+        //     animation: "runningRight"
+        // }
 
         this.move = this.move.bind(this);
     }
@@ -67,7 +67,7 @@ class DisplayCharacters extends React.Component {
             3: 42
         }
         let maxFrames = maxFramesPerCharacter[this.props.character.characterSprite]
-        let currentState = Object.assign({}, this.state)
+        let currentState = Object.assign({}, this.props.state)
         switch(dir) {
             case "up":
                 currentState.characterYPos = currentState.characterYPos - 5;
@@ -87,7 +87,8 @@ class DisplayCharacters extends React.Component {
                 break;
         }
         currentState.frames = (currentState.frames === maxFrames) ? 0 : currentState.frames + 1;
-        this.setState(currentState);
+        this.props.childSetState(currentState, this.props.movement);
+
     }
     componentDidMount() {
         if (localStorage.lobbykey) {
@@ -106,25 +107,6 @@ class DisplayCharacters extends React.Component {
                 68: () => {this.move("right")},
             }, 50)
         }
-
-        // window.addEventListener("keydown", function(e) {
-        //     if (e.keyCode === 87) {
-
-        //     } else if (e.keyCode === 83) {
-        //         that.setState({ characterYPos: that.state.characterYPos + 5 })
-        //         that.setState({ frames: (that.state.frames === maxFrames) ? 0 : that.state.frames + 1})
-        //     }
-
-        //     if (e.keyCode === 65) {
-        //         that.setState({ characterXPos: that.state.characterXPos - 5 })
-        //         that.setState({ frames: (that.state.frames === maxFrames) ? 0 : that.state.frames + 1})
-        //     } else if (e.keyCode === 68) {
-        //         that.setState({ characterXPos: that.state.characterXPos + 5 })
-        //         that.setState({ frames: (that.state.frames === maxFrames) ? 0 : that.state.frames + 1})
-        //     }
-        //     e.preventDefault();
-        //     e.stopPropagation();
-        // })
     }
 
     render() {
@@ -382,13 +364,13 @@ class DisplayCharacters extends React.Component {
         return (
             <Sprite
                 id="check"
-                x={this.state.characterXPos}
-                y={this.state.characterYPos}
+                x={this.props.state.characterXPos}
+                y={this.props.state.characterYPos}
                 image={characterImg}
-                animation={this.state.animation}
+                animation={this.props.state.animation}
                 animations={running}
                 frameRate={60}
-                frameIndex={this.state.frames}
+                frameIndex={this.props.state.frames}
 
                 scaleX={0.5}
                 scaleY={0.5}
