@@ -12,24 +12,22 @@ class Room extends React.Component {
 
     render() {
         if (Object.keys(this.props.lobby).length === 0) return null;
-        console.log(this.props)
 
         let { room, lobby, characters, locations, traps, monsters } = this.props;
         let roomImg;
         let spriteInRoom;
+        let currentChar;
+        let otherChar;
         let trapsInRoom;
         let monstersInRoom;
-
+        
         if (locations) {
-
             roomImg = RoomSelector(locations.room);
             for (let i = 0; i < characters.length; i++) {
-                if (characters[i]._id === lobby.player1) {
-                    spriteInRoom = <DisplayCharacters character={characters[i]} positionX={locations.xPos}  positionY={locations.yPos} />
-                    break;
+                if (characters[i]._id === localStorage.lobbycharacter) {
+                    currentChar = <DisplayCharacters character={characters[i]} positionX={locations.xPos}  positionY={locations.yPos} movement={true}/>
                 } else {
-                    spriteInRoom = <DisplayCharacters character={characters[i]} positionX={locations.xPos}  positionY={locations.yPos} />
-                    break;
+                    otherChar = <DisplayCharacters character={characters[i]} positionX={locations.xPos}  positionY={locations.yPos} />
                 }
             }
 
@@ -65,7 +63,8 @@ class Room extends React.Component {
                     <Stage width={1088} height={704}>
                         <Layer>
                             <Image image={roomImg} />
-                            {spriteInRoom}
+                            {currentChar}
+                            {otherChar}
                             {/* {monstersInRoom} */}
                             {trapsInRoom}
                         </Layer>

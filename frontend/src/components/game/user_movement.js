@@ -98,12 +98,14 @@ class DisplayCharacters extends React.Component {
                 window.socket.emit("dungeonRefresh", localStorage.lobbykey, this.state);
             }, 1000)
         }
-        this.KeyboardController({
-            87: () => {this.move("up")},
-            83: () => {this.move("down")},
-            65: () => {this.move("left")},
-            68: () => {this.move("right")},
-        }, 50)
+        if (this.props.movement) {
+            this.KeyboardController({
+                87: () => {this.move("up")},
+                83: () => {this.move("down")},
+                65: () => {this.move("left")},
+                68: () => {this.move("right")},
+            }, 50)
+        }
 
         // window.addEventListener("keydown", function(e) {
         //     if (e.keyCode === 87) {
