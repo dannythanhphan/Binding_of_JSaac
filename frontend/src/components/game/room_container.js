@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import Room from './room';
 import { retrieve } from '../../actions/lobby_actions';
+import { moveRoom } from '../../actions/room_actions'
 
 const mapStateToProps = state => ({
     room: Object.values(state.entities.rooms),
@@ -12,7 +13,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    fetchLobby: (lobbyKey) => dispatch(retrieve(lobbyKey))
+    fetchLobby: (lobbyKey) => dispatch(retrieve(lobbyKey)),
+    moveRoom: (key, charId, floor, room) => dispatch(moveRoom(key, charId, floor, room))
 });
 
 export default connect(

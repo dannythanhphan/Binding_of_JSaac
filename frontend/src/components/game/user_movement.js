@@ -64,20 +64,32 @@ class DisplayCharacters extends React.Component {
         let currentState = Object.assign({}, this.props.char)
         switch(dir) {
             case "up":
-                currentState.yPixel = currentState.yPixel - 8;
+                if (currentState.yPixel - 8 > 64 || (currentState.xPixel > 500 && currentState.xPixel < 544)) {
+                    currentState.yPixel = currentState.yPixel - 8;
+                } 
+                
                 currentState.yPos = Math.round(currentState.yPixel / 64); 
                 break;
             case "down":
-                currentState.yPixel = currentState.yPixel + 8;
+                if (currentState.yPixel + 8 < 576 || (currentState.xPixel > 500 && currentState.xPixel < 544)) {
+                    currentState.yPixel = currentState.yPixel + 8;
+                } 
+
                 currentState.yPos = Math.round(currentState.yPixel / 64); 
                 break;
             case "left":
-                currentState.xPixel = currentState.xPixel - 8;
+                if (currentState.xPixel - 8 > 64 || (currentState.yPixel > 308 && currentState.yPixel < 352)) {
+                    currentState.xPixel = currentState.xPixel - 8;
+                }
+
                 currentState.xPos = Math.round(currentState.xPixel / 64); 
                 currentState.animation = "runningLeft"
                 break;
             case "right":
-                currentState.xPixel = currentState.xPixel + 8;
+                if (currentState.xPixel + 8 < 992 || (currentState.yPixel > 308 && currentState.yPixel < 352)) {
+                    currentState.xPixel = currentState.xPixel + 8;
+                }
+
                 currentState.xPos = Math.round(currentState.xPixel / 64); 
                 currentState.animation = "runningRight"
                 break;
@@ -353,7 +365,6 @@ class DisplayCharacters extends React.Component {
         }
         return (
             <Sprite
-                id="check"
                 x={this.props.char.xPixel}
                 y={this.props.char.yPixel}
                 image={characterImg}
