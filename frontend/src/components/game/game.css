@@ -21,4 +21,12 @@
   left: -370px;
   top: 10px;
   border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#hud-characters-label {
+  color: #888888;
+  margin-top: 20px;
 }
