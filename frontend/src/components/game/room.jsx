@@ -60,17 +60,15 @@ class Room extends React.Component {
         // max width-height = 1024 x 640
         
         return (
-            <div className="room-main">
-                    <Stage width={1088} height={704}>
-                        <Layer>
-                            <Image image={roomImg} />
-                            {currentChar}
-                            {otherChar}
-                            {/* {monstersInRoom} */}
-                            {trapsInRoom}
-                        </Layer>
-                    </Stage>
-            </div>
+            <Stage width={1088} height={704}>
+                <Layer>
+                    <Image image={roomImg} />
+                    {currentChar}
+                    {otherChar}
+                    {/* {monstersInRoom} */}
+                    {trapsInRoom}
+                </Layer>
+            </Stage>
         )
     }
 };

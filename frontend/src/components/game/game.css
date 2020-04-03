@@ -8,6 +8,17 @@
   background-color: #333333;
 }
 
-.room-main {
+.game-main {
   box-shadow: 0 0 20px #888888;
+  position: relative;
+}
+
+#hud-characters {
+  width: 350px;
+  height: 600px;
+  background-color: rgba(128,128,128,0.3);
+  position: absolute;
+  left: -370px;
+  top: 10px;
+  border-radius: 10px;
 }

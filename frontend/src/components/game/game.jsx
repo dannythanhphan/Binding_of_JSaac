@@ -1,6 +1,6 @@
 import React from 'react';
 import RoomContainer from './room_container';
-import './game.css';
+import './game.css'
 
 class Game extends React.Component {
   constructor(props) {
@@ -9,7 +9,10 @@ class Game extends React.Component {
 
   render() {
     return(
-      <RoomContainer />
+      <div className="game-main">
+        <div id="hud-characters"></div>
+        <RoomContainer />
+      </div>
     )
   }
 }
