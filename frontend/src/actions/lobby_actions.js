@@ -33,7 +33,7 @@ export const receiveErrors = errors => ({
 });
 
 export const leave = (id, charId) => dispatch => {
-    socket.emit('leave', localStorage.lobbykey);
+    window.socket.emit('leave', localStorage.lobbykey);
     localStorage.removeItem('lobbykey');
     localStorage.removeItem('lobbycharacter');
     return APIUtil.leave(id, charId)
@@ -74,7 +74,6 @@ export const create = (charId) => dispatch => {
     return APIUtil.create(charId)
         .then(
             res => { 
-                console.log('emit create room')
                 socket.emit('room', res.data.lobby.lobbykey);
                 localStorage.setItem('lobbykey', res.data.lobby.lobbykey);
                 localStorage.setItem('lobbycharacter', res.data.lobby.player1)

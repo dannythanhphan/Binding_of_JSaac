@@ -13,6 +13,18 @@ class LobbyMain extends React.Component {
         }
     }
 
+    leaveLobby(e) {
+        e.preventDefault();
+        if (localStorage.lobbykey) {
+            this.props.leaveLobby(localStorage.lobbykey, localStorage.lobbycharacter)
+            .then( (res) => {
+                if (res.type === 'REMOVE_LOBBY') {
+                    this.props.history.push('/main')
+                }
+            });
+        }
+    }
+
     // componentDidUpdate(prevProps) {
     //     if (Object.keys(prevProps.lobby).length !== Object.keys(this.props.lobby).length) {
     //         this.props.retrieve(this.props.lobby.lobbykey)
@@ -20,6 +32,7 @@ class LobbyMain extends React.Component {
     // }
     renderPlayer1() {
         const { lobby, gameCharacters } = this.props;
+        console.log(gameCharacters);
         let player1Running;
         let player1ImageObj = new Image();
         let player1Frames = 0;

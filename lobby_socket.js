@@ -18,6 +18,10 @@ const watchLobbies = () => {
             socket.leave(room);
         })
 
+        socket.on('dungeonRefresh', (room, data) => {
+            lobby.to(room).emit("receiveDungeon", data);
+        })
+
     })
 
     changeStream.on("change", change => {

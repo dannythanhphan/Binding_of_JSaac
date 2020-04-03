@@ -9,6 +9,7 @@ import NavBarContainer from './nav_bar_container';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import { ProtectedRoute } from '../../util/route_util';
+import RoomContainer from '../game/room_container';
 
 class MainPage extends React.Component {
     constructor(props) {
@@ -26,7 +27,8 @@ class MainPage extends React.Component {
     }
 
     render() {
-        const { characters, receiveGameCharacter } = this.props
+        
+        const { characters, logout, receiveGameCharacter } = this.props
         const displayCharacters = (characters.length > 0) ? (
             characters.map((character) => {
                 return <MainCharacterItems 
@@ -71,6 +73,7 @@ class MainPage extends React.Component {
                     <ProtectedRoute path="/main/:characterId" component={CharacterSelectedContainer} />
                     <ProtectedRoute path="/main/create" component={CreateCharacterContainer}/>
                     <ProtectedRoute path="/main/lobby/" component={LobbyContainer} />
+                    <ProtectedRoute path="/main/game" component={RoomContainer} />
                 </div>
                 <Link to='/main'>
                     <img className="main-logo-image" src={logo} alt="logo" />

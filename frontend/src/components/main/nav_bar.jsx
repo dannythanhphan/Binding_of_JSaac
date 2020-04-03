@@ -145,7 +145,7 @@ class NavBar extends React.Component {
                     <button className="redirect-buttons" onClick={this.leaveLobby}>
                         Leave Lobby
                     </button>
-                    <Link to="/game" className="redirect-buttons">
+                    <Link to="/main/game" className="redirect-buttons">
                         Start Game
                     </Link>
                 </div>
