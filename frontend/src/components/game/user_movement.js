@@ -10,6 +10,7 @@ class DisplayCharacters extends React.Component {
         this.props = props;
 
         this.move = this.move.bind(this);
+        this.checkCollision = this.checkCollision.bind(this);
     }
 
     KeyboardController(keys, repeat) {
@@ -54,6 +55,22 @@ class DisplayCharacters extends React.Component {
         document.onkeyup = null;
     }
 
+    takeDamage(val) {
+        let currentState = Object.assign({}, this.props.char);
+        currentState.currentHP -= val;
+        console.log("damage taken");
+    }
+
+    checkCollision() {
+        for (let i = 0; i < this.props.traps.length; i++) {
+            if ((this.props.traps[i].xPos === this.props.char.xPos) && 
+            (this.props.traps[i].yPos) === this.props.char.yPos) {
+                this.takeDamage(1);
+            }
+        }
+
+    }
+
     move(dir) {
         let maxFramesPerCharacter = {
             1: 20,
@@ -82,7 +99,7 @@ class DisplayCharacters extends React.Component {
                     currentState.xPixel = currentState.xPixel - 8;
                 }
 
-                currentState.xPos = Math.round(currentState.xPixel / 64); 
+                currentState.xPos = Math.round(currentState.xPixel / 64) - 1; 
                 currentState.animation = "runningLeft"
                 break;
             case "right":
@@ -90,13 +107,14 @@ class DisplayCharacters extends React.Component {
                     currentState.xPixel = currentState.xPixel + 8;
                 }
 
-                currentState.xPos = Math.round(currentState.xPixel / 64); 
+                currentState.xPos = Math.round(currentState.xPixel / 64) - 1; 
                 currentState.animation = "runningRight"
                 break;
             default:
                 break;
         }
         currentState.frames = (currentState.frames === maxFrames) ? 0 : currentState.frames + 1;
+        this.checkCollision();
         this.props.childSetState(currentState);
 
     }

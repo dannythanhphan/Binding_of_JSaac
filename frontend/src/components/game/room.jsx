@@ -82,30 +82,29 @@ class Room extends React.Component {
         let currentChar;
         let otherChar;
         let trapsInRoom;
+        let trapsDisplay;
         let monstersInRoom;
-        if (this.state.otherCharacter) {
-            otherChar = <DisplayCharacters
-                char={this.state.otherCharacter}
-                movement={false}
-                childSetState={this.childSetState}
-            />
-        }
+
         if (this.state.currentCharacter) {
+            let roomNumber = room[(this.state.currentCharacter.room % 16) * this.state.currentCharacter.floor];
             roomImg = RoomSelector(this.state.currentCharacter.room);
+            trapsInRoom = TrapsHelper.GetTraps(roomNumber.id, traps);
+            trapsDisplay = trapsInRoom.map(trap => (
+                TrapsHelper.displayTraps(trap)
+            ))
+
             currentChar = <DisplayCharacters 
                 char={this.state.currentCharacter}
                 movement={true}
                 childSetState={this.childSetState}
+                traps={trapsInRoom}
                 />
 
-            let roomNumber = room[(this.state.currentCharacter.room % 16) * this.state.currentCharacter.floor];
 
             // // uncomment the line below if you want to test each room
             // let roomNumber = room[12] 
 
-            trapsInRoom = TrapsHelper.GetTraps(roomNumber.id, traps).map(trap => (
-                TrapsHelper.displayTraps(trap)
-            ))
+
             
             let monsterCountPerRoom = [];
             for (let i = 0; i < monsters.length; i++) {
@@ -129,16 +128,23 @@ class Room extends React.Component {
         // rooms 17x11 with walls, 1088 x 704
         // min width-height = 64 x 64
         // max width-height = 1024 x 640
-        
+        if (this.state.otherCharacter) {
+            otherChar = <DisplayCharacters
+                char={this.state.otherCharacter}
+                movement={false}
+                childSetState={this.childSetState}
+                traps={trapsInRoom}
+            />
+        }
         return (
             <div className="room-main">
                 <Stage width={1088} height={704}>
                     <Layer>
                         <Image image={roomImg} />
+                        {monstersInRoom}
+                        {trapsDisplay}
                         {currentChar}
                         {otherChar}
-                        {monstersInRoom}
-                        {trapsInRoom}
                     </Layer>
                 </Stage>
             </div>

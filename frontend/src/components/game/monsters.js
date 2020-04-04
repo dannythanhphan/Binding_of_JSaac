@@ -34,16 +34,16 @@ class DisplayMonsters extends React.Component {
     chaseClosestPlayer() {
         let currentState = Object.assign({}, this.state);
         if (this.props.playerX < this.state.monsterXPos) {
-            currentState.monsterXPos -= 4;
+            currentState.monsterXPos -= 1;
         }
         else if (this.props.playerX > this.state.monsterXPos) {
-            currentState.monsterXPos += 4;
+            currentState.monsterXPos += 1;
         }
         if (this.props.playerY < this.state.monsterYPos) {
-            currentState.monsterYPos -= 4;
+            currentState.monsterYPos -= 1;
         }
         else if (this.props.playerY > this.state.monsterYPos) {
-            currentState.monsterYPos += 4;
+            currentState.monsterYPos += 1;
         }
         currentState.frames = (currentState.frames === 11) ? 0 : currentState.frames + 1;
         this.setState(currentState);
