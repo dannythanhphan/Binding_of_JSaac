@@ -1,5 +1,4 @@
 const express = require("express");
-const Character = require("../../models/Character");
 const User = require("../../models/User");
 const validateCharacterCreation = require("../../validation/character_creation");
 const router = express.Router();
@@ -25,24 +24,21 @@ router.post("/create",
         }).catch(err => res.json("Something went wrong"));
 });
 
-router.patch("/update", 
+router.patch("/update/:id", 
     passport.authenticate('jwt', { session: false }),
     (req, res) => {
-        const { errors, isValid } = validateCharacterCreation(req.body);
-
-        if (!isValid) {
-            return res.status(400).json(errors);
-        };
-
         User.findById(req.user.id).then(user => {
-            user.characters.forEach(character => {
-                if (character._id === req.body._id) {
-                    character.meleeAttack = req.body.meleeAttack;
-                    character.rangedAttack = req.body.rangedAttack;
-                    character.defense = req.body.defense;
-                };
-            });
-            user.save().then(user => res.json(user))
+            let charIdx;
+            user.characters.forEach((character, idx) => {
+                if (character.id === req.body._id) {
+                    charIdx = idx
+                    character.meleeAttack = req.body.meleeAttack
+                    character.rangedAttack = req.body.rangedAttack
+                    character.defense = req.body.defense
+                    user.save()
+                }
+            })
+            res.json(user)
         }).catch(err => res.json("Something went wrong"));
 });
 
