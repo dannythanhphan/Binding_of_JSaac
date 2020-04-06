@@ -32,7 +32,6 @@ class LobbyMain extends React.Component {
     // }
     renderPlayer1() {
         const { lobby, gameCharacters } = this.props;
-        console.log(gameCharacters);
         let player1Running;
         let player1ImageObj = new Image();
         let player1Frames = 0;

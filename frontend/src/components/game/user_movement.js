@@ -7,15 +7,10 @@ import { Sprite } from 'react-konva';
 class DisplayCharacters extends React.Component {
     constructor(props) {
         super(props);
-        
-        this.state = {
-            characterXPos: (this.props.positionX === 15) ? (this.props.positionX * 64) : ((this.props.positionX * 64) + 64),
-            characterYPos: (this.props.positionY === 9) ? (this.props.positionY * 64) : ((this.props.positionY * 64) + 64),
-            frames: 0,
-            animation: "runningRight"
-        }
+        this.props = props;
 
         this.move = this.move.bind(this);
+        this.checkCollision = this.checkCollision.bind(this);
     }
 
     KeyboardController(keys, repeat) {
@@ -60,44 +55,70 @@ class DisplayCharacters extends React.Component {
         document.onkeyup = null;
     }
 
+    takeDamage(val) {
+        let currentState = Object.assign({}, this.props.char);
+        currentState.currentHP -= val;
+        console.log("damage taken");
+    }
+
+    checkCollision() {
+        for (let i = 0; i < this.props.traps.length; i++) {
+            if ((this.props.traps[i].xPos === this.props.char.xPos) && 
+            (this.props.traps[i].yPos) === this.props.char.yPos) {
+                this.takeDamage(1);
+            }
+        }
+
+    }
+
     move(dir) {
         let maxFramesPerCharacter = {
             1: 20,
             2: 42,
             3: 42
         }
-        let maxFrames = maxFramesPerCharacter[this.props.character.characterSprite]
-        let currentState = Object.assign({}, this.state)
+        let maxFrames = maxFramesPerCharacter[this.props.char.characterSprite]
+        let currentState = Object.assign({}, this.props.char)
         switch(dir) {
             case "up":
-                currentState.characterYPos = currentState.characterYPos - 5;
+                if (currentState.yPixel - 8 > 64 || (currentState.xPixel > 500 && currentState.xPixel < 544)) {
+                    currentState.yPixel = currentState.yPixel - 8;
+                } 
+                
+                currentState.yPos = Math.round(currentState.yPixel / 64); 
                 break;
             case "down":
-                currentState.characterYPos = currentState.characterYPos + 5;
+                if (currentState.yPixel + 8 < 576 || (currentState.xPixel > 500 && currentState.xPixel < 544)) {
+                    currentState.yPixel = currentState.yPixel + 8;
+                } 
+
+                currentState.yPos = Math.round(currentState.yPixel / 64); 
                 break;
             case "left":
-                currentState.characterXPos = currentState.characterXPos - 5;
+                if (currentState.xPixel - 8 > 64 || (currentState.yPixel > 308 && currentState.yPixel < 352)) {
+                    currentState.xPixel = currentState.xPixel - 8;
+                }
+
+                currentState.xPos = Math.round(currentState.xPixel / 64) - 1; 
                 currentState.animation = "runningLeft"
                 break;
             case "right":
-                currentState.characterXPos = currentState.characterXPos + 5;
+                if (currentState.xPixel + 8 < 992 || (currentState.yPixel > 308 && currentState.yPixel < 352)) {
+                    currentState.xPixel = currentState.xPixel + 8;
+                }
+
+                currentState.xPos = Math.round(currentState.xPixel / 64) - 1; 
                 currentState.animation = "runningRight"
                 break;
             default:
                 break;
         }
         currentState.frames = (currentState.frames === maxFrames) ? 0 : currentState.frames + 1;
-        this.setState(currentState);
+        this.checkCollision();
+        this.props.childSetState(currentState);
+
     }
     componentDidMount() {
-        if (localStorage.lobbykey) {
-            window.socket.on("receiveDungeon", data => {
-                // console.log(data);
-            })
-            setInterval(() => {
-                window.socket.emit("dungeonRefresh", localStorage.lobbykey, this.state);
-            }, 1000)
-        }
         if (this.props.movement) {
             this.KeyboardController({
                 87: () => {this.move("up")},
@@ -106,25 +127,6 @@ class DisplayCharacters extends React.Component {
                 68: () => {this.move("right")},
             }, 50)
         }
-
-        // window.addEventListener("keydown", function(e) {
-        //     if (e.keyCode === 87) {
-
-        //     } else if (e.keyCode === 83) {
-        //         that.setState({ characterYPos: that.state.characterYPos + 5 })
-        //         that.setState({ frames: (that.state.frames === maxFrames) ? 0 : that.state.frames + 1})
-        //     }
-
-        //     if (e.keyCode === 65) {
-        //         that.setState({ characterXPos: that.state.characterXPos - 5 })
-        //         that.setState({ frames: (that.state.frames === maxFrames) ? 0 : that.state.frames + 1})
-        //     } else if (e.keyCode === 68) {
-        //         that.setState({ characterXPos: that.state.characterXPos + 5 })
-        //         that.setState({ frames: (that.state.frames === maxFrames) ? 0 : that.state.frames + 1})
-        //     }
-        //     e.preventDefault();
-        //     e.stopPropagation();
-        // })
     }
 
     render() {
@@ -132,7 +134,7 @@ class DisplayCharacters extends React.Component {
         let frames;
         let running;
 
-        switch (this.props.character.characterSprite) {
+        switch (this.props.char.characterSprite) {
             case 1:
                 characterImg.src = mustacheMan
                 frames = 20
@@ -381,14 +383,13 @@ class DisplayCharacters extends React.Component {
         }
         return (
             <Sprite
-                id="check"
-                x={this.state.characterXPos}
-                y={this.state.characterYPos}
+                x={this.props.char.xPixel}
+                y={this.props.char.yPixel}
                 image={characterImg}
-                animation={this.state.animation}
+                animation={this.props.char.animation}
                 animations={running}
                 frameRate={60}
-                frameIndex={this.state.frames}
+                frameIndex={this.props.char.frames}
 
                 scaleX={0.5}
                 scaleY={0.5}
