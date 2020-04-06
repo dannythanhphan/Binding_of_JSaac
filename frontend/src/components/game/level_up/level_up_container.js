@@ -1,11 +1,12 @@
 import { connect } from 'react-redux';
 import LevelUp from './level_up';
+import { updateCharacter } from '../../../actions/character_actions';
 
 const findCharacter = state => {
     gameCharacters = state.entities.gameCharacters;
     myCharacters = state.entities.myCharacters;
-    for (const character in gameCharacters) {
-        if (myCharacters[character.id]) {
+    for (const characterId in gameCharacters) {
+        if (myCharacters[characterId]) {
             return character;
         }
     }
@@ -13,11 +14,10 @@ const findCharacter = state => {
 
 const mapStateToProps = state => ({
     character: findCharacter(state)
-
 });
 
 const mapDispatchToProps = dispatch => ({
-    
+    updateCharacter: character => dispatch(updateCharacter(character))
 });
 
 export default connect(

@@ -1,4 +1,4 @@
-import { RECEIVE_NEW_CHARACTER, REMOVE_CHARACTER, RECEIVE_GAME_CHARACTER } from '../actions/character_actions';
+import { RECEIVE_CHARACTER, REMOVE_CHARACTER, RECEIVE_GAME_CHARACTER } from '../actions/character_actions';
 import { RECEIVE_LOBBY, REMOVE_LOBBY } from '../actions/lobby_actions';
 import { RECEIVE_USER } from '../actions/user_actions';
 import { RECEIVE_USER_LOGOUT } from '../actions/session_actions';
@@ -17,10 +17,10 @@ const charactersReducer = (state = initialState, action) => {
             newState['myCharacters'] = action.payload.characters;
             return newState;
 
-        case RECEIVE_NEW_CHARACTER:
-            if (!newState['myCharacters'][action.character.data._id]) {
-                newState['myCharacters'][action.character.data] = action.character;
-            } 
+        case RECEIVE_CHARACTER:
+            action.payload.characters.forEach(character => {
+                newState['myCharacters'][character._id] = character
+            })
             return newState;
 
         case REMOVE_CHARACTER:
