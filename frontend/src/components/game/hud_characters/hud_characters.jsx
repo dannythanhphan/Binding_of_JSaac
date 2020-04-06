@@ -7,7 +7,7 @@ class HudCharacters extends React.Component {
   }
 
   render() {
-    const charactersItems = this.props.characters.map(character => <HudCharactersItem character={character}/>);
+    const charactersItems = this.props.characters.map(character => <HudCharactersItem key={character._id} character={character}/>);
     return (
       <div id="hud-characters">
         <p id="hud-characters-label">Characters</p>
