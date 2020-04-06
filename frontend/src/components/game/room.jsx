@@ -5,6 +5,7 @@ import * as TrapsHelper from './traps.js'
 import DisplayMonsters from './monsters.js';
 import DisplayCharacters from './user_movement.js';
 
+
 class Room extends React.Component {
     constructor(props) {
         super(props);
