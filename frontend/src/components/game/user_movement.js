@@ -68,7 +68,32 @@ class DisplayCharacters extends React.Component {
                 this.takeDamage(1);
             }
         }
+    }
+    checkWalls(left, right, top, bottom) {
+        if (left < 48) {
+            if (top < 300 || bottom > 390) {
+                return false;
+            }
+        }
 
+        if (right > 1032) {
+            if (top < 300 || bottom > 400) {
+                return false;
+            }
+        }
+
+        if (top < 48) {
+            if (left < 500 || right > 592) {
+                return false;
+            }
+        }
+
+        if (bottom > 650) {
+            if (left < 500 || right > 592) {
+                return false;
+            }
+        }
+        return true;
     }
 
     move(dir) {
@@ -81,30 +106,42 @@ class DisplayCharacters extends React.Component {
         let currentState = Object.assign({}, this.props.char)
         switch(dir) {
             case "up":
-                if (currentState.yPixel - 8 > 64 || (currentState.xPixel > 500 && currentState.xPixel < 544)) {
-                    currentState.yPixel = currentState.yPixel - 8;
-                } 
+                if (this.checkWalls(
+                    currentState.xPixel, currentState.right, 
+                    currentState.yPixel - 8, currentState.bottom - 8)) {
+                    currentState.yPixel -= 8;
+                    currentState.bottom -= 8;
+                }
                 
                 currentState.yPos = Math.round(currentState.yPixel / 64); 
                 break;
             case "down":
-                if (currentState.yPixel + 8 < 576 || (currentState.xPixel > 500 && currentState.xPixel < 544)) {
-                    currentState.yPixel = currentState.yPixel + 8;
-                } 
+                if (this.checkWalls(
+                    currentState.xPixel, currentState.right,
+                    currentState.yPixel + 8, currentState.bottom + 8)) {
+                    currentState.yPixel += 8;
+                    currentState.bottom += 8;
+                }
 
                 currentState.yPos = Math.round(currentState.yPixel / 64); 
                 break;
             case "left":
-                if (currentState.xPixel - 8 > 64 || (currentState.yPixel > 308 && currentState.yPixel < 352)) {
-                    currentState.xPixel = currentState.xPixel - 8;
+                if (this.checkWalls(
+                    currentState.xPixel - 8, currentState.right - 8,
+                    currentState.yPixel, currentState.bottom)) {
+                    currentState.xPixel -= 8;
+                    currentState.right -= 8;
                 }
 
                 currentState.xPos = Math.round(currentState.xPixel / 64) - 1; 
                 currentState.animation = "runningLeft"
                 break;
             case "right":
-                if (currentState.xPixel + 8 < 992 || (currentState.yPixel > 308 && currentState.yPixel < 352)) {
-                    currentState.xPixel = currentState.xPixel + 8;
+                if (this.checkWalls(
+                    currentState.xPixel + 8, currentState.right + 8,
+                    currentState.yPixel, currentState.bottom)) {
+                    currentState.xPixel += 8;
+                    currentState.right += 8;
                 }
 
                 currentState.xPos = Math.round(currentState.xPixel / 64) - 1; 
@@ -390,7 +427,6 @@ class DisplayCharacters extends React.Component {
                 animations={running}
                 frameRate={60}
                 frameIndex={this.props.char.frames}
-
                 scaleX={0.5}
                 scaleY={0.5}
             />

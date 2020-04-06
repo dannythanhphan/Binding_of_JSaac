@@ -25,6 +25,10 @@ class Room extends React.Component {
         currentCharacter.animation = "runningRight";
         currentCharacter.xPixel = currentCharacter.xPos * 64;
         currentCharacter.yPixel = currentCharacter.yPos * 64;
+        currentCharacter.left = currentCharacter.xPixel;
+        currentCharacter.right = currentCharacter.xPixel + 48;
+        currentCharacter.top = currentCharacter.yPixel;
+        currentCharacter.bottom = currentCharacter.yPixel + 82;
         delete currentCharacter.character;
 
         if (otherCharacter) {
@@ -128,6 +132,7 @@ class Room extends React.Component {
         // rooms 17x11 with walls, 1088 x 704
         // min width-height = 64 x 64
         // max width-height = 1024 x 640
+        // character sprite 48 x 82
         if (this.state.otherCharacter) {
             otherChar = <DisplayCharacters
                 char={this.state.otherCharacter}
