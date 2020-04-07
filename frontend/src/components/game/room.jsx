@@ -55,7 +55,7 @@ class Room extends React.Component {
 
     componentDidMount() {
         if (localStorage.lobbykey && Object.keys(this.props.lobby).length === 0) {
-            this.props.fetchLobby(localStorage.lobbykey)
+            this.props.fetchLobby(localStorage.lobbykey);
         }
         // Change update speed 30fps for now
         window.interval = setInterval(() => {
@@ -105,10 +105,11 @@ class Room extends React.Component {
 
         if (this.state.currentCharacter) {
             let roomNumber = room[(this.state.currentCharacter.room % 16) * this.state.currentCharacter.floor];
-            // trapsInRoom = TrapsHelper.GetTraps(roomNumber.id, traps);
-            // trapsDisplay = trapsInRoom.map(trap => (
-            //     TrapsHelper.displayTraps(trap)
-            // ))
+            roomImg = RoomSelector(this.state.currentCharacter.room);
+            trapsInRoom = TrapsHelper.GetTraps(roomNumber.id, traps);
+            trapsDisplay = trapsInRoom.map(trap => (
+                TrapsHelper.displayTraps(trap)
+            ))
             currentChar = <DisplayCharacters 
                 char={this.state.currentCharacter}
                 movement={true}
@@ -159,9 +160,9 @@ class Room extends React.Component {
             <div className="room-main">
                 <Stage width={1088} height={704}>
                     <Layer>
-                        <Image image={this.state.roomImg} />
+                        <Image image={roomImg} />
                         {/* {monstersInRoom} */}
-                        {/* {trapsDisplay} */}
+                        {trapsDisplay}
                         {currentChar}
                         {otherChar}
                     </Layer>

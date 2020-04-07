@@ -4,11 +4,9 @@ import { UPDATE_LOCATION } from '../actions/room_actions';
 
 const locationsReducer = (state = {}, action) => {
     Object.freeze(state);
+    let nextState = Object.assign({}, state);
     switch (action.type) {
         case RECEIVE_LOBBY:
-            return action.payload.locations;
-
-        case UPDATE_LOCATION:
             return action.payload.locations;
 
         case REMOVE_LOBBY:
@@ -16,7 +14,10 @@ const locationsReducer = (state = {}, action) => {
 
         case RECEIVE_USER_LOGOUT:
             return {};
-
+            
+        case UPDATE_LOCATION:
+            nextState[action.charId].room = action.room
+            return nextState;
         default:
             return state;
   }

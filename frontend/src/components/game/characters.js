@@ -73,12 +73,12 @@ class DisplayCharacters extends React.Component {
     }
 
     checkCollision() {
-        for (let i = 0; i < this.props.traps.length; i++) {
-            if ((this.props.traps[i].xPos === this.props.char.xPos) && 
-            (this.props.traps[i].yPos) === this.props.char.yPos) {
-                this.takeDamage(1);
-            }
-        }
+        // for (let i = 0; i < this.props.traps.length; i++) {
+        //     if ((this.props.traps[i].xPos === this.props.char.xPos) && 
+        //     (this.props.traps[i].yPos) === this.props.char.yPos) {
+        //         this.takeDamage(1);
+        //     }
+        // }
     }
     checkWalls(left, right, top, bottom) {
         if (left < 48) {
@@ -122,7 +122,7 @@ class DisplayCharacters extends React.Component {
                             currentState.room = roomNumber.topExit;
                             currentState.yPixel = 660;
                             currentState.bottom = currentState.yPixel + 82;
-                            this.setState({ pauseMovement: true })
+                            // this.setState({ pauseMovement: true })
                             moveRoom(localStorage.lobbykey, char._id, floorNumber, roomNumber.topExit);
                         } else if (roomNumber.topExit === -1 && currentState.yPixel - 8 < 64) {
                             currentState.yPixel = currentState.yPixel;
@@ -143,7 +143,7 @@ class DisplayCharacters extends React.Component {
                             currentState.room = roomNumber.bottomExit;
                             currentState.yPixel = 10;
                             currentState.bottom = currentState.yPixel + 82;
-                            this.setState({ pauseMovement: true })
+                            // this.setState({ pauseMovement: true })
                             moveRoom(localStorage.lobbykey, char._id, floorNumber, roomNumber.bottomExit);
                         } else if (roomNumber.bottomExit === -1 && currentState.yPixel + 8 > 576) {
                             currentState.yPixel = currentState.yPixel;
@@ -164,7 +164,7 @@ class DisplayCharacters extends React.Component {
                             currentState.room = roomNumber.leftExit;
                             currentState.xPixel = 1056
                             currentState.right = currentState.xPixel + 48;
-                            this.setState({ pauseMovement: true })
+                            // this.setState({ pauseMovement: true })
                             moveRoom(localStorage.lobbykey, char._id, floorNumber, roomNumber.leftExit);
                         } else if (roomNumber.leftExit === -1 && currentState.xPixel - 8 < 64) {
                             currentState.xPixel = currentState.xPixel;
@@ -186,7 +186,7 @@ class DisplayCharacters extends React.Component {
                             currentState.room = roomNumber.rightExit;
                             currentState.xPixel = 10
                             currentState.right = currentState.xPixel + 48;
-                            this.setState({ pauseMovement: true })
+                            // this.setState({ pauseMovement: true })
                             moveRoom(localStorage.lobbykey, char._id, floorNumber, roomNumber.rightExit);
                         } else if (roomNumber.rightExit === -1 && currentState.xPixel + 8 < 992) {
                             currentState.xPixel = currentState.xPixel;
