@@ -8,13 +8,10 @@ const locationsReducer = (state = {}, action) => {
     switch (action.type) {
         case RECEIVE_LOBBY:
             return action.payload.locations;
-<<<<<<< HEAD
-=======
 
         case UPDATE_LOCATION:
             return action.payload.locations;
 
->>>>>>> 7191b322f219cd191fdc86c0be686079b607649f
         case REMOVE_LOBBY:
             return {};
 
