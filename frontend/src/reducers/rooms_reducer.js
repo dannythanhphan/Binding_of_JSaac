@@ -8,6 +8,13 @@ const roomsReducer = (state = {}, action) => {
         case RECEIVE_LOBBY:
             return action.payload.rooms;
 
+<<<<<<< HEAD
+=======
+        // case UPDATE_LOCATION:
+        //     console.log(action)
+        //     return action.payload
+
+>>>>>>> 7191b322f219cd191fdc86c0be686079b607649f
         case REMOVE_LOBBY:
             return {};
 
