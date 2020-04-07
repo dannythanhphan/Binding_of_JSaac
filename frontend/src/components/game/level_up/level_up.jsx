@@ -1,9 +1,10 @@
 import React from 'react'
+import './level-up.css'
 
 class LevelUp extends React.Component {
     constructor(props) {
         super(props)
-        this.state = this.character;
+        this.state = this.props.character;
         this.state.pointsSpent = 0;
         this.state.hitPoints += 25;
         this.increaseStat = this.increaseStat.bind(this);
@@ -11,7 +12,7 @@ class LevelUp extends React.Component {
         this.handleClick = this.handleClick.bind(this);
     };
 
-    increaseStat = stat => {
+    increaseStat(stat) {
         return e => {
             this.setState({
                 [stat]: this.state.stat++,
@@ -21,7 +22,7 @@ class LevelUp extends React.Component {
         };
     };
 
-    decreaseStat = stat => {
+    decreaseStat(stat) {
         return e => {
             this.setState({
                 [stat]: this.state.stat--,
@@ -31,7 +32,7 @@ class LevelUp extends React.Component {
         };
     };
 
-    handleClick = e => {
+    handleClick(e) {
         this.props.updateCharacter(this.state)
     };
 
@@ -40,7 +41,7 @@ class LevelUp extends React.Component {
         const decreaseUnavailable = this.state.pointsSpent === 0;
 
         return (
-            <div className="level-up-box">
+            <div className="level-up-box">Level Up!
                 <div className="level-up-options">
                     <div className="level-up-melee-attack-label">
                         Melee Attack: {this.state.meleeAttack}
@@ -97,7 +98,7 @@ class LevelUp extends React.Component {
                 <div className="level-up-finalize-label">
                     <button
                         disabled={!increaseUnavailable}
-                        onClick={handleClick}
+                        onClick={this.handleClick}
                     >
                         Finalize Choices
                     </button>

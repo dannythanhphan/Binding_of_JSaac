@@ -31,7 +31,6 @@ router.patch("/update/:id",
             let charIdx;
             user.characters.forEach((character, idx) => {
                 if (character.id === req.body._id) {
-                    charIdx = idx
                     character.meleeAttack = req.body.meleeAttack
                     character.rangedAttack = req.body.rangedAttack
                     character.defense = req.body.defense

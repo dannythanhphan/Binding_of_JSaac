@@ -3,11 +3,11 @@ import LevelUp from './level_up';
 import { updateCharacter } from '../../../actions/character_actions';
 
 const findCharacter = state => {
-    gameCharacters = state.entities.gameCharacters;
-    myCharacters = state.entities.myCharacters;
+    let gameCharacters = state.entities.characters.gameCharacters;
+    let myCharacters = state.entities.characters.myCharacters;
     for (const characterId in gameCharacters) {
         if (myCharacters[characterId]) {
-            return character;
+            return gameCharacters[characterId];
         }
     }
 }
