@@ -1,14 +1,9 @@
 import { RECEIVE_LOBBY, RECEIVE_LOBBY_ERRORS, REMOVE_LOBBY,
     START_LOADING_LOBBY, START_REMOVING_LOBBY } from '../actions/lobby_actions';
-import { UPDATE_LOCATION } from '../actions/room_actions';
 
 const trapsReducer = (state = {}, action) => {
     Object.freeze(state);
     switch (action.type) {
-
-        case UPDATE_LOCATION:
-            console.log("???")
-            return {moving: false}
 
         case RECEIVE_LOBBY:
             return {loading: false};
