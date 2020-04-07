@@ -148,7 +148,7 @@ class DisplayCharacters extends React.Component {
                             currentState.room = roomNumber.bottomExit;
                             currentState.yPixel = 10;
                             currentState.bottom = currentState.yPixel + 82;
-                            this.setState({ pauseMovement: true })
+                            // this.setState({ pauseMovement: true })
                             moveRoom(localStorage.lobbykey, char._id, floorNumber, roomNumber.bottomExit);
                         } else if (roomNumber.bottomExit === -1 && currentState.yPixel + 8 > 576) {
                             currentState.yPixel = currentState.yPixel;
