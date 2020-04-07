@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import LevelUp from './level_up';
-import { updateCharacter } from '../../../actions/character_actions';
+import { updateCharacter } from '../../../../actions/character_actions';
 
 const findCharacter = state => {
     let gameCharacters = state.entities.characters.gameCharacters;
