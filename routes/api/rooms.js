@@ -2,9 +2,11 @@ const express = require("express");
 const Lobby = require('../../models/Lobby');
 const router = express.Router();
 const ObjectId = require('mongodb').ObjectId;
+const buildLocationJson = require('../../util/room_change_util');
+
 
 router.patch("/:lobbykey/:characterId/:floor/:room", (req, res) => {
-    Lobby.update({
+    Lobby.findOneAndUpdate({
         "lobbykey": req.params.lobbykey
     },
     {
@@ -14,9 +16,11 @@ router.patch("/:lobbykey/:characterId/:floor/:room", (req, res) => {
         }
     },
     { 
+        new: true,
+        useFindAndModify: false,
         arrayFilters: [{ "char.character": new ObjectId(req.params.characterId) }]
     })
-    .then(() => res.json({ positionUpdate: "Position updated" }))
+    .then(lobby => buildLocationJson(lobby, res))
     .catch(err => { res.status(404), json("Position update failed") })
 });
 

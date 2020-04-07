@@ -81,13 +81,18 @@ class Room extends React.Component {
         window.clearInterval(window.interval);
     }
 
-    componentDidUpdate(prevProps) {
-        if (prevProps.locations !== this.props.locations) {
-            this.setState({ roomImg: RoomSelector(this.state.currentCharacter.room) })
-        }
-    }
+    // componentDidUpdate(prevProps) {
+    //     if (prevProps.locations !== this.props.locations) {
+    //         this.setState({ roomImg: RoomSelector(this.state.currentCharacter.room) })
+    //     }
+    // }
 
     render() {
+        if (this.props.movingRooms) {
+            console.log("changing rooms")
+            return (<div>Changing Rooms!!!!</div>)
+        }
+
         if (Object.keys(this.props.lobby).length === 0) return null;
         let { room, traps, locations, monsters } = this.props;
         let roomImg;
@@ -104,12 +109,11 @@ class Room extends React.Component {
             // trapsDisplay = trapsInRoom.map(trap => (
             //     TrapsHelper.displayTraps(trap)
             // ))
-
             currentChar = <DisplayCharacters 
                 char={this.state.currentCharacter}
                 movement={true}
                 childSetState={this.childSetState}
-                // traps={trapsInRoom}
+                traps={trapsInRoom}
                 moveRoom={this.props.moveRoom}
                 roomNumber={roomNumber}
                 floorNumber={Object.values(locations)[0].floor}
@@ -156,8 +160,8 @@ class Room extends React.Component {
                 <Stage width={1088} height={704}>
                     <Layer>
                         <Image image={this.state.roomImg} />
-                        {monstersInRoom}
-                        {trapsDisplay}
+                        {/* {monstersInRoom} */}
+                        {/* {trapsDisplay} */}
                         {currentChar}
                         {otherChar}
                     </Layer>

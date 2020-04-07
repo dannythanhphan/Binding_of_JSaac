@@ -224,7 +224,7 @@ class DisplayCharacters extends React.Component {
                 68: () => {this.move("right")},
             }, 50)
         }
-        window.collision = setInterval(this.checkCollision,100);
+        // window.collision = setInterval(this.checkCollision,100);
     }
 
     render() {

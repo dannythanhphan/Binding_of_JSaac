@@ -4,6 +4,7 @@ import { retrieve } from '../../actions/lobby_actions';
 import { moveRoom } from '../../actions/room_actions'
 
 const mapStateToProps = state => ({
+    movingRooms: state.ui.moving,
     room: Object.values(state.entities.rooms),
     characters: Object.values(state.entities.characters.gameCharacters),
     locations: (state.entities.locations),
