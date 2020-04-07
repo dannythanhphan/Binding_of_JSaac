@@ -1,7 +1,7 @@
 import React from 'react';
-import ava1 from '../../assets/avatars/character_ava1.png'
-import ava2 from '../../assets/avatars/character_ava2.png'
-import ava3 from '../../assets/avatars/character_ava3.png'
+import knight_ava from '../../assets/avatars/knight_ava.png'
+import rogue_ava from '../../assets/avatars/rogue_ava.png'
+import mage_ava from '../../assets/avatars/mage_ava.png'
 import { Link, withRouter } from 'react-router-dom'
 
 class MainCharacterItems extends React.Component {
@@ -19,15 +19,15 @@ class MainCharacterItems extends React.Component {
         let displayAvatar;
         if (this.props.character.characterSprite === 1) {
             displayAvatar = (
-                <img className="character-avatar-image" src={ava1} alt="mustache-man"/>
+                <img className="character-avatar-image" src={knight_ava} alt="mustache-man"/>
             )
         } else if (this.props.character.characterSprite === 2) {
             displayAvatar = (
-                <img className="character-avatar-image" src={ava2} alt="robber"/>
+                <img className="character-avatar-image" src={rogue_ava} alt="robber"/>
             )
         } else {
             displayAvatar = (
-                <img className="character-avatar-image" src={ava3} alt="superwoman"/>
+                <img className="character-avatar-image" src={mage_ava} alt="superwoman"/>
             )
         }
         return (

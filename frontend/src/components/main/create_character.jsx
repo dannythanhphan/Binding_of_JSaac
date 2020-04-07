@@ -1,7 +1,7 @@
 import React from 'react';
-import ava1 from '../../assets/avatars/character_ava1.png';
-import ava2 from '../../assets/avatars/character_ava2.png';
-import ava3 from '../../assets/avatars/character_ava3.png';
+import knight_ava from '../../assets/avatars/knight_ava.png';
+import rogue_ava from '../../assets/avatars/rogue_ava.png';
+import mage_ava from '../../assets/avatars/mage_ava.png';
 import './create_character.css';
 
 class CreateCharacter extends React.Component {
@@ -47,8 +47,8 @@ class CreateCharacter extends React.Component {
                         <label className="radio-container">
                             <input type="radio" name="character" />
                             <img 
-                                src={ava1} 
-                                alt="mustache-man" 
+                                src={knight_ava} 
+                                alt="knight" 
                                 onClick={() => this.handleCharacterSprite(1)}
                             />
                         </label>
@@ -56,8 +56,8 @@ class CreateCharacter extends React.Component {
                         <label className="radio-container">
                             <input type="radio" name="character" />
                             <img 
-                                src={ava2} 
-                                alt="thief" 
+                                src={rogue_ava} 
+                                alt="rogue" 
                                 onClick={() => this.handleCharacterSprite(2)} 
                             />
                         </label>
@@ -65,8 +65,8 @@ class CreateCharacter extends React.Component {
                         <label className="radio-container">
                             <input type="radio" name="character" />
                             <img 
-                                src={ava3} 
-                                alt="super-woman" 
+                                src={mage_ava} 
+                                alt="mage" 
                                 onClick={() => this.handleCharacterSprite(3)}
                             />
                         </label>

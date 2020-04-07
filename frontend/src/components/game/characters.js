@@ -1,7 +1,7 @@
 import React from 'react';
-import mustacheMan from '../../assets/animations/mustache_man_animation.png';
-import thief from '../../assets/animations/thief_animation.png';
-import superWoman from '../../assets/animations/super_woman_animation.png';
+import knight from '../../assets/animations/knight/knight_animations.png';
+import rogue from '../../assets/animations/rogue/rogue_animations.png';
+import mage from '../../assets/animations/mage/mage_animations.png';
 import { Sprite } from 'react-konva';
 import characterAnimations from './character_animations';
 
@@ -108,12 +108,7 @@ class DisplayCharacters extends React.Component {
     }
 
     move(dir) {
-        let maxFramesPerCharacter = {
-            1: 20,
-            2: 42,
-            3: 42
-        }
-        let maxFrames = maxFramesPerCharacter[this.props.char.characterSprite]
+        let maxFrames = 7
         let currentState = Object.assign({}, this.props.char)
         let { roomNumber, char, floorNumber, moveRoom } = this.props
         if (!this.state.pauseMovement) {
@@ -204,11 +199,16 @@ class DisplayCharacters extends React.Component {
                     currentState.xPos = Math.round(currentState.xPixel / 64); 
                     currentState.animation = "runningRight"
                     break;
+                case "space":
+                    currentState.animation = "meleeRight"
+                    currentState.frames = 0
                 default:
                     break;
             }
         }
-        currentState.frames = (currentState.frames === maxFrames) ? 0 : currentState.frames + 1;
+        if (dir !== "space") {
+            currentState.frames = (currentState.frames === maxFrames) ? 0 : currentState.frames + 1;
+        }
         this.props.childSetState(currentState);
         let that = this;
         if (this.state.pauseMovement) {
@@ -222,6 +222,7 @@ class DisplayCharacters extends React.Component {
                 83: () => {this.move("down")},
                 65: () => {this.move("left")},
                 68: () => {this.move("right")},
+                32: () => {this.move("space")}
             }, 50)
         }
         // window.collision = setInterval(this.checkCollision,100);
@@ -229,18 +230,18 @@ class DisplayCharacters extends React.Component {
 
     render() {
         let characterImg = new Image();
-        let running;
+        let animations;
         let curPlayerInfo = characterAnimations(this.props.char.characterSprite)
-        running = curPlayerInfo.running;
+        animations = curPlayerInfo.animations;
         switch (curPlayerInfo.characterImg) {
-            case "mustacheMan":
-                characterImg.src = mustacheMan
+            case "knight":
+                characterImg.src = knight
                 break;
-            case "thief":
-                characterImg.src = thief
+            case "rogue":
+                characterImg.src = rogue
                 break;
-            case "superWoman":
-                characterImg.src = superWoman
+            case "mage":
+                characterImg.src = mage
                 break;
         }
         return (
@@ -249,11 +250,19 @@ class DisplayCharacters extends React.Component {
                 y={this.props.char.yPixel}
                 image={characterImg}
                 animation={this.props.char.animation}
-                animations={running}
+                animations={animations}
                 frameRate={60}
                 frameIndex={this.props.char.frames}
-                scaleX={0.5}
-                scaleY={0.5}
+                ref={(node => {
+                    if(node && !node.isRunning() && (node.attrs.animation === "meleeRight")) {
+                        // setInterval(function() {node.move({x: (20 % 200), y: 0})}, 48)
+                        node.start()
+                        setTimeout(function() {
+                            node.stop()
+                        }, 1000/60)
+                    }
+                })}
+
             />
 
         )

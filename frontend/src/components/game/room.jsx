@@ -3,7 +3,7 @@ import { Stage, Layer, Image } from 'react-konva';
 import RoomSelector from './room_selector';
 import * as TrapsHelper from './traps.js'
 import DisplayMonsters from './monsters.js';
-import DisplayCharacters from './user_movement.js';
+import DisplayCharacters from './characters.js';
 
 class Room extends React.Component {
     constructor(props) {

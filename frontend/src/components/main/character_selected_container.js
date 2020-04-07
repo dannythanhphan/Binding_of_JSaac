@@ -6,7 +6,4 @@ const mapStateToProps = (state, ownProps) => ({
     ui: state.ui,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-})
-
 export default connect(mapStateToProps, null)(CharacterSelected)
