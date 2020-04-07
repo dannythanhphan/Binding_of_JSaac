@@ -53,12 +53,22 @@ class DisplayCharacters extends React.Component {
     componentWillUnmount() {
         document.onkeydown = null;
         document.onkeyup = null;
+        clearInterval(window.collision);
     }
 
     takeDamage(val) {
         let currentState = Object.assign({}, this.props.char);
-        currentState.currentHP -= val;
-        console.log("damage taken");
+        if (!currentState.invincible) {
+            console.log("damage taken")
+            currentState.currentHP -= val;
+            currentState.invincible = true;
+            let that = this;
+            setTimeout( () => {
+                let current = Object.assign({}, that.props.char);
+                current.invincible = false;
+                that.props.childSetState(current)}, 1000);
+            this.props.childSetState(currentState);
+        }
     }
 
     checkCollision() {
@@ -71,7 +81,7 @@ class DisplayCharacters extends React.Component {
     }
     checkWalls(left, right, top, bottom) {
         if (left < 48) {
-            if (top < 300 || bottom > 390) {
+            if (top < 300 || bottom > 400) {
                 return false;
             }
         }
@@ -151,7 +161,6 @@ class DisplayCharacters extends React.Component {
                 break;
         }
         currentState.frames = (currentState.frames === maxFrames) ? 0 : currentState.frames + 1;
-        this.checkCollision();
         this.props.childSetState(currentState);
 
     }
@@ -164,6 +173,7 @@ class DisplayCharacters extends React.Component {
                 68: () => {this.move("right")},
             }, 50)
         }
+        window.collision = setInterval(this.checkCollision,100);
     }
 
     render() {
