@@ -106,10 +106,10 @@ class Room extends React.Component {
         if (this.state.currentCharacter) {
             let roomNumber = room[(this.state.currentCharacter.room % 16) * this.state.currentCharacter.floor];
             roomImg = RoomSelector(this.state.currentCharacter.room);
-            // trapsInRoom = TrapsHelper.GetTraps(roomNumber.id, traps);
-            // trapsDisplay = trapsInRoom.map(trap => (
-            //     TrapsHelper.displayTraps(trap)
-            // ))
+            trapsInRoom = TrapsHelper.GetTraps(roomNumber.id, traps);
+            trapsDisplay = trapsInRoom.map(trap => (
+                TrapsHelper.displayTraps(trap)
+            ))
             currentChar = <DisplayCharacters 
                 char={this.state.currentCharacter}
                 movement={true}
@@ -162,7 +162,7 @@ class Room extends React.Component {
                     <Layer>
                         <Image image={roomImg} />
                         {/* {monstersInRoom} */}
-                        {/* {trapsDisplay} */}
+                        {trapsDisplay}
                         {currentChar}
                         {otherChar}
                     </Layer>
