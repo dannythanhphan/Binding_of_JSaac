@@ -55,7 +55,8 @@ class Room extends React.Component {
 
     componentDidMount() {
         if (localStorage.lobbykey && Object.keys(this.props.lobby).length === 0) {
-            this.props.fetchLobby(localStorage.lobbykey)
+            console.log('hi');
+            this.props.fetchLobby(localStorage.lobbykey);
         }
         // Change update speed 30fps for now
         window.interval = setInterval(() => {
