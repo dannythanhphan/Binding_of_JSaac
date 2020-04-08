@@ -1,5 +1,4 @@
 const express = require("express");
-const Character = require("../../models/Character");
 const User = require("../../models/User");
 const validateCharacterCreation = require("../../validation/character_creation");
 const router = express.Router();
@@ -22,6 +21,23 @@ router.post("/create",
         User.findById(req.user.id).then(user => {
             user.characters.push(newCharacter)
             user.save().then(user => res.json(user))
+        }).catch(err => res.json("Something went wrong"));
+});
+
+router.patch("/update/:id", 
+    passport.authenticate('jwt', { session: false }),
+    (req, res) => {
+        User.findById(req.user.id).then(user => {
+            let charIdx;
+            user.characters.forEach((character, idx) => {
+                if (character.id === req.body._id) {
+                    character.meleeAttack = req.body.meleeAttack
+                    character.rangedAttack = req.body.rangedAttack
+                    character.defense = req.body.defense
+                    user.save()
+                }
+            })
+            res.json(user)
         }).catch(err => res.json("Something went wrong"));
 });
 

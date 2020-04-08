@@ -1,5 +1,6 @@
 import React from 'react';
 import HudCharactersItem from './hud_characters_item'
+import LevelUpContainer from './level_up/level_up_container'
 
 class HudCharacters extends React.Component {
   constructor(props) {
@@ -12,6 +13,7 @@ class HudCharacters extends React.Component {
       <div id="hud-characters">
         <p id="hud-characters-label">Characters</p>
         {charactersItems}
+        <LevelUpContainer />
       </div>
     )
   }
