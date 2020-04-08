@@ -1,8 +1,8 @@
 import React from 'react';
 import './lobby.css';
-import mustacheMan from '../../assets/animations/character_animations1.jpg';
-import thief from '../../assets/animations/character_animations2.png';
-import superWoman from '../../assets/animations/character_animations3.png';
+import knight from '../../assets/animations/knight/knight_idle_animations.png';
+import rogue from '../../assets/animations/rogue/rogue_idle_animations.png';
+import mage from '../../assets/animations/mage/mage_idle_animations.png';
 import { Stage, Layer, Sprite } from 'react-konva';
 import animationDetails from './animation_details';
 
@@ -32,21 +32,21 @@ class LobbyMain extends React.Component {
     // }
     renderPlayer1() {
         const { lobby, gameCharacters } = this.props;
-        let player1Running;
+        let player1idle;
         let player1ImageObj = new Image();
         let player1Frames = 0;
         if (lobby && lobby.player1 && gameCharacters[lobby.player1]) {
             let player1Info = animationDetails(gameCharacters[lobby.player1].characterSprite)
-            player1Running = player1Info.running
+            player1idle = player1Info.idle
             switch (player1Info.imageObj) {
-                case "mustacheMan":
-                    player1ImageObj.src = mustacheMan
+                case "knight":
+                    player1ImageObj.src = knight
                     break;
-                case "thief":
-                    player1ImageObj.src = thief
+                case "rogue":
+                    player1ImageObj.src = rogue
                     break;
-                case "superWoman":
-                    player1ImageObj.src = superWoman
+                case "mage":
+                    player1ImageObj.src = mage
                     break;
             }
             player1Frames = player1Info.frames
@@ -62,8 +62,8 @@ class LobbyMain extends React.Component {
                             x={50}
                             y={50}
                             image={player1ImageObj}
-                            animation='running'
-                            animations={player1Running}
+                            animation='idle'
+                            animations={player1idle}
                             frameRate={player1Frames}
                             frameIndex={0}
                             ref={(node => {
@@ -84,22 +84,22 @@ class LobbyMain extends React.Component {
     }
     renderPlayer2() {
         const { lobby, gameCharacters } = this.props;
-        let player2Running;
+        let player2idle;
         let player2ImageObj = new Image();
         let player2Frames = 0;
 
         if (lobby && lobby.player2 && gameCharacters[lobby.player2]) {
             let player2Info = animationDetails(gameCharacters[lobby.player2].characterSprite)
-            player2Running = player2Info.running
+            player2idle = player2Info.idle
             switch (player2Info.imageObj) {
-                case "mustacheMan":
-                    player2ImageObj.src = mustacheMan
+                case "knight":
+                    player2ImageObj.src = knight
                     break;
-                case "thief":
-                    player2ImageObj.src = thief
+                case "rogue":
+                    player2ImageObj.src = rogue
                     break;
-                case "superWoman":
-                    player2ImageObj.src = superWoman
+                case "mage":
+                    player2ImageObj.src = mage
                     break;
             }
             player2Frames = player2Info.frames
@@ -115,8 +115,8 @@ class LobbyMain extends React.Component {
                                 x={50}
                                 y={50}
                                 image={player2ImageObj}
-                                animation='running'
-                                animations={player2Running}
+                                animation='idle'
+                                animations={player2idle}
                                 frameRate={player2Frames}
                                 frameIndex={0}
                                 ref={(node => {
