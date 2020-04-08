@@ -17,6 +17,7 @@ const users = require("./routes/api/users");
 const lobbies = require("./routes/api/lobbies");
 const characters = require("./routes/api/characters");
 const monsters = require("./routes/api/monsters");
+const rooms = require("./routes/api/rooms");
 
 mongoose
     .connect(db, { useNewUrlParser: true })
@@ -32,6 +33,7 @@ app.use("/api/users", users);
 app.use("/api/lobbies", lobbies);
 app.use("/api/characters", characters);
 app.use("/api/monsters", monsters);
+app.use("/api/rooms", rooms);
 
 const port = process.env.PORT || 5000;
 const server = require('http').createServer(app);
@@ -46,6 +48,10 @@ io.on('connection', (socket) => {
 
     socket.on('leave', room => {
         socket.leave(room);
+    })
+
+    socket.on('dungeonRefresh', data => {
+        io.to(data.room).emit("receiveDungeon", data.char);
     })
 
 })

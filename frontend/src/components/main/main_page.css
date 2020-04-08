@@ -57,6 +57,7 @@
 
 .character-avatar-image {
     height: 90px;
+    margin-top: 15px;
 }
 
 .main-logo-image {
@@ -96,6 +97,7 @@
     display: flex;
     padding-left: 5%;
     flex-wrap: wrap;
+    width: 303px;
 }
 
 .character-stats {

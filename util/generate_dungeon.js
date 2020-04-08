@@ -50,7 +50,7 @@ const generateFloor = (level, location, xPos, yPos) => {
     let leftExit, rightExit, topExit, bottomExit;
     for (let roomRow = 0; roomRow < FLOOR_SIZE; roomRow++) {
         for (let roomCol = 0; roomCol < FLOOR_SIZE; roomCol++) {
-            position = roomRow * FLOOR_SIZE;
+            position = roomRow * FLOOR_SIZE + roomCol;
             width = ROOM_WIDTH;
             height = ROOM_HEIGHT;
             leftExit = (roomCol === 0) ? -1 : position - 1;

@@ -4,6 +4,7 @@ import { RECEIVE_LOBBY, RECEIVE_LOBBY_ERRORS, REMOVE_LOBBY,
 const trapsReducer = (state = {}, action) => {
     Object.freeze(state);
     switch (action.type) {
+
         case RECEIVE_LOBBY:
             return {loading: false};
 

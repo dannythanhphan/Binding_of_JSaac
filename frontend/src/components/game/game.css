@@ -1,0 +1,186 @@
+#app {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #333333;
+}
+
+.game-main {
+  box-shadow: 0 0 20px #888888;
+  position: relative;
+}
+
+#hud-characters {
+  width: 350px;
+  height: 600px;
+  background-color: rgba(128,128,128,0.3);
+  position: absolute;
+  left: -370px;
+  top: 10px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#hud-characters-label {
+  color: #888888;
+  margin-top: 20px;
+  text-transform: uppercase;
+}
+
+.hud-characters-item-box {
+  margin-top: 20px;
+  width: 300px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid rgba(153, 153, 153, 0.6);
+  border-radius: 10px;
+  background-color: rgba(86,86,86,1);
+}
+
+.hud-characters-item-content-box{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 280px;
+}
+
+.hud-characters-item-label {
+  width: 280px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  color: rgba(200,200,200,1);
+}
+
+.hud-characters-item-name {
+  margin-left: 10px;
+  user-select: none;
+}
+
+.hud-characters-item-level {
+  margin-left: auto;
+  margin-right: 10px;
+  user-select: none;
+}
+
+.hud-characters-item-avatar {
+  width: 48px;
+  height: 48px;
+  margin-left: 10px;
+}
+
+.hud-characters-item-bars-box{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  margin-left: 50px;
+}
+
+.hud-characters-item-hp-bar-outer {
+  width: 150px;
+  height: 20px;
+  border: 1px solid rgba(200,200,200,0.2);
+  border-radius: 5px;
+  position: relative;
+}
+
+.hud-characters-item-hp-bar-inner {
+  position: absolute;
+  height: 20px;
+  background: rgb(0,0,0);
+  background: linear-gradient(30deg, rgba(0,0,0,1) 0%, rgba(255,0,0,1) 100%);
+  border-radius: 5px;  
+}
+
+.hud-characters-item-exp-box {
+  margin-top: 5px;
+}
+
+.hud-characters-item-exp-bar-outer {
+  width: 150px;
+  height: 20px;
+  border: 1px solid rgba(200,200,200,0.2);
+  border-radius: 5px;
+}
+
+.hud-characters-item-exp-bar-inner {
+  position: absolute;
+  height: 20px;
+  background: rgb(0,0,0);
+  background: linear-gradient(30deg, rgb(255, 255, 255) 0%, rgb(246, 242, 7) 100%);
+  border-radius: 5px;  
+}
+
+.level-up-box {
+  position: absolute;
+  bottom: 20px;
+  border: 1px solid rgba(153, 153, 153, 0.6);
+  border-radius: 10px;
+  background-color: rgba(86,86,86,1);
+  width: 280px;
+  height: 160px;
+  padding: 10px;
+  color: rgba(200,200,200,1);
+}
+
+.level-up-options {
+  color: black;
+  margin-top: 15px;
+}
+
+.level-up-label {
+  display: flex;
+  justify-content: space-between;
+  height: 30px;
+  align-content: center;
+  margin-top: 5px;
+}
+
+.level-up-item {
+  display: flex;
+}
+
+.level-up-item p {
+  margin: 0 5px;
+  width: 25px;
+  text-align: center;
+}
+
+.level-up-options button {
+  color: black;
+  border-radius: 5px;
+}
+
+.stat-decrease-button {
+  margin-left: 10px;
+}
+
+.stat-decrease-button, 
+.stat-increase-button {
+  width: 25px;
+  height: 25px;
+  font-size: 10px;
+  text-align: center;
+  padding: 0 0 3px 0;
+  margin-top: -5px;
+}
+
+.level-up-options button:disabled {
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+}
+
+.level-up-finalize-label button {
+  align-self: center;
+  border-radius: 5px;
+}

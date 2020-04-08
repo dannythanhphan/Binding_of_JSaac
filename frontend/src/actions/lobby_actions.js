@@ -33,7 +33,7 @@ export const receiveErrors = errors => ({
 });
 
 export const leave = (id, charId) => dispatch => {
-    socket.emit('leave', localStorage.lobbykey);
+    window.socket.emit('leave', localStorage.lobbykey);
     localStorage.removeItem('lobbykey');
     localStorage.removeItem('lobbycharacter');
     return APIUtil.leave(id, charId)
@@ -52,13 +52,12 @@ export const join = (id, charId) => dispatch => {
     return APIUtil.join(id, charId)
         .then(
             res => { 
-                console.log('emit join room')
+                window.socket = socket;
                 socket.emit('room', res.data.lobby.lobbykey);
                 localStorage.setItem('lobbykey', res.data.lobby.lobbykey);
                 localStorage.setItem('lobbycharacter', charId)
 
                 socket.on('changeLobbyData', (data) => {
-                    console.log('lobby data changed')
                     return dispatch(retrieve(data.lobbykey));
                 })
                 return dispatch(receiveLobby(res.data));
@@ -74,7 +73,7 @@ export const create = (charId) => dispatch => {
     return APIUtil.create(charId)
         .then(
             res => { 
-                console.log('emit create room')
+                window.socket = socket;
                 socket.emit('room', res.data.lobby.lobbykey);
                 localStorage.setItem('lobbykey', res.data.lobby.lobbykey);
                 localStorage.setItem('lobbycharacter', res.data.lobby.player1)

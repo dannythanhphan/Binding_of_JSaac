@@ -1,13 +1,13 @@
 import * as APIUtil from '../util/character_api_util';
 
-export const RECEIVE_NEW_CHARACTER = 'RECEIVE_NEW_CHARACTER';
+export const RECEIVE_CHARACTER = 'RECEIVE_NEW_CHARACTER';
 export const RECEIVE_CHARACTERS = 'RECEIVE_CHARACTERS';
 export const REMOVE_CHARACTER = 'REMOVE_CHARACTER';
 export const RECEIVE_GAME_CHARACTER = 'RECEIVE_GAME_CHARACTER';
 
-export const receiveCharacter = character => ({
-    type: RECEIVE_NEW_CHARACTER,
-    character
+export const receiveCharacter = payload => ({
+    type: RECEIVE_CHARACTER,
+    payload
 });
 
 export const removeCharacter = id => ({
@@ -22,7 +22,12 @@ export const receiveGameCharacter = character => ({
 
 export const createCharacter = character => dispatch => (
     APIUtil.createCharacter(character)
-    .then(character => dispatch(receiveCharacter(character)))
+    .then(payload => dispatch(receiveCharacter(payload.data)))
+);
+
+export const updateCharacter = character => dispatch => (
+    APIUtil.updateCharacter(character)
+    .then(payload => dispatch(receiveCharacter(payload.data)))
 );
 
 export const deleteCharacter = id => dispatch => (
