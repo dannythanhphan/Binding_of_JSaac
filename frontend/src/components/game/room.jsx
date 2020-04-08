@@ -120,28 +120,23 @@ class Room extends React.Component {
                 roomNumber={roomNumber}
                 floorNumber={Object.values(locations)[0].floor}
                 />
+         
+            let monsterCountPerRoom = [];
+            for (let i = 0; i < monsters.length; i++) {
+                if (monsters[i].roomId === roomNumber.id) {
+                    monsterCountPerRoom.push(monsters[i])
+                }
+            }
 
-
-            // uncomment the line below if you want to test each room
-            // let roomNumber = room[10] 
-
-            
-            // let monsterCountPerRoom = [];
-            // for (let i = 0; i < monsters.length; i++) {
-            //     if (monsters[i].roomId === roomNumber.id) {
-            //         monsterCountPerRoom.push(monsters[i])
-            //     }
-            // }
-
-            // monstersInRoom = monsterCountPerRoom.map(monster => (
-            //     monstersInRoom = <DisplayMonsters 
-            //     monster={monster} 
-            //     positionX={monster.xPos} 
-            //     positionY={monster.yPos}
-            //     playerX={this.state.currentCharacter.xPixel}
-            //     playerY={this.state.currentCharacter.yPixel}
-            //     />
-            // ))
+            monstersInRoom = monsterCountPerRoom.map(monster => (
+                monstersInRoom = <DisplayMonsters 
+                monster={monster} 
+                positionX={monster.xPos} 
+                positionY={monster.yPos}
+                playerX={this.state.currentCharacter.xPixel}
+                playerY={this.state.currentCharacter.yPixel}
+                />
+            ))
         }
         // tiles are 64 x 64
         // rooms 15x9, 960 x 576
@@ -162,7 +157,7 @@ class Room extends React.Component {
                 <Stage width={1088} height={704}>
                     <Layer>
                         <Image image={roomImg} />
-                        {/* {monstersInRoom} */}
+                        {monstersInRoom}
                         {trapsDisplay}
                         {currentChar}
                         {otherChar}

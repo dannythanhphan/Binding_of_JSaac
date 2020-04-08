@@ -27,7 +27,7 @@ class MainCharacterItems extends React.Component {
             )
         } else {
             displayAvatar = (
-                <img className="character-avatar-image" src={mage_ava} alt="superwoman"/>
+                <img className="character-avatar-image" src={mage_ava} alt="rogue"/>
             )
         }
         return (
