@@ -20,6 +20,7 @@ export const displayTraps = (trap) => {
 
     return (
         <Image
+            key={Math.random()}
             x={trapXPos}
             y={trapYPos}
             image={trapImg}

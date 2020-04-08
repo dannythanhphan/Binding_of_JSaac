@@ -1,15 +1,15 @@
 import React from 'react';
+import { Switch, Route } from 'react-router';
+import { Link } from 'react-router-dom';
+import { ProtectedRoute } from '../../util/route_util';
 import MainCharacterItems from './main_character_items';
 import './main_page.css';
-import { Switch, Route } from 'react-router';
 import CharacterSelectedContainer from './character_selected_container';
 import CreateCharacterContainer from './create_character_container';
 import LobbyContainer from '../lobby/lobby_container';
 import NavBarContainer from './nav_bar_container';
-import { Link } from 'react-router-dom';
 import logo from '../../assets/logo.png';
-import { ProtectedRoute } from '../../util/route_util';
-import RoomContainer from '../game/room_container';
+
 
 class MainPage extends React.Component {
     constructor(props) {

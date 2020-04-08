@@ -16,45 +16,37 @@ const RANDOMMOVEPOSITION = [-5, 0, 5]
 class DisplayMonsters extends React.Component {
     constructor(props) {
         super(props);
+        this.props = props;
         this.state = {
             monsterXPos: (this.props.positionX === 15) ? (this.props.positionX * 64) : ((this.props.positionX * 64) + 64),
             monsterYPos: (this.props.positionY === 9) ? (this.props.positionY * 64) : ((this.props.positionY * 64) + 64),
             frames: 0,
-            monsterSprite: 0
+            monsterSprite: 1
         }
-        this.monsterLoop = this.monsterLoop.bind(this)
+        this.chaseClosestPlayer = this.chaseClosestPlayer.bind(this);
     }
 
     componentDidMount() {
-        this.setState({ monsterSprite: Math.ceil(Math.random() * 6) })
-
-        window.requestAnimationFrame(this.monsterLoop)
+        // this.setState({ monsterSprite: Math.ceil(Math.random() * 6) })
+        setInterval(this.chaseClosestPlayer, 50);
     }
 
-    monsterLoop() {
-        if (this.state.monsterXPos > MAXXPOS) {
-            this.setState({ monsterXPos: this.state.monsterXPos - 10 })
-            this.setState({ frames: (this.state.frames === 11) ? 0 : this.state.frames + 1})
-        } else if (this.state.monsterXPos < MINXPOS) {
-            this.setState({ monsterXPos: this.state.monsterXPos + 10 })
-            this.setState({ frames: (this.state.frames === 11) ? 0 : this.state.frames + 1})
-        } else {
-            this.setState({ monsterXPos: this.state.monsterXPos + RANDOMMOVEPOSITION[Math.floor(Math.random() * 3)] })
-            this.setState({ frames: (this.state.frames === 11) ? 0 : this.state.frames + 1})
+    chaseClosestPlayer() {
+        let currentState = Object.assign({}, this.state);
+        if (this.props.playerX < this.state.monsterXPos) {
+            currentState.monsterXPos -= 1;
         }
-
-        if (this.state.monsterYPos > MAXYPOS) {
-            this.setState({ monsterYPos: this.state.monsterYPos - 10 })
-            this.setState({ frames: (this.state.frames === 11) ? 0 : this.state.frames + 1})
-        } else if (this.state.monsterYPos < MINYPOS) {
-            this.setState({ monsterYPos: this.state.monsterYPos + 10 })
-            this.setState({ frames: (this.state.frames === 11) ? 0 : this.state.frames + 1})
-        } else {
-            this.setState({ monsterYPos: this.state.monsterYPos + RANDOMMOVEPOSITION[Math.floor(Math.random() * 3)] })
-            this.setState({ frames: (this.state.frames === 11) ? 0 : this.state.frames + 1})
+        else if (this.props.playerX > this.state.monsterXPos) {
+            currentState.monsterXPos += 1;
         }
-        
-        window.requestAnimationFrame(this.monsterLoop)
+        if (this.props.playerY < this.state.monsterYPos) {
+            currentState.monsterYPos -= 1;
+        }
+        else if (this.props.playerY > this.state.monsterYPos) {
+            currentState.monsterYPos += 1;
+        }
+        currentState.frames = (currentState.frames === 11) ? 0 : currentState.frames + 1;
+        this.setState(currentState);
     }
 
     render() {

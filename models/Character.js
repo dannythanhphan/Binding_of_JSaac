@@ -46,6 +46,14 @@ const CharacterSchema = new Schema({
         type: Number,
         default: 0,
     },
+    currentEXP: {
+        type: Number,
+        default: 0
+    },
+    totalEXP: {
+        type: Number,
+        default: 100
+    },
     // user: {
     //     type: Schema.Types.ObjectId,
     //     ref: 'users'

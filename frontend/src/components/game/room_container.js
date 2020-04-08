@@ -1,18 +1,21 @@
 import { connect } from 'react-redux';
 import Room from './room';
 import { retrieve } from '../../actions/lobby_actions';
+import { moveRoom } from '../../actions/room_actions'
 
 const mapStateToProps = state => ({
+    movingRooms: state.ui.moving,
     room: Object.values(state.entities.rooms),
     characters: Object.values(state.entities.characters.gameCharacters),
-    locations: Object.values(state.entities.locations)[0],
+    locations: (state.entities.locations),
     traps: Object.values(state.entities.traps),
     monsters: Object.values(state.entities.monsters),
     lobby: state.entities.lobby
 });
 
 const mapDispatchToProps = dispatch => ({
-    fetchLobby: (lobbyKey) => dispatch(retrieve(lobbyKey))
+    fetchLobby: (lobbyKey) => dispatch(retrieve(lobbyKey)),
+    moveRoom: (key, charId, floor, room) => dispatch(moveRoom(key, charId, floor, room))
 });
 
 export default connect(
