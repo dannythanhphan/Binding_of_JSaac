@@ -10,10 +10,10 @@ import MainPageContainer from './main/main_page_container';
 const App = () => (
     <div>
         <ProtectedRoute path="/main" component={MainPageContainer} />
-
         <AuthRoute exact path="/" component={HomePage} />
         <AuthRoute exact path="/login" component={LoginFormContainer} />
         <AuthRoute exact path="/register" component={SignupFormContainer} />
+        
     </div>
 );
 
