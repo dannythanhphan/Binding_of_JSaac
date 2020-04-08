@@ -206,9 +206,11 @@ class DisplayCharacters extends React.Component {
                     break;
             }
         }
+
         if (dir !== "space") {
             currentState.frames = (currentState.frames === maxFrames) ? 0 : currentState.frames + 1;
         }
+
         this.props.childSetState(currentState);
         let that = this;
         if (this.state.pauseMovement) {
@@ -251,15 +253,17 @@ class DisplayCharacters extends React.Component {
                 image={characterImg}
                 animation={this.props.char.animation}
                 animations={animations}
-                frameRate={60}
+                frameRate={7}
                 frameIndex={this.props.char.frames}
+                // scaleX={0.8}
+                // scaleY={0.8}
                 ref={(node => {
                     if(node && !node.isRunning() && (node.attrs.animation === "meleeRight")) {
                         // setInterval(function() {node.move({x: (20 % 200), y: 0})}, 48)
                         node.start()
                         setTimeout(function() {
                             node.stop()
-                        }, 1000/60)
+                        }, 1000)
                     }
                 })}
 
