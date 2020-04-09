@@ -12,6 +12,7 @@ class DisplayCharacters extends React.Component {
         this.state = { pauseMovement: false }
         this.move = this.move.bind(this);
         this.checkCollision = this.checkCollision.bind(this);
+        this.checkTrapsCollision = this.checkTrapsCollision.bind(this);
     }
 
     KeyboardController(keys, repeat) {
@@ -73,12 +74,33 @@ class DisplayCharacters extends React.Component {
     }
 
     checkCollision() {
-        // for (let i = 0; i < this.props.traps.length; i++) {
-        //     if ((this.props.traps[i].xPos === this.props.char.xPos) && 
-        //     (this.props.traps[i].yPos) === this.props.char.yPos) {
-        //         this.takeDamage(1);
-        //     }
-        // }
+        this.checkTrapsCollision();
+    }
+
+    checkTrapsCollision() {
+        for (let i = 0; i < this.props.traps.length; i++) {
+            let traptopleft = {
+                x: this.props.traps[i].xPos * 64,
+                y: this.props.traps[i].yPos * 64
+            }
+            let trapbottomright = {
+                x: traptopleft.x + 64,
+                y: traptopleft.y + 64
+            }
+
+            if (!(traptopleft.x >= this.props.char.right - 30 || 
+                trapbottomright.x <= this.props.char.xPixel ||
+                trapbottomright.y <= this.props.char.yPixel ||
+                traptopleft.y >= this.props.char.bottom)) {
+                    this.takeDamage(this.props.traps[i].meleeAttack);
+                    console.log(traptopleft)
+                    console.log(trapbottomright)
+                    console.log(this.props.char.xPixel)   
+                    console.log(this.props.char.yPixel)   
+                    console.log(this.props.char.right)   
+                    console.log(this.props.char.bottom)   
+                }     
+        }
     }
     checkWalls(left, right, top, bottom) {
         if (left < 5) {
@@ -237,7 +259,7 @@ class DisplayCharacters extends React.Component {
                 that.move("space");
             }
         })
-        // window.collision = setInterval(this.checkCollision,100);
+        window.collision = setInterval(this.checkCollision,100);
     }
 
     render() {
@@ -262,7 +284,7 @@ class DisplayCharacters extends React.Component {
                     width={50}
                     height={10}
                     cornerRadius={3}
-                    x={this.props.char.xPixel + 20}
+                    x={this.props.char.xPixel + 37}
                     y={this.props.char.yPixel + 10}
                     fill={'white'}
                 />
@@ -270,7 +292,7 @@ class DisplayCharacters extends React.Component {
                     width={this.props.char.currentHP / this.props.char.totalHP * 50}
                     height={10}
                     cornerRadius={3}
-                    x={this.props.char.xPixel + 20}
+                    x={this.props.char.xPixel + 37}
                     y={this.props.char.yPixel + 10}
                     fill={'red'}
                 />
