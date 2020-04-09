@@ -159,9 +159,9 @@ class Room extends React.Component {
                         <Image image={roomImg} />
                         {monstersInRoom}
                         {trapsDisplay}
+                    </Layer>
                         {currentChar}
                         {otherChar}
-                    </Layer>
                 </Stage>
             </div>
         )
