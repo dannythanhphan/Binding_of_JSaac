@@ -202,7 +202,12 @@ class DisplayCharacters extends React.Component {
                 currentState.animation = "runningRight"
                 break;
             case "space":
-                currentState.animation = (currentState.animation === "runningRight") ? "meleeRight" : "meleeLeft"
+                if (currentState.animation === "runningRight" || currentState.animation === "meleeRight") {
+                    currentState.animation = "meleeRight" 
+                } else if (currentState.animation === "runningLeft" || currentState.animation === "meleeLeft") {
+                    currentState.animation = "meleeLeft"
+                }
+               
                 currentState.frames = 0
             default:
                 break;
