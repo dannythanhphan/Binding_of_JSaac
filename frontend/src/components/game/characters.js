@@ -2,7 +2,7 @@ import React from 'react';
 import knight from '../../assets/animations/knight/knight_animations.png';
 import rogue from '../../assets/animations/rogue/rogue_animations.png';
 import mage from '../../assets/animations/mage/mage_animations.png';
-import { Sprite } from 'react-konva';
+import { Sprite, Layer, Rect } from 'react-konva';
 import characterAnimations from './character_animations';
 
 class DisplayCharacters extends React.Component {
@@ -249,28 +249,47 @@ class DisplayCharacters extends React.Component {
                 break;
         }
         return (
-            <Sprite
-                x={this.props.char.xPixel}
-                y={this.props.char.yPixel}
-                // fill={"blue"}
-                image={characterImg}
-                animation={this.props.char.animation}
-                animations={animations}
-                frameRate={7}
-                frameIndex={this.props.char.frames}
-                // scaleX={0.8}
-                // scaleY={0.8}
-                ref={(node => {
-                    if(node && !node.isRunning() && (node.attrs.animation === "meleeRight" || node.attrs.animation === "meleeLeft")) {
-                        // setInterval(function() {node.move({x: (20 % 200), y: 0})}, 48)
-                        node.start()
-                        setTimeout(function() {
-                            node.stop()
-                        }, 1000)
-                    }
-                })}
+            <Layer>
+                <Rect
+                    width={50}
+                    height={10}
+                    cornerRadius={3}
+                    x={this.props.char.xPixel + 20}
+                    y={this.props.char.yPixel + 10}
+                    fill={'white'}
+                />
+                <Rect
+                    width={this.props.char.currentHP / this.props.char.totalHP * 50}
+                    height={10}
+                    cornerRadius={3}
+                    x={this.props.char.xPixel + 20}
+                    y={this.props.char.yPixel + 10}
+                    fill={'red'}
+                />
+                <Sprite
+                    x={this.props.char.xPixel}
+                    y={this.props.char.yPixel}
+                    // fill={"blue"}
+                    image={characterImg}
+                    animation={this.props.char.animation}
+                    animations={animations}
+                    frameRate={7}
+                    frameIndex={this.props.char.frames}
+                    // scaleX={0.8}
+                    // scaleY={0.8}
+                    ref={(node => {
+                        if (node && !node.isRunning() && (node.attrs.animation === "meleeRight" || node.attrs.animation === "meleeLeft")) {
+                            // setInterval(function() {node.move({x: (20 % 200), y: 0})}, 48)
+                            node.start()
+                            setTimeout(function () {
+                                node.stop()
+                            }, 1000)
+                        }
+                    })}
 
-            />
+                />
+            </Layer>
+            
 
         )
     }
