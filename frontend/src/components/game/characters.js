@@ -81,26 +81,26 @@ class DisplayCharacters extends React.Component {
         // }
     }
     checkWalls(left, right, top, bottom) {
-        if (left < 0) {
-            if (top < 300 || bottom > 400) {
+        if (left < 5) {
+            if (top < 272 || bottom > 378) {
                 return false;
             }
         }
 
-        if (right > 1032) {
-            if (top < 300 || bottom > 400) {
+        if (right > 995) {
+            if (top < 272 || bottom > 378) {
                 return false;
             }
         }
 
-        if (top < 0) {
-            if (left < 472 || right > 562) {
+        if (top < 10) {
+            if (left < 456 || right > 552) {
                 return false;
             }
         }
 
-        if (bottom > 625) {
-            if (left < 472 || right > 562) {
+        if (bottom > 640) {
+            if (left < 456 || right > 552) {
                 return false;
             }
         }
@@ -114,12 +114,15 @@ class DisplayCharacters extends React.Component {
 
         switch(dir) {
             case "up":
-                // if (currentState.yPixel - 8 > 64 || (currentState.xPixel > 500 && currentState.xPixel < 544)) {
+                if (currentState.animation === "runningRight" || currentState.animation === "meleeRight") {
+                    currentState.animation = "runningRight"
+                } else if (currentState.animation === "runningLeft" || currentState.animation === "meleeLeft") {
+                    currentState.animation = "runningLeft"
+                }
                 if (this.checkWalls(
                     currentState.xPixel, currentState.right, 
                     currentState.yPixel - 8, currentState.bottom - 8)) {
-
-                    if (roomNumber.topExit !== -1 && (currentState.yPixel - 8 < -64 && (currentState.xPixel > 472 && currentState.xPixel < 562))) {
+                    if (roomNumber.topExit !== -1 && (currentState.yPixel - 8 < -96 && (currentState.xPixel > 456 && currentState.xPixel < 552))) {
                         currentState.room = roomNumber.topExit;
                         currentState.yPixel = 660;
                         currentState.bottom = currentState.yPixel + 82;
@@ -135,11 +138,15 @@ class DisplayCharacters extends React.Component {
                 currentState.yPos = Math.round(currentState.yPixel / 64); 
                 break;
             case "down":
-                // if (currentState.yPixel + 8 < 576 || (currentState.xPixel > 500 && currentState.xPixel < 544)) {
+                if (currentState.animation === "runningRight" || currentState.animation === "meleeRight") {
+                    currentState.animation = "runningRight"
+                } else if (currentState.animation === "runningLeft" || currentState.animation === "meleeLeft") {
+                    currentState.animation = "runningLeft"
+                }
                 if (this.checkWalls(
                     currentState.xPixel, currentState.right,
                     currentState.yPixel + 8, currentState.bottom + 8)) {
-                    if (roomNumber.bottomExit !== -1 && (currentState.yPixel + 8 > 650 && (currentState.xPixel > 472 && currentState.xPixel < 562))) {
+                    if (roomNumber.bottomExit !== -1 && (currentState.yPixel + 8 > 650 && (currentState.xPixel > 456 && currentState.xPixel < 552))) {
                         currentState.room = roomNumber.bottomExit;
                         currentState.yPixel = 10;
                         currentState.bottom = currentState.yPixel + 82;
@@ -155,11 +162,10 @@ class DisplayCharacters extends React.Component {
                 currentState.yPos = Math.round(currentState.yPixel / 64); 
                 break;
             case "left":
-                // if (currentState.xPixel - 8 > 64 || (currentState.yPixel > 308 && currentState.yPixel < 352)) {
                 if (this.checkWalls(
                     currentState.xPixel - 8, currentState.right - 8,
                     currentState.yPixel, currentState.bottom)) {
-                    if (roomNumber.leftExit !== -1 && (currentState.xPixel - 8 < 0 && (currentState.yPixel > 300 && currentState.yPixel < 390))) {
+                    if (roomNumber.leftExit !== -1 && (currentState.xPixel - 8 < -96 && (currentState.yPixel > 272 && currentState.yPixel < 378))) {
                         currentState.room = roomNumber.leftExit;
                         currentState.xPixel = 1056
                         currentState.right = currentState.xPixel + 48;
@@ -176,11 +182,10 @@ class DisplayCharacters extends React.Component {
                 currentState.animation = "runningLeft"
                 break;
             case "right":
-                // if (currentState.xPixel + 8 < 992 || (currentState.yPixel > 308 && currentState.yPixel < 352)) {
                 if (this.checkWalls(
                     currentState.xPixel + 8, currentState.right + 8,
                     currentState.yPixel, currentState.bottom)) {
-                    if (roomNumber.rightExit !== -1 && (currentState.xPixel + 8 > 1056 && (currentState.yPixel > 300 && currentState.yPixel < 390))) {
+                    if (roomNumber.rightExit !== -1 && (currentState.xPixel + 8 > 1056 && (currentState.yPixel > 272 && currentState.yPixel < 378))) {
                         currentState.room = roomNumber.rightExit;
                         currentState.xPixel = 10
                         currentState.right = currentState.xPixel + 48;
@@ -197,9 +202,7 @@ class DisplayCharacters extends React.Component {
                 currentState.animation = "runningRight"
                 break;
             case "space":
-                console.log(currentState.animation)
                 currentState.animation = (currentState.animation === "runningRight") ? "meleeRight" : "meleeLeft"
-                console.log(currentState.animation)
                 currentState.frames = 0
             default:
                 break;
