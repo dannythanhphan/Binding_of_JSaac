@@ -1,8 +1,8 @@
 import React from 'react';
 
-import mustacheMan from '../../../assets/avatars/character_ava1.png';
-import thief from '../../../assets/avatars/character_ava2.png';
-import superWoman from '../../../assets/avatars/character_ava3.png';
+import knight from '../../../assets/avatars/knight_ava.png';
+import mage from '../../../assets/avatars/mage_ava.png';
+import rogue from '../../../assets/avatars/rogue_ava.png';
 
 class HudCharacterItem extends React.Component {
   constructor(props) {
@@ -11,13 +11,13 @@ class HudCharacterItem extends React.Component {
     this.avatar = 1;
     switch (this.props.character.characterSprite) {
       case 1:
-        this.avatar = mustacheMan;
+        this.avatar = knight;
         break;
       case 2:
-        this.avatar = thief;
+        this.avatar = rogue;
         break;
       case 3:
-        this.avatar = superWoman;
+        this.avatar = mage;
         break;
       default:
         break;
