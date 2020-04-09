@@ -11,9 +11,6 @@
 
 .game-main {
   position: relative;
-  padding: 100px;
-  background-color: rgba(238, 239, 241, 0.699);
-  border-radius: 10px;
   display: flex;
 }
 
@@ -21,13 +18,15 @@
   margin-right: 30px;
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 0 20px #888888;
+  padding: 100px;
+  background-color: rgba(238, 239, 241, 0.699);
+  border-radius: 10px;
 }
 
 #hud-characters {
   width: 350px;
-  height: 704px;
-  background-color: #4e688394;
+  height: 904px;
+  background-color: rgba(238, 239, 241, 0.699);
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -35,14 +34,15 @@
 }
 
 #hud-characters-label {
-  margin-top: 20px;
+  margin-top: 30px;
   text-transform: uppercase;
+  font-size: 30px;
 }
 
 .hud-characters-item-box {
   margin-top: 20px;
   width: 300px;
-  height: 120px;
+  height: 130px;
   display: flex;
   flex-direction: column;
   align-items: center;
