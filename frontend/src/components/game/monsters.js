@@ -6,6 +6,7 @@ import reaper1 from '../../assets/animations/reaper1_animation.png'
 import reaper2 from '../../assets/animations/reaper2_animation.png'
 import reaper3 from '../../assets/animations/reaper3_animation.png'
 import { Sprite } from 'react-konva';
+import monsterAnimations from './monster_animations';
 
 const MAXXPOS = 1024;
 const MINXPOS = 64;
@@ -21,7 +22,8 @@ class DisplayMonsters extends React.Component {
             monsterXPos: (this.props.positionX === 15) ? (this.props.positionX * 64) : ((this.props.positionX * 64) + 64),
             monsterYPos: (this.props.positionY === 9) ? (this.props.positionY * 64) : ((this.props.positionY * 64) + 64),
             frames: 0,
-            monsterSprite: 1
+            animation: "runningRight",
+            monsterSprite: Math.ceil(Math.random() * 6)
         }
         this.chaseClosestPlayer = this.chaseClosestPlayer.bind(this);
     }
@@ -46,9 +48,11 @@ class DisplayMonsters extends React.Component {
         }
         if (closestPlayer.x < monsterXPos) {
             currentState.monsterXPos -= 1;
+            currentState.animation = "runningLeft"
         }
         else if (closestPlayer.x > monsterXPos) {
             currentState.monsterXPos += 1;
+            currentState.animation = "runningRight"
         }
         if (closestPlayer.y < monsterYPos) {
             currentState.monsterYPos -= 1;
@@ -62,122 +66,28 @@ class DisplayMonsters extends React.Component {
 
     render() {
         let monsterImg = new Image();
-        let running;
+        let animations;
     
-        switch (this.state.monsterSprite) {
-            case 1:
+        let curMonsterInfo = monsterAnimations(this.state.monsterSprite)
+        animations = curMonsterInfo.animations ;
+        switch (curMonsterInfo.monsterImg) {
+            case "golem1":
                 monsterImg.src = golem1
-                running = {
-                    running: [
-                        0, 0, 750, 750,
-                        750, 0, 750, 750,
-                        1500, 0, 750, 750,
-                        2250, 0, 750, 750,
-                        3000, 0, 750, 750,
-                        3750, 0, 750, 750,
-                        4500, 0, 750, 750,
-                        5250, 0, 750, 750,
-                        6000, 0, 750, 750,
-                        6750, 0, 750, 750,
-                        7500, 0, 750, 750,
-                        8250, 0, 750, 750,
-                    ]
-                }
                 break;
-            case 2:
+            case "golem2":
                 monsterImg.src = golem2
-                running = {
-                    running: [
-                        0, 0, 750, 750,
-                        750, 0, 750, 750,
-                        1500, 0, 750, 750,
-                        2250, 0, 750, 750,
-                        3000, 0, 750, 750,
-                        3750, 0, 750, 750,
-                        4500, 0, 750, 750,
-                        5250, 0, 750, 750,
-                        6000, 0, 750, 750,
-                        6750, 0, 750, 750,
-                        7500, 0, 750, 750,
-                        8250, 0, 750, 750,
-                    ]
-                }
                 break;
-            case 3:
+            case "golem3":
                 monsterImg.src = golem3
-                running = {
-                    running: [
-                        0, 0, 750, 750,
-                        750, 0, 750, 750,
-                        1500, 0, 750, 750,
-                        2250, 0, 750, 750,
-                        3000, 0, 750, 750,
-                        3750, 0, 750, 750,
-                        4500, 0, 750, 750,
-                        5250, 0, 750, 750,
-                        6000, 0, 750, 750,
-                        6750, 0, 750, 750,
-                        7500, 0, 750, 750,
-                        8250, 0, 750, 750,
-                    ]
-                }
                 break;
-            case 4:
+            case "reaper1":
                 monsterImg.src = reaper1
-                running = {
-                    running: [
-                        0, 0, 750, 750,
-                        750, 0, 750, 750,
-                        1500, 0, 750, 750,
-                        2250, 0, 750, 750,
-                        3000, 0, 750, 750,
-                        3750, 0, 750, 750,
-                        4500, 0, 750, 750,
-                        5250, 0, 750, 750,
-                        6000, 0, 750, 750,
-                        6750, 0, 750, 750,
-                        7500, 0, 750, 750,
-                        8250, 0, 750, 750,
-                    ]
-                }
                 break;
-            case 5:
+            case "reaper2":
                 monsterImg.src = reaper2
-                running = {
-                    running: [
-                        0, 0, 750, 750,
-                        750, 0, 750, 750,
-                        1500, 0, 750, 750,
-                        2250, 0, 750, 750,
-                        3000, 0, 750, 750,
-                        3750, 0, 750, 750,
-                        4500, 0, 750, 750,
-                        5250, 0, 750, 750,
-                        6000, 0, 750, 750,
-                        6750, 0, 750, 750,
-                        7500, 0, 750, 750,
-                        8250, 0, 750, 750,
-                    ]
-                }
                 break;
-            case 6:
+            case "reaper3":
                 monsterImg.src = reaper3
-                running = {
-                    running: [
-                        0, 0, 750, 750,
-                        750, 0, 750, 750,
-                        1500, 0, 750, 750,
-                        2250, 0, 750, 750,
-                        3000, 0, 750, 750,
-                        3750, 0, 750, 750,
-                        4500, 0, 750, 750,
-                        5250, 0, 750, 750,
-                        6000, 0, 750, 750,
-                        6750, 0, 750, 750,
-                        7500, 0, 750, 750,
-                        8250, 0, 750, 750,
-                    ]
-                }
                 break;
         }
 
@@ -186,12 +96,12 @@ class DisplayMonsters extends React.Component {
                 x={this.state.monsterXPos}
                 y={this.state.monsterYPos}
                 image={monsterImg}
-                animation='running'
-                animations={running}
+                animation={this.state.animation}
+                animations={animations}
                 frameRate={24}
                 frameIndex={this.state.frames}
-                scaleX={0.1}
-                scaleY={0.1}
+                scaleX={0.5}
+                scaleY={0.5}
             />
         );
     };
