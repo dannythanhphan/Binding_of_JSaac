@@ -61,7 +61,7 @@ class DisplayCharacters extends React.Component {
     takeDamage(val) {
         let currentState = Object.assign({}, this.props.char);
         if (!currentState.invincible) {
-            console.log("damage taken")
+            this.props.updateHP(currentState._id, currentState.currentHP - val);
             currentState.currentHP -= val;
             currentState.invincible = true;
             let that = this;

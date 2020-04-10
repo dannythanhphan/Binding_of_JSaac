@@ -9,6 +9,8 @@ export const updateLocation = (room, charId) => {
     charId
 }};
 
+
+
 export const moveRoom = (key, charId, floor, room) => (dispatch) => {
     APIUtil.changeLocation(key, charId, floor, room);
     dispatch(updateLocation(room, charId));

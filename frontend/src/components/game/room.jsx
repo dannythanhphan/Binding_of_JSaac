@@ -121,6 +121,7 @@ class Room extends React.Component {
                 moveRoom={this.props.moveRoom}
                 roomNumber={roomNumber}
                 floorNumber={Object.values(locations)[0].floor}
+                updateHP={this.props.updateHP}
                 />
          
             let monsterCountPerRoom = [];
