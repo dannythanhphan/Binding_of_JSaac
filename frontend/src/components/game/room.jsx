@@ -174,18 +174,6 @@ class Room extends React.Component {
                     player2Y={player2Y}
                 />
             ))
-            
-            currentChar = <DisplayCharacters 
-                char={this.state.currentCharacter}
-                movement={true}
-                childSetState={this.childSetState}
-                traps={trapsInRoom}
-                monsters={monstersInRoom}
-                moveRoom={this.props.moveRoom}
-                roomNumber={roomNumber}
-                floorNumber={Object.values(locations)[0].floor}
-                updateHP={this.props.updateHP}
-                />
         }
 
         
