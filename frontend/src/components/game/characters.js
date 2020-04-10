@@ -80,25 +80,19 @@ class DisplayCharacters extends React.Component {
     checkTrapsCollision() {
         for (let i = 0; i < this.props.traps.length; i++) {
             let traptopleft = {
-                x: this.props.traps[i].xPos * 64,
-                y: this.props.traps[i].yPos * 64
+                x: this.props.traps[i].xPos * 64 + 64,
+                y: this.props.traps[i].yPos * 64 + 64
             }
             let trapbottomright = {
                 x: traptopleft.x + 64,
                 y: traptopleft.y + 64
             }
 
-            if (!(traptopleft.x >= this.props.char.right - 30 || 
-                trapbottomright.x <= this.props.char.xPixel ||
-                trapbottomright.y <= this.props.char.yPixel ||
+            if (!(traptopleft.x >= this.props.char.right || 
+                trapbottomright.x <= this.props.char.left ||
+                trapbottomright.y <= this.props.char.top ||
                 traptopleft.y >= this.props.char.bottom)) {
                     this.takeDamage(this.props.traps[i].meleeAttack);
-                    console.log(traptopleft)
-                    console.log(trapbottomright)
-                    console.log(this.props.char.xPixel)   
-                    console.log(this.props.char.yPixel)   
-                    console.log(this.props.char.right)   
-                    console.log(this.props.char.bottom)   
                 }     
         }
     }
