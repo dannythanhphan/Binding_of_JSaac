@@ -5,7 +5,6 @@ import * as TrapsHelper from './traps.js'
 import DisplayMonsters from './monsters.js';
 import DisplayCharacters from './characters.js';
 
-
 class Room extends React.Component {
     constructor(props) {
         super(props);
@@ -71,6 +70,9 @@ class Room extends React.Component {
             if (data._id !== localStorage.lobbycharacter) {
                 let currentState = Object.assign({}, this.state);
                 currentState.otherCharacter = data;
+                if (this.props.locations[currentState.otherCharacter._id].room !== data.room) {
+                    this.props.updateLocation(data.room, currentState.otherCharacter._id);
+                }
                 this.setState(currentState);
             }
         })
@@ -144,14 +146,21 @@ class Room extends React.Component {
         // min width-height = 64 x 64
         // max width-height = 1024 x 640
         // character sprite 48 x 82
-        if (this.state.otherCharacter) {
+
+        if (this.state.otherCharacter && 
+            this.props.locations[this.state.currentCharacter._id].floor == this.props.locations[this.state.otherCharacter._id].floor &
+            this.props.locations[this.state.currentCharacter._id].room == this.props.locations[this.state.otherCharacter._id].room
+            ) {
             otherChar = <DisplayCharacters
                 char={this.state.otherCharacter}
                 movement={false}
                 childSetState={this.childSetState}
                 traps={trapsInRoom}
             />
+        } else {
+            otherChar = null;
         }
+        
         return (
             <div className="room-main">
                 <Stage width={1088} height={704}>
