@@ -12,7 +12,8 @@ class Room extends React.Component {
         let currentCharacter;
         let otherCharacter;
         let roomImg;
-        const { locations, characters } = this.props;
+        const { locations } = this.props;
+        let characters = Object.values(this.props.characters);
         for (let i = 0; i < characters.length; i++) {
             if (characters[i]._id === localStorage.lobbycharacter) {
                 currentCharacter = characters[i];
@@ -39,6 +40,10 @@ class Room extends React.Component {
             otherCharacter.animation = "runningRight";
             otherCharacter.xPixel = otherCharacter.xPos * 64;
             otherCharacter.yPixel = otherCharacter.yPos * 64;
+            otherCharacter.left = otherCharacter.xPixel + 48;
+            otherCharacter.right = otherCharacter.xPixel + 96;
+            otherCharacter.top = otherCharacter.yPixel + 40;
+            otherCharacter.bottom = otherCharacter.yPixel + 80;
             delete otherCharacter.character;
         }
         this.state = { currentCharacter, otherCharacter, roomImg};
@@ -72,6 +77,9 @@ class Room extends React.Component {
                 currentState.otherCharacter = data;
                 if (this.props.locations[currentState.otherCharacter._id].room !== data.room) {
                     this.props.updateLocation(data.room, currentState.otherCharacter._id);
+                }
+                if (this.props.characters[currentState.otherCharacter._id].currentHP != data.currentHP) {
+                    this.props.updateHP(currentState.otherCharacter._id, data.currentHP);
                 }
                 this.setState(currentState);
             }
@@ -136,8 +144,12 @@ class Room extends React.Component {
                 monster={monster} 
                 positionX={monster.xPos} 
                 positionY={monster.yPos}
-                playerX={this.state.currentCharacter.xPixel}
-                playerY={this.state.currentCharacter.yPixel}
+                playerX={(this.state.currentCharacter.left + this.state.currentCharacter.right) / 2}
+                playerY={(this.state.currentCharacter.top + this.state.currentCharacter.bottom) / 2}
+                player2X={(this.state.otherCharacter) ? 
+                    (this.state.otherCharacter.left + this.state.otherCharacter.right) / 2 : undefined}
+                player2Y={(this.state.otherCharacter) ? 
+                    (this.state.otherCharacter.top + this.state.otherCharacter.bottom) / 2 : undefined}
                 />
             ))
         }
