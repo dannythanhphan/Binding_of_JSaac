@@ -5,21 +5,28 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #333333;
+  background-image: url("../../assets/home_page.jpg");
+  background-size: cover;
 }
 
 .game-main {
-  box-shadow: 0 0 20px #888888;
   position: relative;
+  display: flex;
+}
+
+.room-main {
+  margin-right: 30px;
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 100px;
+  background-color: rgba(238, 239, 241, 0.699);
+  border-radius: 10px;
 }
 
 #hud-characters {
   width: 350px;
-  height: 600px;
-  background-color: rgba(128,128,128,0.3);
-  position: absolute;
-  left: -370px;
-  top: 10px;
+  height: 904px;
+  background-color: rgba(238, 239, 241, 0.699);
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -27,21 +34,21 @@
 }
 
 #hud-characters-label {
-  color: #888888;
-  margin-top: 20px;
+  margin-top: 30px;
   text-transform: uppercase;
+  font-size: 30px;
 }
 
 .hud-characters-item-box {
   margin-top: 20px;
   width: 300px;
-  height: 120px;
+  height: 130px;
   display: flex;
   flex-direction: column;
   align-items: center;
   border: 1px solid rgba(153, 153, 153, 0.6);
   border-radius: 10px;
-  background-color: rgba(86,86,86,1);
+  background-color: rgba(238, 239, 241, 1);
 }
 
 .hud-characters-item-content-box{
@@ -57,7 +64,7 @@
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  color: rgba(200,200,200,1);
+  color: #4e6883;
 }
 
 .hud-characters-item-name {
@@ -88,7 +95,7 @@
 .hud-characters-item-hp-bar-outer {
   width: 150px;
   height: 20px;
-  border: 1px solid rgba(200,200,200,0.2);
+  border: 1px solid #4e688394;
   border-radius: 5px;
   position: relative;
 }
@@ -108,7 +115,7 @@
 .hud-characters-item-exp-bar-outer {
   width: 150px;
   height: 20px;
-  border: 1px solid rgba(200,200,200,0.2);
+  border: 1px solid #4e688394;
   border-radius: 5px;
 }
 
@@ -122,14 +129,18 @@
 
 .level-up-box {
   position: absolute;
-  bottom: 20px;
+  bottom: 120px;
   border: 1px solid rgba(153, 153, 153, 0.6);
   border-radius: 10px;
-  background-color: rgba(86,86,86,1);
+  background-color: rgba(238, 239, 241, 1);
   width: 280px;
-  height: 160px;
+  height: 165px;
   padding: 10px;
-  color: rgba(200,200,200,1);
+  color: #4e6883;
+}
+
+.hidden-level-up {
+  display: none;
 }
 
 .level-up-options {
@@ -158,6 +169,7 @@
 .level-up-options button {
   color: black;
   border-radius: 5px;
+  background-color: #4e688394;
 }
 
 .stat-decrease-button {
@@ -181,6 +193,8 @@
 }
 
 .level-up-finalize-label button {
-  align-self: center;
   border-radius: 5px;
+  padding: 5px;
+  width: 100%;
+  background-color: #4e688394;
 }
