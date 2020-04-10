@@ -113,24 +113,14 @@ class Room extends React.Component {
             trapsDisplay = trapsInRoom.map(trap => (
                 TrapsHelper.displayTraps(trap)
             ))
-            currentChar = <DisplayCharacters 
-                char={this.state.currentCharacter}
-                movement={true}
-                childSetState={this.childSetState}
-                traps={trapsInRoom}
-                moveRoom={this.props.moveRoom}
-                roomNumber={roomNumber}
-                floorNumber={Object.values(locations)[0].floor}
-                updateHP={this.props.updateHP}
-                />
-         
+            
             let monsterCountPerRoom = [];
             for (let i = 0; i < monsters.length; i++) {
                 if (monsters[i].roomId === roomNumber.id) {
                     monsterCountPerRoom.push(monsters[i])
                 }
             }
-
+            
             monstersInRoom = monsterCountPerRoom.map(monster => (
                 monstersInRoom = <DisplayMonsters 
                 monster={monster} 
@@ -140,6 +130,18 @@ class Room extends React.Component {
                 playerY={this.state.currentCharacter.yPixel}
                 />
             ))
+            
+            currentChar = <DisplayCharacters 
+                char={this.state.currentCharacter}
+                movement={true}
+                childSetState={this.childSetState}
+                traps={trapsInRoom}
+                monsters={monstersInRoom}
+                moveRoom={this.props.moveRoom}
+                roomNumber={roomNumber}
+                floorNumber={Object.values(locations)[0].floor}
+                updateHP={this.props.updateHP}
+                />
         }
         // tiles are 64 x 64
         // rooms 15x9, 960 x 576
