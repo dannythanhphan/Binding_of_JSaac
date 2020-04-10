@@ -55,7 +55,9 @@ class DisplayCharacters extends React.Component {
     componentWillUnmount() {
         document.onkeydown = null;
         document.onkeyup = null;
-        clearInterval(window.collision);
+        if (this.props.movement) {
+            clearInterval(window.collision);
+        }
     }
 
     takeDamage(val) {
@@ -263,7 +265,9 @@ class DisplayCharacters extends React.Component {
                 that.move("space");
             }
         })
-        window.collision = setInterval(this.checkCollision,100);
+        if (this.props.movement) {
+            window.collision = setInterval(this.checkCollision,100);
+        }
     }
 
     render() {

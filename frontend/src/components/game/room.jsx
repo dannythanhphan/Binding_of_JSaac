@@ -12,7 +12,8 @@ class Room extends React.Component {
         let currentCharacter;
         let otherCharacter;
         let roomImg;
-        const { locations, characters } = this.props;
+        const { locations } = this.props;
+        let characters = Object.values(this.props.characters);
         for (let i = 0; i < characters.length; i++) {
             if (characters[i]._id === localStorage.lobbycharacter) {
                 currentCharacter = characters[i];
@@ -39,6 +40,10 @@ class Room extends React.Component {
             otherCharacter.animation = "runningRight";
             otherCharacter.xPixel = otherCharacter.xPos * 64;
             otherCharacter.yPixel = otherCharacter.yPos * 64;
+            otherCharacter.left = otherCharacter.xPixel + 48;
+            otherCharacter.right = otherCharacter.xPixel + 96;
+            otherCharacter.top = otherCharacter.yPixel + 40;
+            otherCharacter.bottom = otherCharacter.yPixel + 80;
             delete otherCharacter.character;
         }
         this.state = { currentCharacter, otherCharacter, roomImg};
@@ -72,6 +77,9 @@ class Room extends React.Component {
                 currentState.otherCharacter = data;
                 if (this.props.locations[currentState.otherCharacter._id].room !== data.room) {
                     this.props.updateLocation(data.room, currentState.otherCharacter._id);
+                }
+                if (this.props.characters[currentState.otherCharacter._id].currentHP != data.currentHP) {
+                    this.props.updateHP(currentState.otherCharacter._id, data.currentHP);
                 }
                 this.setState(currentState);
             }
@@ -113,21 +121,57 @@ class Room extends React.Component {
             trapsDisplay = trapsInRoom.map(trap => (
                 TrapsHelper.displayTraps(trap)
             ))
-            
+            currentChar = <DisplayCharacters 
+                char={this.state.currentCharacter}
+                movement={true}
+                childSetState={this.childSetState}
+                traps={trapsInRoom}
+                moveRoom={this.props.moveRoom}
+                roomNumber={roomNumber}
+                floorNumber={Object.values(locations)[0].floor}
+                updateHP={this.props.updateHP}
+                />
+
+            // tiles are 64 x 64
+            // rooms 15x9, 960 x 576
+            // rooms 17x11 with walls, 1088 x 704
+            // min width-height = 64 x 64
+            // max width-height = 1024 x 640
+            // character sprite 48 x 82
+            let player2X, player2Y;
+            if (this.state.otherCharacter &&
+                this.props.locations[this.state.currentCharacter._id].floor == this.props.locations[this.state.otherCharacter._id].floor &
+                this.props.locations[this.state.currentCharacter._id].room == this.props.locations[this.state.otherCharacter._id].room
+            ) {
+                otherChar = <DisplayCharacters
+                    char={this.state.otherCharacter}
+                    movement={false}
+                    childSetState={this.childSetState}
+                    traps={trapsInRoom}
+                />
+                player2X = (this.state.otherCharacter.left + this.state.otherCharacter.right) / 2;
+                player2Y = (this.state.otherCharacter.top + this.state.otherCharacter.bottom) / 2;
+            } else {
+                player2X = undefined;
+                player2Y = undefined;
+                otherChar = null;
+            }
+
             let monsterCountPerRoom = [];
             for (let i = 0; i < monsters.length; i++) {
                 if (monsters[i].roomId === roomNumber.id) {
                     monsterCountPerRoom.push(monsters[i])
                 }
             }
-            
             monstersInRoom = monsterCountPerRoom.map(monster => (
-                monstersInRoom = <DisplayMonsters 
-                monster={monster} 
-                positionX={monster.xPos} 
-                positionY={monster.yPos}
-                playerX={this.state.currentCharacter.xPixel}
-                playerY={this.state.currentCharacter.yPixel}
+                monstersInRoom = <DisplayMonsters
+                    monster={monster}
+                    positionX={monster.xPos}
+                    positionY={monster.yPos}
+                    playerX={(this.state.currentCharacter.left + this.state.currentCharacter.right) / 2}
+                    playerY={(this.state.currentCharacter.top + this.state.currentCharacter.bottom) / 2}
+                    player2X={player2X}
+                    player2Y={player2Y}
                 />
             ))
             
@@ -143,26 +187,7 @@ class Room extends React.Component {
                 updateHP={this.props.updateHP}
                 />
         }
-        // tiles are 64 x 64
-        // rooms 15x9, 960 x 576
-        // rooms 17x11 with walls, 1088 x 704
-        // min width-height = 64 x 64
-        // max width-height = 1024 x 640
-        // character sprite 48 x 82
 
-        if (this.state.otherCharacter && 
-            this.props.locations[this.state.currentCharacter._id].floor == this.props.locations[this.state.otherCharacter._id].floor &
-            this.props.locations[this.state.currentCharacter._id].room == this.props.locations[this.state.otherCharacter._id].room
-            ) {
-            otherChar = <DisplayCharacters
-                char={this.state.otherCharacter}
-                movement={false}
-                childSetState={this.childSetState}
-                traps={trapsInRoom}
-            />
-        } else {
-            otherChar = null;
-        }
         
         return (
             <div className="room-main">

@@ -35,18 +35,29 @@ class DisplayMonsters extends React.Component {
 
     chaseClosestPlayer() {
         let currentState = Object.assign({}, this.state);
-        if (this.props.playerX < this.state.monsterXPos) {
+        let closestPlayer;
+        let {playerX, playerY, player2X, player2Y} = this.props;
+        let {monsterXPos, monsterYPos} = this.state;
+        if (player2X) {
+            let playerDist = Math.sqrt(Math.pow((playerX - monsterXPos), 2) + Math.pow((playerY - monsterYPos), 2));
+            let player2Dist = Math.sqrt(Math.pow((player2X - monsterXPos), 2) + Math.pow((player2Y - monsterYPos), 2));
+            closestPlayer = (playerDist > player2Dist) ? { x: player2X, y: player2Y } : { x: playerX, y: playerY }
+        }
+        else {
+            closestPlayer = {x: playerX, y: playerY}
+        }
+        if (closestPlayer.x < monsterXPos) {
             currentState.monsterXPos -= 1;
             currentState.animation = "runningLeft"
         }
-        else if (this.props.playerX > this.state.monsterXPos) {
+        else if (closestPlayer.x > monsterXPos) {
             currentState.monsterXPos += 1;
             currentState.animation = "runningRight"
         }
-        if (this.props.playerY < this.state.monsterYPos) {
+        if (closestPlayer.y < monsterYPos) {
             currentState.monsterYPos -= 1;
         }
-        else if (this.props.playerY > this.state.monsterYPos) {
+        else if (closestPlayer.y > monsterYPos) {
             currentState.monsterYPos += 1;
         }
         currentState.frames = (currentState.frames === 11) ? 0 : currentState.frames + 1;
