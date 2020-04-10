@@ -53,9 +53,9 @@ class DisplayCharacters extends React.Component {
     }
 
     componentWillUnmount() {
-        document.onkeydown = null;
-        document.onkeyup = null;
         if (this.props.movement) {
+            document.onkeydown = null;
+            document.onkeyup = null;
             clearInterval(window.collision);
         }
     }
