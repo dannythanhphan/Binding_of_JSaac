@@ -27,10 +27,10 @@ class Room extends React.Component {
         currentCharacter.animation = "runningRight";
         currentCharacter.xPixel = currentCharacter.xPos * 64;
         currentCharacter.yPixel = currentCharacter.yPos * 64;
-        // currentCharacter.left = currentCharacter.xPixel;
-        currentCharacter.right = currentCharacter.xPixel + 48;
-        // currentCharacter.top = currentCharacter.yPixel;
-        currentCharacter.bottom = currentCharacter.yPixel + 82;
+        currentCharacter.left = currentCharacter.xPixel + 48;
+        currentCharacter.right = currentCharacter.xPixel + 96;
+        currentCharacter.top = currentCharacter.yPixel + 40;
+        currentCharacter.bottom = currentCharacter.yPixel + 80;
         delete currentCharacter.character;
         currentCharacter.invincible = false;
 

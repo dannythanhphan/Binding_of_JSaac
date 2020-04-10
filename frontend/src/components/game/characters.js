@@ -103,26 +103,26 @@ class DisplayCharacters extends React.Component {
         }
     }
     checkWalls(left, right, top, bottom) {
-        if (left < 5) {
-            if (top < 272 || bottom > 378) {
+        if (left < 56) {
+            if (top < 312 || bottom > 378) {
                 return false;
             }
         }
 
-        if (right > 995) {
-            if (top < 272 || bottom > 378) {
+        if (right > 1040) {
+            if (top < 312 || bottom > 378) {
                 return false;
             }
         }
 
-        if (top < 10) {
-            if (left < 456 || right > 552) {
+        if (top < 56) {
+            if (left < 500 || right > 604) {
                 return false;
             }
         }
 
-        if (bottom > 640) {
-            if (left < 456 || right > 552) {
+        if (bottom > 636) {
+            if (left < 500 || right > 604) {
                 return false;
             }
         }
@@ -142,17 +142,19 @@ class DisplayCharacters extends React.Component {
                     currentState.animation = "runningLeft"
                 }
                 if (this.checkWalls(
-                    currentState.xPixel, currentState.right, 
-                    currentState.yPixel - 8, currentState.bottom - 8)) {
+                    currentState.left, currentState.right, 
+                    currentState.top - 8, currentState.bottom - 8)) {
                     if (roomNumber.topExit !== -1 && (currentState.yPixel - 8 < -96 && (currentState.xPixel > 456 && currentState.xPixel < 552))) {
                         currentState.room = roomNumber.topExit;
                         currentState.yPixel = 660;
-                        currentState.bottom = currentState.yPixel + 82;
+                        currentState.top = currentState.yPixel + 40;
+                        currentState.bottom = currentState.yPixel + 80;
                         moveRoom(localStorage.lobbykey, char._id, floorNumber, roomNumber.topExit);
                     } else if (roomNumber.topExit === -1 && currentState.yPixel - 8 < 0) {
                         currentState.yPixel = currentState.yPixel;
                     } else {
                         currentState.yPixel -= 8;
+                        currentState.top -= 8;
                         currentState.bottom -= 8;
                     }
                 } 
@@ -166,17 +168,19 @@ class DisplayCharacters extends React.Component {
                     currentState.animation = "runningLeft"
                 }
                 if (this.checkWalls(
-                    currentState.xPixel, currentState.right,
-                    currentState.yPixel + 8, currentState.bottom + 8)) {
+                    currentState.left, currentState.right,
+                    currentState.top + 8, currentState.bottom + 8)) {
                     if (roomNumber.bottomExit !== -1 && (currentState.yPixel + 8 > 650 && (currentState.xPixel > 456 && currentState.xPixel < 552))) {
                         currentState.room = roomNumber.bottomExit;
                         currentState.yPixel = 10;
-                        currentState.bottom = currentState.yPixel + 82;
+                        currentState.top = currentState.yPixel + 40;
+                        currentState.bottom = currentState.yPixel + 80;
                         moveRoom(localStorage.lobbykey, char._id, floorNumber, roomNumber.bottomExit);
                     } else if (roomNumber.bottomExit === -1 && currentState.yPixel + 8 > 576) {
                         currentState.yPixel = currentState.yPixel;
                     } else {
                         currentState.yPixel += 8;
+                        currentState.top += 8;
                         currentState.bottom += 8;
                     }
                 } 
@@ -185,17 +189,19 @@ class DisplayCharacters extends React.Component {
                 break;
             case "left":
                 if (this.checkWalls(
-                    currentState.xPixel - 8, currentState.right - 8,
-                    currentState.yPixel, currentState.bottom)) {
+                    currentState.left - 8, currentState.right - 8,
+                    currentState.top, currentState.bottom)) {
                     if (roomNumber.leftExit !== -1 && (currentState.xPixel - 8 < -96 && (currentState.yPixel > 272 && currentState.yPixel < 378))) {
                         currentState.room = roomNumber.leftExit;
                         currentState.xPixel = 1056
-                        currentState.right = currentState.xPixel + 48;
+                        currentState.left = currentState.xPixel + 48;
+                        currentState.right = currentState.xPixel + 96;
                         moveRoom(localStorage.lobbykey, char._id, floorNumber, roomNumber.leftExit);
                     } else if (roomNumber.leftExit === -1 && currentState.xPixel - 8 < 64) {
                         currentState.xPixel = currentState.xPixel;
                     } else {
                         currentState.xPixel -= 8;
+                        currentState.left -= 8;
                         currentState.right -= 8;
                     }
                 }
@@ -205,17 +211,19 @@ class DisplayCharacters extends React.Component {
                 break;
             case "right":
                 if (this.checkWalls(
-                    currentState.xPixel + 8, currentState.right + 8,
-                    currentState.yPixel, currentState.bottom)) {
+                    currentState.left + 8, currentState.right + 8,
+                    currentState.top, currentState.bottom)) {
                     if (roomNumber.rightExit !== -1 && (currentState.xPixel + 8 > 1056 && (currentState.yPixel > 272 && currentState.yPixel < 378))) {
                         currentState.room = roomNumber.rightExit;
                         currentState.xPixel = 10
-                        currentState.right = currentState.xPixel + 48;
+                        currentState.left = currentState.xPixel + 48;
+                        currentState.right = currentState.xPixel + 96;
                         moveRoom(localStorage.lobbykey, char._id, floorNumber, roomNumber.rightExit);
                     } else if (roomNumber.rightExit === -1 && currentState.xPixel + 8 < 992) {
                         currentState.xPixel = currentState.xPixel;
                     } else {
                         currentState.xPixel += 8;
+                        currentState.left += 8;
                         currentState.right += 8;
                     }
                 }
