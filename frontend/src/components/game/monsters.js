@@ -19,8 +19,8 @@ class DisplayMonsters extends React.Component {
         super(props);
         this.props = props;
         this.state = {
-            monsterXPos: (this.props.positionX === 15) ? (this.props.positionX * 64) : ((this.props.positionX * 64) + 64),
-            monsterYPos: (this.props.positionY === 9) ? (this.props.positionY * 64) : ((this.props.positionY * 64) + 64),
+            monsterXPos: this.props.positionX * 64,
+            monsterYPos: this.props.positionY * 64,
             frames: 0,
             animation: "runningRight",
             monsterSprite: Math.ceil(Math.random() * 6)

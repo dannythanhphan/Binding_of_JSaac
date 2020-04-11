@@ -82,8 +82,8 @@ class DisplayCharacters extends React.Component {
     checkTrapsCollision() {
         for (let i = 0; i < this.props.traps.length; i++) {
             let traptopleft = {
-                x: this.props.traps[i].xPos * 64 + 64,
-                y: this.props.traps[i].yPos * 64 + 64
+                x: this.props.traps[i].xPos * 64,
+                y: this.props.traps[i].yPos * 64
             }
             let trapbottomright = {
                 x: traptopleft.x + 64,

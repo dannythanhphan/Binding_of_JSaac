@@ -94,8 +94,8 @@ const generateRoom = (position, width, height, leftExit, rightExit, topExit, bot
 
     let xPos, yPos;
     for (let i = 0; i < numMonsters; i++) {
-        xPos = Math.floor(Math.random() * ROOM_WIDTH);
-        yPos = Math.floor(Math.random() * ROOM_HEIGHT);
+        xPos = Math.ceil(Math.random() * (ROOM_WIDTH - 2));
+        yPos = Math.ceil(Math.random() * (ROOM_HEIGHT - 2));
         room.monsters.push(generateMonster(name, level, totalHp, currentHp, meleeAttack, rangedAttack, xPos, yPos))
     }
 
@@ -103,8 +103,8 @@ const generateRoom = (position, width, height, leftExit, rightExit, topExit, bot
     const trapDamage = TRAP_DAMAGE;
 
     for (let i = 0; i < numTraps; i++) {
-        xPos = Math.floor(Math.random() * ROOM_WIDTH);
-        yPos = Math.floor(Math.random() * ROOM_HEIGHT);
+        xPos = Math.ceil(Math.random() * (ROOM_WIDTH - 2));
+        yPos = Math.ceil(Math.random() * (ROOM_HEIGHT - 2));
         
         room.traps.push(generateTrap(type, trapDamage, xPos, yPos))
     }    
