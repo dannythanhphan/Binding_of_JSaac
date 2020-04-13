@@ -240,8 +240,8 @@ class DisplayCharacters extends React.Component {
                     currentState.animation = "meleeRight" 
                 } else if (currentState.animation === "runningLeft" || currentState.animation === "meleeLeft") {
                     currentState.animation = "meleeLeft"
-                    attackPixels.left = currentState.left - 98;
-                    attackPixels.right = currentState.right - 96;
+                    attackPixels.left = currentState.left - 49;
+                    attackPixels.right = currentState.right - 48;
                 }
 
 
