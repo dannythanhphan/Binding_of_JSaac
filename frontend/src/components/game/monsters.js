@@ -22,6 +22,7 @@ class DisplayMonsters extends React.Component {
         this.state = {
             monsterXPos: props.positionX * 64,
             monsterYPos: props.positionY * 64,
+            currentHP: props.monster.currentHP,
             frames: 0,
             animation: "runningRight",
             monsterSprite: Math.ceil(Math.random() * 6)
@@ -32,11 +33,13 @@ class DisplayMonsters extends React.Component {
     }
 
     componentDidMount() {
-        let that = this;
-        setInterval(function() {
-            that.chaseClosestPlayer();
-            that.checkIfAttacked();
-        }, 50);
+        // let that = this;
+        // setInterval(function() {
+        //     that.chaseClosestPlayer();
+        //     that.checkIfAttacked();
+        // }, 50);
+        setInterval(this.chaseClosestPlayer, 50);
+        setInterval(this.checkIfAttacked, 1000);
     }
 
     checkIfAttacked() {
@@ -51,7 +54,8 @@ class DisplayMonsters extends React.Component {
             activeAttackPixels.top <= currentState.bottom &&
             activeAttackPixels.left >= currentState.left &&
             activeAttackPixels.left <= currentState.right) {
-                console.log("attacked");
+                this.setState({ currentHP: this.state.currentHP - activeAttackPixels.damage })
+                console.log(this.state.currentHP)
         }
 
     }
@@ -66,8 +70,7 @@ class DisplayMonsters extends React.Component {
             let playerDist = Math.sqrt(Math.pow((playerX - monsterXPos), 2) + Math.pow((playerY - monsterYPos), 2));
             let player2Dist = Math.sqrt(Math.pow((player2X - monsterXPos), 2) + Math.pow((player2Y - monsterYPos), 2));
             closestPlayer = (playerDist > player2Dist) ? { x: player2X, y: player2Y } : { x: playerX, y: playerY }
-        }
-        else {
+        } else {
             closestPlayer = {x: playerX, y: playerY}
         }
         if (closestPlayer.x < monsterXPos) {

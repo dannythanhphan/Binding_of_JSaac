@@ -228,18 +228,22 @@ class DisplayCharacters extends React.Component {
                 currentState.animation = "runningRight"
                 break;
             case "space":
-                if (currentState.animation === "runningRight" || currentState.animation === "meleeRight") {
-                    currentState.animation = "meleeRight" 
-                } else if (currentState.animation === "runningLeft" || currentState.animation === "meleeLeft") {
-                    currentState.animation = "meleeLeft"
-                }
-
                 let attackPixels = {
                     top: currentState.top + 33,
                     bottom: currentState.bottom - 5,
                     left: currentState.left + 49,
-                    right: currentState.right + 48
+                    right: currentState.right + 48,
+                    damage: currentState.meleeAttack
                 };
+
+                if (currentState.animation === "runningRight" || currentState.animation === "meleeRight") {
+                    currentState.animation = "meleeRight" 
+                } else if (currentState.animation === "runningLeft" || currentState.animation === "meleeLeft") {
+                    currentState.animation = "meleeLeft"
+                    attackPixels.left = currentState.left - 98;
+                    attackPixels.right = currentState.right - 96;
+                }
+
 
                 this.props.activePixels(attackPixels);
                 currentState.frames = 0
@@ -328,7 +332,8 @@ class DisplayCharacters extends React.Component {
                                 top: 0,
                                 bottom: 0,
                                 left: 0,
-                                right: 0
+                                right: 0,
+                                damage: 0
                             }
                             node.start()
                             let that = this;
