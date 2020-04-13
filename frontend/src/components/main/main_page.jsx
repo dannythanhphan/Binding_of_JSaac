@@ -55,7 +55,7 @@ class MainPage extends React.Component {
                         If you do not have a character, create a new character by clicking the "New Character" button above
                     </li>
                     <li className="instructions">
-                        Create a lobby by clicking the "Find a Lobby" button above.
+                        Create a lobby by clicking the "Create Lobby" button above.
                     </li>
                     <li className="instructions">
                         Share the lobby key with a friend or choose to go on your adventure alone.
