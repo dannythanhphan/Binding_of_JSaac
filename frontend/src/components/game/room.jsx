@@ -175,7 +175,7 @@ class Room extends React.Component {
                     monster={monster}
                     positionX={monster.xPos}
                     positionY={monster.yPos}
-                    activeFrames={this.state.activeAttackPixels}
+                    activeAttackPixels={this.state.activeAttackPixels}
                     playerX={(this.state.currentCharacter.left + this.state.currentCharacter.right) / 2}
                     playerY={(this.state.currentCharacter.top + this.state.currentCharacter.bottom) / 2}
                     player2X={player2X}

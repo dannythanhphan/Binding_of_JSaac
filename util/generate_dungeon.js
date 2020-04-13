@@ -116,8 +116,8 @@ const generateMonster = ( name, level, totalHp, currentHp, meleeAttack, rangedAt
     const monster = new Monster({
         name: name,
         level: level,
-        totalHp: totalHp,
-        currentHp: currentHp,
+        totalHP: totalHp,
+        currentHP: currentHp,
         meleeAttack: meleeAttack,
         rangedAttack: rangedAttack,
         xPos: xPos,

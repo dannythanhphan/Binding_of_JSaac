@@ -18,22 +18,42 @@ class DisplayMonsters extends React.Component {
     constructor(props) {
         super(props);
         this.props = props;
+
         this.state = {
-            monsterXPos: this.props.positionX * 64,
-            monsterYPos: this.props.positionY * 64,
+            monsterXPos: props.positionX * 64,
+            monsterYPos: props.positionY * 64,
             frames: 0,
             animation: "runningRight",
             monsterSprite: Math.ceil(Math.random() * 6)
         }
+        
         this.chaseClosestPlayer = this.chaseClosestPlayer.bind(this);
+        this.checkIfAttacked = this.checkIfAttacked.bind(this);
     }
 
     componentDidMount() {
-        setInterval(this.chaseClosestPlayer, 50);
+        let that = this;
+        setInterval(function() {
+            that.chaseClosestPlayer();
+            that.checkIfAttacked();
+        }, 50);
     }
 
     checkIfAttacked() {
-        
+        let currentState = Object.assign({}, this.state);
+        let { activeAttackPixels } = this.props;
+        currentState.top = currentState.monsterYPos + 22;
+        currentState.bottom = currentState.monsterYPos + 65;
+        currentState.left = currentState.monsterXPos + 25;
+        currentState.right = currentState.monsterXPos + 53;
+
+        if (activeAttackPixels.top >= currentState.top &&
+            activeAttackPixels.top <= currentState.bottom &&
+            activeAttackPixels.left >= currentState.left &&
+            activeAttackPixels.left <= currentState.right) {
+                console.log("attacked");
+        }
+
     }
 
     chaseClosestPlayer() {
@@ -41,6 +61,7 @@ class DisplayMonsters extends React.Component {
         let closestPlayer;
         let {playerX, playerY, player2X, player2Y} = this.props;
         let {monsterXPos, monsterYPos} = this.state;
+
         if (player2X) {
             let playerDist = Math.sqrt(Math.pow((playerX - monsterXPos), 2) + Math.pow((playerY - monsterYPos), 2));
             let player2Dist = Math.sqrt(Math.pow((player2X - monsterXPos), 2) + Math.pow((player2Y - monsterYPos), 2));
