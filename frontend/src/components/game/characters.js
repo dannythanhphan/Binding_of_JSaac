@@ -257,7 +257,6 @@ class DisplayCharacters extends React.Component {
         }
 
         this.props.childSetState(currentState);
-        let that = this;
     }
     componentDidMount() {
         if (this.props.movement) {
@@ -328,20 +327,11 @@ class DisplayCharacters extends React.Component {
                     ref={(node => {
                         if (node && !node.isRunning() && (node.attrs.animation === "meleeRight" || node.attrs.animation === "meleeLeft")) {
                             // setInterval(function() {node.move({x: (20 % 200), y: 0})}, 48)
-                            let resetPixels = {
-                                top: 0,
-                                bottom: 0,
-                                left: 0,
-                                right: 0,
-                                damage: 0
-                            }
                             node.start()
-                            let that = this;
 
                             setTimeout(function () {
                                 node.stop()
                             }, 1000)
-                            that.props.activePixels(resetPixels);
                         }
                     })}
 

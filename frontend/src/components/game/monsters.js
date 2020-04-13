@@ -25,7 +25,9 @@ class DisplayMonsters extends React.Component {
             currentHP: props.monster.currentHP,
             frames: 0,
             animation: "runningRight",
-            monsterSprite: Math.ceil(Math.random() * 6)
+            monsterSprite: 1,
+            attacked: false
+            // monsterSprite: Math.ceil(Math.random() * 6)
         }
         
         this.chaseClosestPlayer = this.chaseClosestPlayer.bind(this);
@@ -33,18 +35,19 @@ class DisplayMonsters extends React.Component {
     }
 
     componentDidMount() {
-        // let that = this;
-        // setInterval(function() {
-        //     that.chaseClosestPlayer();
-        //     that.checkIfAttacked();
-        // }, 50);
-        setInterval(this.chaseClosestPlayer, 50);
-        setInterval(this.checkIfAttacked, 1000);
+        let that = this;
+        setInterval(function() {
+            if (!that.state.attacked) {
+                that.chaseClosestPlayer();
+            }
+        }, 50);
+        // setInterval(this.chaseClosestPlayer, 50);
+        setInterval(this.checkIfAttacked, 50);
     }
 
     checkIfAttacked() {
         let currentState = Object.assign({}, this.state);
-        let { activeAttackPixels } = this.props;
+        let { activeAttackPixels, resetAttackPixels } = this.props;
         currentState.top = currentState.monsterYPos + 22;
         currentState.bottom = currentState.monsterYPos + 65;
         currentState.left = currentState.monsterXPos + 25;
@@ -54,10 +57,23 @@ class DisplayMonsters extends React.Component {
             activeAttackPixels.top <= currentState.bottom &&
             activeAttackPixels.left >= currentState.left &&
             activeAttackPixels.left <= currentState.right) {
-                this.setState({ currentHP: this.state.currentHP - activeAttackPixels.damage })
-                console.log(this.state.currentHP)
+                let attackAnimation = (this.state.animation === "runningRight") ? "attackedRight" : "attackedLeft"
+                
+                currentState.currentHP = this.state.currentHP - activeAttackPixels.damage;
+                currentState.animation = attackAnimation;
+                currentState.attacked = true;
+                currentState.frames = (currentState.frames === 11) ? 0 : currentState.frames + 1;
+                this.setState(currentState)
+                resetAttackPixels();
+            }
+            
+        if (currentState.attacked) {
+            let that = this;
+            let attackAnimation = (this.state.animation === "attackedRight") ? "runningRight" : "runningLeft"
+            setTimeout(function() {
+                that.setState({ animation: attackAnimation, attacked: false });
+            }, 1000)
         }
-
     }
 
     chaseClosestPlayer() {

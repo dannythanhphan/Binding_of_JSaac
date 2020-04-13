@@ -56,6 +56,7 @@ class Room extends React.Component {
         this.state = { currentCharacter, otherCharacter, activeAttackPixels };
         this.childSetState = this.childSetState.bind(this);
         this.getActiveAttackPixels = this.getActiveAttackPixels.bind(this);
+        this.resetAttackPixels = this.resetAttackPixels.bind(this);
     }
 
     childSetState(state) {
@@ -70,6 +71,16 @@ class Room extends React.Component {
         let currentState = Object.assign({}, this.state);
         currentState.activeAttackPixels = pixels;
         this.setState(currentState);
+    }
+
+    resetAttackPixels() {
+        let resetState = Object.assign({}, this.state);
+        resetState.activeAttackPixels.top = 0;
+        resetState.activeAttackPixels.bottom = 0;
+        resetState.activeAttackPixels.left = 0;
+        resetState.activeAttackPixels.right = 0;
+
+        this.setState(resetState)
     }
 
     componentDidMount() {
@@ -177,6 +188,7 @@ class Room extends React.Component {
                     positionX={monster.xPos}
                     positionY={monster.yPos}
                     activeAttackPixels={this.state.activeAttackPixels}
+                    resetAttackPixels={this.resetAttackPixels}
                     playerX={(this.state.currentCharacter.left + this.state.currentCharacter.right) / 2}
                     playerY={(this.state.currentCharacter.top + this.state.currentCharacter.bottom) / 2}
                     player2X={player2X}
