@@ -11,7 +11,12 @@ class Room extends React.Component {
         this.props = props;
         let currentCharacter;
         let otherCharacter;
-        let roomImg;
+        let activeAttackPixels = {
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0
+        };
         const { locations } = this.props;
         let characters = Object.values(this.props.characters);
         for (let i = 0; i < characters.length; i++) {
@@ -46,8 +51,10 @@ class Room extends React.Component {
             otherCharacter.bottom = otherCharacter.yPixel + 80;
             delete otherCharacter.character;
         }
-        this.state = { currentCharacter, otherCharacter, roomImg};
+
+        this.state = { currentCharacter, otherCharacter, activeAttackPixels };
         this.childSetState = this.childSetState.bind(this);
+        this.getActiveAttackPixels = this.getActiveAttackPixels.bind(this);
     }
 
     childSetState(state) {
@@ -55,6 +62,12 @@ class Room extends React.Component {
         if (state._id === localStorage.lobbycharacter) {
             currentState.currentCharacter = state;
         }
+        this.setState(currentState);
+    }
+
+    getActiveAttackPixels(pixels) {
+        let currentState = Object.assign({}, this.state);
+        currentState.activeAttackPixels = pixels;
         this.setState(currentState);
     }
 
@@ -84,19 +97,12 @@ class Room extends React.Component {
                 this.setState(currentState);
             }
         })
-        this.setState({ roomImg: RoomSelector(this.state.currentCharacter.room) })
     }
 
     componentWillUnmount() {
         // still need to figure this out
         window.clearInterval(window.interval);
     }
-
-    // componentDidUpdate(prevProps) {
-    //     if (prevProps.locations !== this.props.locations) {
-    //         this.setState({ roomImg: RoomSelector(this.state.currentCharacter.room) })
-    //     }
-    // }
 
     render() {
         if (this.props.movingRooms) {
@@ -125,6 +131,7 @@ class Room extends React.Component {
                 char={this.state.currentCharacter}
                 movement={true}
                 childSetState={this.childSetState}
+                activePixels={this.getActiveAttackPixels}
                 traps={trapsInRoom}
                 moveRoom={this.props.moveRoom}
                 roomNumber={roomNumber}
@@ -168,6 +175,7 @@ class Room extends React.Component {
                     monster={monster}
                     positionX={monster.xPos}
                     positionY={monster.yPos}
+                    activeFrames={this.state.activeAttackPixels}
                     playerX={(this.state.currentCharacter.left + this.state.currentCharacter.right) / 2}
                     playerY={(this.state.currentCharacter.top + this.state.currentCharacter.bottom) / 2}
                     player2X={player2X}

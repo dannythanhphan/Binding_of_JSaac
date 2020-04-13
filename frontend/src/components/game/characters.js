@@ -234,8 +234,14 @@ class DisplayCharacters extends React.Component {
                     currentState.animation = "meleeLeft"
                 }
 
-                debugger
-               
+                let attackPixels = {
+                    top: currentState.top + 33,
+                    bottom: currentState.bottom - 5,
+                    left: currentState.left + 49,
+                    right: currentState.right + 48
+                };
+
+                this.props.activePixels(attackPixels);
                 currentState.frames = 0
             default:
                 break;
@@ -318,10 +324,19 @@ class DisplayCharacters extends React.Component {
                     ref={(node => {
                         if (node && !node.isRunning() && (node.attrs.animation === "meleeRight" || node.attrs.animation === "meleeLeft")) {
                             // setInterval(function() {node.move({x: (20 % 200), y: 0})}, 48)
+                            let resetPixels = {
+                                top: 0,
+                                bottom: 0,
+                                left: 0,
+                                right: 0
+                            }
                             node.start()
+                            let that = this;
+
                             setTimeout(function () {
                                 node.stop()
                             }, 1000)
+                            that.props.activePixels(resetPixels);
                         }
                     })}
 

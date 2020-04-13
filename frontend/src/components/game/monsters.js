@@ -29,8 +29,11 @@ class DisplayMonsters extends React.Component {
     }
 
     componentDidMount() {
-        // this.setState({ monsterSprite: Math.ceil(Math.random() * 6) })
         setInterval(this.chaseClosestPlayer, 50);
+    }
+
+    checkIfAttacked() {
+        
     }
 
     chaseClosestPlayer() {
