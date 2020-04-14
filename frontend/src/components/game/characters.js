@@ -284,16 +284,17 @@ class DisplayCharacters extends React.Component {
                 68: () => {this.move("right")},
             }, 50)
 
+            let that = this
+            window.addEventListener("keydown", function(e) {
+                if (e.keyCode === 32) {
+                    that.move("space");
+                }
+            })
+
+            this.collision = setInterval(this.checkCollision, 100);
+
         }
-        let that = this
-        window.addEventListener("keydown", function(e) {
-            if (e.keyCode === 32) {
-                that.move("space");
-            }
-        })
-        if (this.props.movement) {
-            this.collision = setInterval(this.checkCollision,100);
-        }
+
     }
 
     render() {
