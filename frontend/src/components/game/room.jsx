@@ -65,8 +65,34 @@ class Room extends React.Component {
         this.childSetState = this.childSetState.bind(this);
         this.getActiveAttackPixels = this.getActiveAttackPixels.bind(this);
         this.resetAttackPixels = this.resetAttackPixels.bind(this);
+        this.takeDamage = this.takeDamage.bind(this);
     }
 
+    takeDamage(val) {
+        let currentState = Object.assign({}, this.state);
+        if (!currentState.currentCharacter.invincible) {
+            currentState.currentCharacter.currentHP -= val;
+            if (currentState.currentCharacter.currentHP > 0) {
+                this.props.updateHP(currentState.currentCharacter._id, currentState.currentCharacter.currentHP);
+                currentState.currentCharacter.invincible = true;
+                let that = this;
+                setTimeout( () => {
+                    let current = Object.assign({}, that.state);
+                    current.currentCharacter.invincible = false;
+                    that.setState(current)
+                }, 1000);
+                console.log(currentState.currentCharacter.currentHP)
+                this.setState(currentState);
+                
+            }
+            else if (currentState.currentCharacter.currentHP <= 0) {
+                currentState.currentCharacter.dead = true;
+                currentState.currentCharacter.currentHP = 0;
+                this.props.updateHP(currentState.currentCharacter._id, currentState.currentCharacter.currentHP);
+                this.setState(currentState);
+            }
+        }
+    }
 
     childSetState(state, movingRooms) {
         let currentState = Object.assign({}, this.state);
@@ -160,6 +186,7 @@ class Room extends React.Component {
                 movement={true}
                 childSetState={this.childSetState}
                 activePixels={this.getActiveAttackPixels}
+                takeDamage={this.takeDamage}
                 traps={trapsInRoom}
                 moveRoom={this.props.moveRoom}
                 roomNumber={roomNumber}
@@ -213,8 +240,10 @@ class Room extends React.Component {
                     monster={monster}
                     positionX={monster.xPos}
                     positionY={monster.yPos}
+                    playerHP={this.state.currentCharacter.currentHP}
                     activeAttackPixels={this.state.activeAttackPixels}
                     resetAttackPixels={this.resetAttackPixels}
+                    takeDamage={this.takeDamage}
                     playerX={(this.state.currentCharacter.left + this.state.currentCharacter.right) / 2}
                     playerY={(this.state.currentCharacter.top + this.state.currentCharacter.bottom) / 2}
                     player2X={player2X}

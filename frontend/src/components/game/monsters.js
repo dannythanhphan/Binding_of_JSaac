@@ -30,6 +30,7 @@ class DisplayMonsters extends React.Component {
         
         this.chaseClosestPlayer = this.chaseClosestPlayer.bind(this);
         this.checkIfAttacked = this.checkIfAttacked.bind(this);
+        this.checkPlayerCollision = this.checkPlayerCollision.bind(this);
     }
 
     componentDidMount() {
@@ -40,13 +41,35 @@ class DisplayMonsters extends React.Component {
             }
         }, 50);
 
+        this.checkCollision = setInterval(this.checkPlayerCollision, 50);
+
         this.checkAttacked = setInterval(this.checkIfAttacked, 50);
     }
 
     componentWillUnmount() {
         clearInterval(this.chasePlayer);
         clearInterval(this.checkAttacked);
+        clearInterval(this.checkCollision);
         console.log("monster unmounting")
+    }
+
+    checkPlayerCollision() {
+        let currentState = Object.assign({}, this.state);
+        let {playerX, playerY, playerHP} = this.props;
+
+        currentState.top = currentState.monsterYPos + 22;
+        currentState.bottom = currentState.monsterYPos + 65;
+        currentState.left = currentState.monsterXPos + 25;
+        currentState.right = currentState.monsterXPos + 53;
+        
+        let playerCollisionCheck = ((currentState.top >= playerY - 20 &&
+                                    currentState.top <= playerY + 20) &&
+                                    (currentState.left >= playerX - 24 &&
+                                    currentState.left <= playerX + 24))
+
+        if (playerCollisionCheck && playerHP > 0) {
+            this.props.takeDamage(this.props.monster.meleeAttack)
+        }
     }
 
     checkIfAttacked() {
@@ -104,15 +127,15 @@ class DisplayMonsters extends React.Component {
             closestPlayer = {x: playerX, y: playerY}
         }
         
-        if (closestPlayer.x < monsterXPos) {
+        if (closestPlayer.x - 45 < monsterXPos) {
             currentState.monsterXPos -= 1;
             currentState.animation = "runningLeft"
         }
-        else if (closestPlayer.x - 80 > monsterXPos) {
+        else if (closestPlayer.x - 45 > monsterXPos) {
             currentState.monsterXPos += 1;
             currentState.animation = "runningRight"
         }
-        if (closestPlayer.y - 30 < monsterYPos) {
+        if (closestPlayer.y - 35 < monsterYPos) {
             currentState.monsterYPos -= 1;
         }
         else if (closestPlayer.y > monsterYPos) {

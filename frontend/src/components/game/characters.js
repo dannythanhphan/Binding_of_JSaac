@@ -60,28 +60,28 @@ class DisplayCharacters extends React.Component {
         }
     }
 
-    takeDamage(val) {
-        let currentState = Object.assign({}, this.props.char);
-        if (!currentState.invincible) {
-            currentState.currentHP -= val;
-            if (currentState.currentHP > 0) {
-                this.props.updateHP(currentState._id, currentState.currentHP);
-                currentState.invincible = true;
-                let that = this;
-                setTimeout( () => {
-                    let current = Object.assign({}, that.props.char);
-                    current.invincible = false;
-                    that.props.childSetState(current)}, 1000);
-                this.props.childSetState(currentState);
-            }
-            else {
-                currentState.dead = true;
-                currentState.currentHP = 0;
-                this.props.updateHP(currentState._id, currentState.currentHP);
-                this.props.childSetState(currentState);
-            }
-        }
-    }
+    // takeDamage(val) {
+    //     let currentState = Object.assign({}, this.props.char);
+    //     if (!currentState.invincible) {
+    //         currentState.currentHP -= val;
+    //         if (currentState.currentHP > 0) {
+    //             this.props.updateHP(currentState._id, currentState.currentHP);
+    //             currentState.invincible = true;
+    //             let that = this;
+    //             setTimeout( () => {
+    //                 let current = Object.assign({}, that.props.char);
+    //                 current.invincible = false;
+    //                 that.props.childSetState(current)}, 1000);
+    //             this.props.childSetState(currentState);
+    //         }
+    //         else {
+    //             currentState.dead = true;
+    //             currentState.currentHP = 0;
+    //             this.props.updateHP(currentState._id, currentState.currentHP);
+    //             this.props.childSetState(currentState);
+    //         }
+    //     }
+    // }
 
     checkCollision() {
         this.checkTrapsCollision();
@@ -101,11 +101,13 @@ class DisplayCharacters extends React.Component {
             if (!(traptopleft.x >= this.props.char.right || 
                 trapbottomright.x <= this.props.char.left ||
                 trapbottomright.y <= this.props.char.top ||
-                traptopleft.y >= this.props.char.bottom)) {
-                    this.takeDamage(this.props.traps[i].meleeAttack);
+                traptopleft.y >= this.props.char.bottom) &&
+                this.props.char.currentHP > 0) {
+                    this.props.takeDamage(this.props.traps[i].meleeAttack);
                 }     
         }
     }
+
     checkWalls(left, right, top, bottom) {
         if (left < 56) {
             if (top < 312 || bottom > 378) {
@@ -244,14 +246,23 @@ class DisplayCharacters extends React.Component {
                 currentState.animation = "runningRight"
                 break;
             case "space":
+                let attackPixels = {
+                    top: currentState.top + 33,
+                    bottom: currentState.bottom - 5,
+                    left: currentState.left + 49,
+                    right: currentState.right + 48,
+                    damage: currentState.meleeAttack
+                };
+
                 if (currentState.animation === "runningRight" || currentState.animation === "meleeRight") {
                     currentState.animation = "meleeRight" 
                 } else if (currentState.animation === "runningLeft" || currentState.animation === "meleeLeft") {
                     currentState.animation = "meleeLeft"
+                    attackPixels.left = currentState.left - 49;
+                    attackPixels.right = currentState.right - 48;
                 }
 
-               
-                currentState.frames = 0
+                this.props.activePixels(attackPixels);
             default:
                 break;
         }
