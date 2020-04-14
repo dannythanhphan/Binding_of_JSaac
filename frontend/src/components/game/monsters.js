@@ -46,7 +46,6 @@ class DisplayMonsters extends React.Component {
     componentWillUnmount() {
         clearInterval(this.chasePlayer);
         clearInterval(this.checkAttacked);
-        console.log("monster unmounting")
     }
 
     checkIfAttacked() {
@@ -78,7 +77,6 @@ class DisplayMonsters extends React.Component {
                 currentState.frames = (currentState.frames === 11) ? 0 : currentState.frames + 1;
                 this.setState(currentState)
                 resetAttackPixels();
-                console.log("attacked")
             }
             
         if (currentState.attacked) {
