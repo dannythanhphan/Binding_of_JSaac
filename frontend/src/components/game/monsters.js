@@ -25,9 +25,8 @@ class DisplayMonsters extends React.Component {
             currentHP: props.monster.currentHP,
             frames: 0,
             animation: "runningRight",
-            monsterSprite: 1,
-            attacked: false
-            // monsterSprite: Math.ceil(Math.random() * 6)
+            attacked: false,
+            monsterSprite: Math.ceil(Math.random() * 6)
         }
         
         this.chaseClosestPlayer = this.chaseClosestPlayer.bind(this);
@@ -41,7 +40,7 @@ class DisplayMonsters extends React.Component {
                 that.chaseClosestPlayer();
             }
         }, 50);
-        // setInterval(this.chaseClosestPlayer, 50);
+
         setInterval(this.checkIfAttacked, 50);
     }
 
@@ -56,7 +55,8 @@ class DisplayMonsters extends React.Component {
         if (activeAttackPixels.top >= currentState.top &&
             activeAttackPixels.top <= currentState.bottom &&
             activeAttackPixels.left >= currentState.left &&
-            activeAttackPixels.left <= currentState.right) {
+            activeAttackPixels.left <= currentState.right &&
+            !currentState.attacked) {
                 let attackAnimation = (this.state.animation === "runningRight") ? "attackedRight" : "attackedLeft"
                 
                 currentState.currentHP = this.state.currentHP - activeAttackPixels.damage;
