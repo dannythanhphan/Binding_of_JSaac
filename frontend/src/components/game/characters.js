@@ -2,7 +2,7 @@ import React from 'react';
 import knight from '../../assets/animations/knight/knight_animations.png';
 import rogue from '../../assets/animations/rogue/rogue_animations.png';
 import mage from '../../assets/animations/mage/mage_animations.png';
-import { Sprite, Layer, Rect } from 'react-konva';
+import { Sprite, Layer, Rect, Group } from 'react-konva';
 import characterAnimations from './character_animations';
 
 class DisplayCharacters extends React.Component {
@@ -64,14 +64,22 @@ class DisplayCharacters extends React.Component {
         let currentState = Object.assign({}, this.props.char);
         if (!currentState.invincible) {
             currentState.currentHP -= val;
-            this.props.updateHP(currentState._id, currentState.currentHP);
-            currentState.invincible = true;
-            let that = this;
-            setTimeout( () => {
-                let current = Object.assign({}, that.props.char);
-                current.invincible = false;
-                that.props.childSetState(current)}, 1000);
-            this.props.childSetState(currentState);
+            if (currentState.currentHP > 0) {
+                this.props.updateHP(currentState._id, currentState.currentHP);
+                currentState.invincible = true;
+                let that = this;
+                setTimeout( () => {
+                    let current = Object.assign({}, that.props.char);
+                    current.invincible = false;
+                    that.props.childSetState(current)}, 1000);
+                this.props.childSetState(currentState);
+            }
+            else {
+                currentState.dead = true;
+                currentState.currentHP = 0;
+                this.props.updateHP(currentState._id, currentState.currentHP);
+                this.props.childSetState(currentState);
+            }
         }
     }
 
@@ -242,7 +250,6 @@ class DisplayCharacters extends React.Component {
                     currentState.animation = "meleeLeft"
                 }
 
-                debugger
                
                 currentState.frames = 0
             default:
@@ -295,7 +302,7 @@ class DisplayCharacters extends React.Component {
                 break;
         }
         return (
-            <Layer>
+            <Group>
                 <Rect
                     width={50}
                     height={10}
@@ -334,7 +341,7 @@ class DisplayCharacters extends React.Component {
                     })}
 
                 />
-            </Layer>
+            </Group>
             
 
         )
