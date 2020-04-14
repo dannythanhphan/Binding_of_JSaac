@@ -18,7 +18,6 @@ class DisplayMonsters extends React.Component {
     constructor(props) {
         super(props);
         this.props = props;
-
         this.state = {
             monsterXPos: props.positionX * 64,
             monsterYPos: props.positionY * 64,
@@ -35,13 +34,19 @@ class DisplayMonsters extends React.Component {
 
     componentDidMount() {
         let that = this;
-        setInterval(function() {
+        this.chasePlayer = setInterval(function() {
             if (!that.state.attacked) {
                 that.chaseClosestPlayer();
             }
         }, 50);
 
-        setInterval(this.checkIfAttacked, 50);
+        this.checkAttacked = setInterval(this.checkIfAttacked, 50);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.chasePlayer);
+        clearInterval(this.checkAttacked);
+        console.log("monster unmounting")
     }
 
     checkIfAttacked() {
@@ -116,6 +121,7 @@ class DisplayMonsters extends React.Component {
         currentState.frames = (currentState.frames === 11) ? 0 : currentState.frames + 1;
         this.setState(currentState);
     }
+
 
     render() {
         let monsterImg = new Image();

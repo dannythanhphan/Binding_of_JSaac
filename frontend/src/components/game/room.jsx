@@ -53,16 +53,36 @@ class Room extends React.Component {
             delete otherCharacter.character;
         }
 
-        this.state = { currentCharacter, otherCharacter, activeAttackPixels };
+        let room = this.props.room[(currentCharacter.room % 16) * currentCharacter.floor];
+        let monsters = {};
+        this.props.monsters.forEach( monster => {
+            if (monster.roomId === room.id) {
+                monsters[monster.id] = monster;
+            }
+        });
+
+        this.state = { currentCharacter, otherCharacter, activeAttackPixels, room, monsters };
         this.childSetState = this.childSetState.bind(this);
         this.getActiveAttackPixels = this.getActiveAttackPixels.bind(this);
         this.resetAttackPixels = this.resetAttackPixels.bind(this);
     }
 
-    childSetState(state) {
+
+    childSetState(state, movingRooms) {
         let currentState = Object.assign({}, this.state);
         if (state._id === localStorage.lobbycharacter) {
             currentState.currentCharacter = state;
+        }
+        if (movingRooms) {
+            let room = this.props.room[(currentState.currentCharacter.room % 16) * currentState.currentCharacter.floor];
+            currentState.room = room;
+            let monsters = {};
+            this.props.monsters.forEach(monster => {
+                if (monster.roomId === room.id) {
+                    monsters[monster.id] = monster;
+                }
+            });
+            currentState.monsters = monsters;
         }
         this.setState(currentState);
     }
@@ -117,11 +137,6 @@ class Room extends React.Component {
     }
 
     render() {
-        if (this.props.movingRooms) {
-            console.log("changing rooms")
-            return (<div>Changing Rooms!!!!</div>)
-        }
-
         if (Object.keys(this.props.lobby).length === 0) return null;
         let { room, traps, locations, monsters } = this.props;
         let roomImg;
@@ -176,14 +191,19 @@ class Room extends React.Component {
                 otherChar = null;
             }
 
-            let monsterCountPerRoom = [];
-            for (let i = 0; i < monsters.length; i++) {
-                if (monsters[i].roomId === roomNumber.id) {
-                    monsterCountPerRoom.push(monsters[i])
-                }
-            }
-            monstersInRoom = monsterCountPerRoom.map(monster => (
+            // let monsterCountPerRoom = [];
+            // for (let i = 0; i < monsters.length; i++) {
+            //     if (monsters[i].roomId === roomNumber.id) {
+            //         // console.log(monsters[i].roomId)
+            //         // console.log(roomNumber.id)
+            //         monsterCountPerRoom.push(monsters[i])
+            //     }
+            // }
+            // console.log(monsterCountPerRoom)
+            // monstersInRoom = monsterCountPerRoom.map(monster => (
+            monstersInRoom = Object.values(this.state.monsters).map(monster => (
                 monstersInRoom = <DisplayMonsters
+                    key={monster.id}
                     monster={monster}
                     positionX={monster.xPos}
                     positionY={monster.yPos}

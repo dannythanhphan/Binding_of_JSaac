@@ -56,7 +56,7 @@ class DisplayCharacters extends React.Component {
         if (this.props.movement) {
             document.onkeydown = null;
             document.onkeyup = null;
-            clearInterval(window.collision);
+            clearInterval(this.collision);
         }
     }
 
@@ -129,6 +129,7 @@ class DisplayCharacters extends React.Component {
         let maxFrames = 7
         let currentState = Object.assign({}, this.props.char)
         let { roomNumber, char, floorNumber, moveRoom } = this.props
+        let movingRooms = false;
 
         switch(dir) {
             case "up":
@@ -146,6 +147,7 @@ class DisplayCharacters extends React.Component {
                         currentState.top = currentState.yPixel + 40;
                         currentState.bottom = currentState.yPixel + 80;
                         moveRoom(localStorage.lobbykey, char._id, floorNumber, roomNumber.topExit);
+                        movingRooms = true;
                     } else if (roomNumber.topExit === -1 && currentState.yPixel - 8 < 0) {
                         currentState.yPixel = currentState.yPixel;
                     } else {
@@ -172,6 +174,8 @@ class DisplayCharacters extends React.Component {
                         currentState.top = currentState.yPixel + 40;
                         currentState.bottom = currentState.yPixel + 80;
                         moveRoom(localStorage.lobbykey, char._id, floorNumber, roomNumber.bottomExit);
+                        movingRooms = true;
+
                     } else if (roomNumber.bottomExit === -1 && currentState.yPixel + 8 > 576) {
                         currentState.yPixel = currentState.yPixel;
                     } else {
@@ -193,6 +197,8 @@ class DisplayCharacters extends React.Component {
                         currentState.left = currentState.xPixel + 48;
                         currentState.right = currentState.xPixel + 96;
                         moveRoom(localStorage.lobbykey, char._id, floorNumber, roomNumber.leftExit);
+                        movingRooms = true;
+
                     } else if (roomNumber.leftExit === -1 && currentState.xPixel - 8 < 64) {
                         currentState.xPixel = currentState.xPixel;
                     } else {
@@ -215,6 +221,8 @@ class DisplayCharacters extends React.Component {
                         currentState.left = currentState.xPixel + 48;
                         currentState.right = currentState.xPixel + 96;
                         moveRoom(localStorage.lobbykey, char._id, floorNumber, roomNumber.rightExit);
+                        movingRooms = true;
+
                     } else if (roomNumber.rightExit === -1 && currentState.xPixel + 8 < 992) {
                         currentState.xPixel = currentState.xPixel;
                     } else {
@@ -228,24 +236,14 @@ class DisplayCharacters extends React.Component {
                 currentState.animation = "runningRight"
                 break;
             case "space":
-                let attackPixels = {
-                    top: currentState.top + 33,
-                    bottom: currentState.bottom - 5,
-                    left: currentState.left + 49,
-                    right: currentState.right + 48,
-                    damage: currentState.meleeAttack
-                };
-
                 if (currentState.animation === "runningRight" || currentState.animation === "meleeRight") {
                     currentState.animation = "meleeRight" 
                 } else if (currentState.animation === "runningLeft" || currentState.animation === "meleeLeft") {
                     currentState.animation = "meleeLeft"
-                    attackPixels.left = currentState.left - 49;
-                    attackPixels.right = currentState.right - 48;
                 }
 
-
-                this.props.activePixels(attackPixels);
+                debugger
+               
                 currentState.frames = 0
             default:
                 break;
@@ -256,7 +254,8 @@ class DisplayCharacters extends React.Component {
             currentState.frames = (currentState.frames === maxFrames) ? 0 : currentState.frames + 1;
         }
 
-        this.props.childSetState(currentState);
+        this.props.childSetState(currentState, movingRooms);
+        let that = this;
     }
     componentDidMount() {
         if (this.props.movement) {
@@ -275,7 +274,7 @@ class DisplayCharacters extends React.Component {
             }
         })
         if (this.props.movement) {
-            window.collision = setInterval(this.checkCollision,100);
+            this.collision = setInterval(this.checkCollision,100);
         }
     }
 
@@ -328,7 +327,6 @@ class DisplayCharacters extends React.Component {
                         if (node && !node.isRunning() && (node.attrs.animation === "meleeRight" || node.attrs.animation === "meleeLeft")) {
                             // setInterval(function() {node.move({x: (20 % 200), y: 0})}, 48)
                             node.start()
-
                             setTimeout(function () {
                                 node.stop()
                             }, 1000)
