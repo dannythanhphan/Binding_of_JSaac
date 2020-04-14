@@ -15,8 +15,8 @@ export const GetTraps = (roomId, traps) => {
 export const displayTraps = (trap) => {
     let trapImg = new window.Image();
     trapImg.src = spike
-    let trapXPos = (trap.xPos === 15) ? (trap.xPos * 64) : ((trap.xPos * 64) + 64)
-    let trapYPos = (trap.yPos === 9) ? (trap.yPos * 64) : ((trap.yPos * 64) + 64)
+    let trapXPos = trap.xPos * 64
+    let trapYPos = trap.yPos * 64
 
     return (
         <Image

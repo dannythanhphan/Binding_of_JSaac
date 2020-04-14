@@ -6,6 +6,7 @@ import reaper1 from '../../assets/animations/reaper1_animation.png'
 import reaper2 from '../../assets/animations/reaper2_animation.png'
 import reaper3 from '../../assets/animations/reaper3_animation.png'
 import { Sprite } from 'react-konva';
+import monsterAnimations from './monster_animations';
 
 const MAXXPOS = 1024;
 const MINXPOS = 64;
@@ -18,155 +19,134 @@ class DisplayMonsters extends React.Component {
         super(props);
         this.props = props;
         this.state = {
-            monsterXPos: (this.props.positionX === 15) ? (this.props.positionX * 64) : ((this.props.positionX * 64) + 64),
-            monsterYPos: (this.props.positionY === 9) ? (this.props.positionY * 64) : ((this.props.positionY * 64) + 64),
+            monsterXPos: props.positionX * 64,
+            monsterYPos: props.positionY * 64,
+            currentHP: props.monster.currentHP,
             frames: 0,
-            monsterSprite: 1
+            animation: "runningRight",
+            attacked: false,
+            monsterSprite: Math.ceil(Math.random() * 6)
         }
+        
         this.chaseClosestPlayer = this.chaseClosestPlayer.bind(this);
+        this.checkIfAttacked = this.checkIfAttacked.bind(this);
     }
 
     componentDidMount() {
-        // this.setState({ monsterSprite: Math.ceil(Math.random() * 6) })
-        setInterval(this.chaseClosestPlayer, 50);
+        let that = this;
+        this.chasePlayer = setInterval(function() {
+            if (!that.state.attacked) {
+                that.chaseClosestPlayer();
+            }
+        }, 50);
+
+        this.checkAttacked = setInterval(this.checkIfAttacked, 50);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.chasePlayer);
+        clearInterval(this.checkAttacked);
+        console.log("monster unmounting")
+    }
+
+    checkIfAttacked() {
+        let currentState = Object.assign({}, this.state);
+        let { activeAttackPixels, resetAttackPixels } = this.props;
+        currentState.top = currentState.monsterYPos + 22;
+        currentState.bottom = currentState.monsterYPos + 65;
+        currentState.left = currentState.monsterXPos + 25;
+        currentState.right = currentState.monsterXPos + 53;
+
+        let rightAttackCheck = (activeAttackPixels.top >= currentState.top &&
+                            activeAttackPixels.top <= currentState.bottom &&
+                            activeAttackPixels.left >= currentState.left &&
+                            activeAttackPixels.left <= currentState.right &&
+                            !currentState.attacked)
+        
+        let leftAttackCheck = (activeAttackPixels.top >= currentState.top &&
+                            activeAttackPixels.top <= currentState.bottom &&
+                            activeAttackPixels.left <= currentState.left &&
+                            activeAttackPixels.left <= currentState.right &&
+                            !currentState.attacked)
+
+        if (rightAttackCheck || leftAttackCheck) {
+                let attackAnimation = (this.state.animation === "runningRight") ? "attackedRight" : "attackedLeft"
+                
+                currentState.currentHP = this.state.currentHP - activeAttackPixels.damage;
+                currentState.animation = attackAnimation;
+                currentState.attacked = true;
+                currentState.frames = (currentState.frames === 11) ? 0 : currentState.frames + 1;
+                this.setState(currentState)
+                resetAttackPixels();
+                console.log("attacked")
+            }
+            
+        if (currentState.attacked) {
+            let that = this;
+            let attackAnimation = (this.state.animation === "attackedRight") ? "runningRight" : "runningLeft"
+            setTimeout(function() {
+                that.setState({ animation: attackAnimation, attacked: false });
+            }, 1000)
+        }
     }
 
     chaseClosestPlayer() {
         let currentState = Object.assign({}, this.state);
-        if (this.props.playerX < this.state.monsterXPos) {
+        let closestPlayer;
+        let {playerX, playerY, player2X, player2Y} = this.props;
+        let {monsterXPos, monsterYPos} = this.state;
+
+        if (player2X) {
+            let playerDist = Math.sqrt(Math.pow((playerX - monsterXPos), 2) + Math.pow((playerY - monsterYPos), 2));
+            let player2Dist = Math.sqrt(Math.pow((player2X - monsterXPos), 2) + Math.pow((player2Y - monsterYPos), 2));
+            closestPlayer = (playerDist > player2Dist) ? { x: player2X, y: player2Y } : { x: playerX, y: playerY }
+        } else {
+            closestPlayer = {x: playerX, y: playerY}
+        }
+        
+        if (closestPlayer.x < monsterXPos) {
             currentState.monsterXPos -= 1;
+            currentState.animation = "runningLeft"
         }
-        else if (this.props.playerX > this.state.monsterXPos) {
+        else if (closestPlayer.x - 80 > monsterXPos) {
             currentState.monsterXPos += 1;
+            currentState.animation = "runningRight"
         }
-        if (this.props.playerY < this.state.monsterYPos) {
+        if (closestPlayer.y - 30 < monsterYPos) {
             currentState.monsterYPos -= 1;
         }
-        else if (this.props.playerY > this.state.monsterYPos) {
+        else if (closestPlayer.y > monsterYPos) {
             currentState.monsterYPos += 1;
         }
         currentState.frames = (currentState.frames === 11) ? 0 : currentState.frames + 1;
         this.setState(currentState);
     }
 
+
     render() {
         let monsterImg = new Image();
-        let running;
+        let animations;
     
-        switch (this.state.monsterSprite) {
-            case 1:
+        let curMonsterInfo = monsterAnimations(this.state.monsterSprite)
+        animations = curMonsterInfo.animations ;
+        switch (curMonsterInfo.monsterImg) {
+            case "golem1":
                 monsterImg.src = golem1
-                running = {
-                    running: [
-                        0, 0, 750, 750,
-                        750, 0, 750, 750,
-                        1500, 0, 750, 750,
-                        2250, 0, 750, 750,
-                        3000, 0, 750, 750,
-                        3750, 0, 750, 750,
-                        4500, 0, 750, 750,
-                        5250, 0, 750, 750,
-                        6000, 0, 750, 750,
-                        6750, 0, 750, 750,
-                        7500, 0, 750, 750,
-                        8250, 0, 750, 750,
-                    ]
-                }
                 break;
-            case 2:
+            case "golem2":
                 monsterImg.src = golem2
-                running = {
-                    running: [
-                        0, 0, 750, 750,
-                        750, 0, 750, 750,
-                        1500, 0, 750, 750,
-                        2250, 0, 750, 750,
-                        3000, 0, 750, 750,
-                        3750, 0, 750, 750,
-                        4500, 0, 750, 750,
-                        5250, 0, 750, 750,
-                        6000, 0, 750, 750,
-                        6750, 0, 750, 750,
-                        7500, 0, 750, 750,
-                        8250, 0, 750, 750,
-                    ]
-                }
                 break;
-            case 3:
+            case "golem3":
                 monsterImg.src = golem3
-                running = {
-                    running: [
-                        0, 0, 750, 750,
-                        750, 0, 750, 750,
-                        1500, 0, 750, 750,
-                        2250, 0, 750, 750,
-                        3000, 0, 750, 750,
-                        3750, 0, 750, 750,
-                        4500, 0, 750, 750,
-                        5250, 0, 750, 750,
-                        6000, 0, 750, 750,
-                        6750, 0, 750, 750,
-                        7500, 0, 750, 750,
-                        8250, 0, 750, 750,
-                    ]
-                }
                 break;
-            case 4:
+            case "reaper1":
                 monsterImg.src = reaper1
-                running = {
-                    running: [
-                        0, 0, 750, 750,
-                        750, 0, 750, 750,
-                        1500, 0, 750, 750,
-                        2250, 0, 750, 750,
-                        3000, 0, 750, 750,
-                        3750, 0, 750, 750,
-                        4500, 0, 750, 750,
-                        5250, 0, 750, 750,
-                        6000, 0, 750, 750,
-                        6750, 0, 750, 750,
-                        7500, 0, 750, 750,
-                        8250, 0, 750, 750,
-                    ]
-                }
                 break;
-            case 5:
+            case "reaper2":
                 monsterImg.src = reaper2
-                running = {
-                    running: [
-                        0, 0, 750, 750,
-                        750, 0, 750, 750,
-                        1500, 0, 750, 750,
-                        2250, 0, 750, 750,
-                        3000, 0, 750, 750,
-                        3750, 0, 750, 750,
-                        4500, 0, 750, 750,
-                        5250, 0, 750, 750,
-                        6000, 0, 750, 750,
-                        6750, 0, 750, 750,
-                        7500, 0, 750, 750,
-                        8250, 0, 750, 750,
-                    ]
-                }
                 break;
-            case 6:
+            case "reaper3":
                 monsterImg.src = reaper3
-                running = {
-                    running: [
-                        0, 0, 750, 750,
-                        750, 0, 750, 750,
-                        1500, 0, 750, 750,
-                        2250, 0, 750, 750,
-                        3000, 0, 750, 750,
-                        3750, 0, 750, 750,
-                        4500, 0, 750, 750,
-                        5250, 0, 750, 750,
-                        6000, 0, 750, 750,
-                        6750, 0, 750, 750,
-                        7500, 0, 750, 750,
-                        8250, 0, 750, 750,
-                    ]
-                }
                 break;
         }
 
@@ -175,12 +155,12 @@ class DisplayMonsters extends React.Component {
                 x={this.state.monsterXPos}
                 y={this.state.monsterYPos}
                 image={monsterImg}
-                animation='running'
-                animations={running}
+                animation={this.state.animation}
+                animations={animations}
                 frameRate={24}
                 frameIndex={this.state.frames}
-                scaleX={0.1}
-                scaleY={0.1}
+                scaleX={0.5}
+                scaleY={0.5}
             />
         );
     };

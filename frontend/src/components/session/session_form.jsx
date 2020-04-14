@@ -27,11 +27,11 @@ class SessionForm extends React.Component {
 
     render() {
         const typeOfForm = this.props.formType === "signup" ? "Sign Up" : "Log In"
-        const toSignUpPage = this.props.formType === "login" ? (
-            <Link to="/register" className="login-signup-button">Sign Up</Link>
-        ) : (
-            <Link to="/" className="session-home-button">Cancel</Link>
-        )
+        // const toSignUpPage = this.props.formType === "login" ? (
+        //     <Link to="/register" className="login-signup-button">Sign Up</Link>
+        // ) : (
+        //     <Link to="/" className="session-home-button">Cancel</Link>
+        // )
 
         const confirmPassword = this.props.formType === "signup" ? (
             <label className="confirm-password-label">Confirm: 
@@ -81,7 +81,7 @@ class SessionForm extends React.Component {
                                 <button onClick={this.handleSubmit} className="session-button">
                                     {typeOfForm}
                                 </button>
-                                {toSignUpPage}
+                                <Link to="/" className="session-home-button">Cancel</Link>
                             </div>
                         </form>
                     </div>
