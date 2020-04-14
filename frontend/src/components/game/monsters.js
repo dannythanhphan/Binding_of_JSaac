@@ -52,11 +52,19 @@ class DisplayMonsters extends React.Component {
         currentState.left = currentState.monsterXPos + 25;
         currentState.right = currentState.monsterXPos + 53;
 
-        if (activeAttackPixels.top >= currentState.top &&
-            activeAttackPixels.top <= currentState.bottom &&
-            activeAttackPixels.left >= currentState.left &&
-            activeAttackPixels.left <= currentState.right &&
-            !currentState.attacked) {
+        let rightAttackCheck = (activeAttackPixels.top >= currentState.top &&
+                            activeAttackPixels.top <= currentState.bottom &&
+                            activeAttackPixels.left >= currentState.left &&
+                            activeAttackPixels.left <= currentState.right &&
+                            !currentState.attacked)
+        
+        let leftAttackCheck = (activeAttackPixels.top >= currentState.top &&
+                            activeAttackPixels.top <= currentState.bottom &&
+                            activeAttackPixels.left <= currentState.left &&
+                            activeAttackPixels.left <= currentState.right &&
+                            !currentState.attacked)
+
+        if (rightAttackCheck || leftAttackCheck) {
                 let attackAnimation = (this.state.animation === "runningRight") ? "attackedRight" : "attackedLeft"
                 
                 currentState.currentHP = this.state.currentHP - activeAttackPixels.damage;
@@ -65,6 +73,7 @@ class DisplayMonsters extends React.Component {
                 currentState.frames = (currentState.frames === 11) ? 0 : currentState.frames + 1;
                 this.setState(currentState)
                 resetAttackPixels();
+                console.log("attacked")
             }
             
         if (currentState.attacked) {
@@ -89,15 +98,16 @@ class DisplayMonsters extends React.Component {
         } else {
             closestPlayer = {x: playerX, y: playerY}
         }
+        
         if (closestPlayer.x < monsterXPos) {
             currentState.monsterXPos -= 1;
             currentState.animation = "runningLeft"
         }
-        else if (closestPlayer.x > monsterXPos) {
+        else if (closestPlayer.x - 80 > monsterXPos) {
             currentState.monsterXPos += 1;
             currentState.animation = "runningRight"
         }
-        if (closestPlayer.y < monsterYPos) {
+        if (closestPlayer.y - 30 < monsterYPos) {
             currentState.monsterYPos -= 1;
         }
         else if (closestPlayer.y > monsterYPos) {
