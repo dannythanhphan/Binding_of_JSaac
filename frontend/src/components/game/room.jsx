@@ -65,8 +65,8 @@ class Room extends React.Component {
         this.childSetState = this.childSetState.bind(this);
         this.getActiveAttackPixels = this.getActiveAttackPixels.bind(this);
         this.resetAttackPixels = this.resetAttackPixels.bind(this);
+        this.waitingForData = false;
     }
-
 
     childSetState(state, movingRooms) {
         let currentState = Object.assign({}, this.state);
@@ -74,6 +74,7 @@ class Room extends React.Component {
             currentState.currentCharacter = state;
         }
         if (movingRooms) {
+            this.waitingForData = true;
             let room = this.props.room[(currentState.currentCharacter.room % 16) * currentState.currentCharacter.floor];
             currentState.room = room;
             let monsters = {};
@@ -201,7 +202,8 @@ class Room extends React.Component {
             // }
             // console.log(monsterCountPerRoom)
             // monstersInRoom = monsterCountPerRoom.map(monster => (
-            monstersInRoom = Object.values(this.state.monsters).map(monster => (
+            monstersInRoom = this.waitingForData ? null : 
+            Object.values(this.state.monsters).map(monster => (
                 monstersInRoom = <DisplayMonsters
                     key={monster.id}
                     monster={monster}
@@ -217,7 +219,6 @@ class Room extends React.Component {
             ))
         }
 
-        
         return (
             <div className="room-main">
                 <Stage width={1088} height={704}>
