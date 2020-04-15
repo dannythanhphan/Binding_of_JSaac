@@ -58,6 +58,9 @@ class Room extends React.Component {
         this.props.monsters.forEach( monster => {
             if (monster.roomId === room.id) {
                 monsters[monster.id] = monster;
+                monsters[monster.id].xPos *= 64;
+                monsters[monster.id].yPos *= 64;
+                monsters[monster.id].animation = "runningRight";
             }
         });
 
@@ -103,6 +106,46 @@ class Room extends React.Component {
 
         this.setState(resetState)
     }
+
+    updateMonsterPos(monster) {
+        let updatedMonster = Object.assign({}, monster);
+        let closestPlayer;
+        const playerX = (this.state.currentCharacter.left + this.state.currentCharacter.right) / 2
+        const playerY = (this.state.currentCharacter.top + this.state.currentCharacter.bottom) / 2
+        let player2X, player2Y;
+        if (this.state.otherCharacter &&
+            this.props.locations[this.state.currentCharacter._id].floor == this.props.locations[this.state.otherCharacter._id].floor &
+            this.props.locations[this.state.currentCharacter._id].room == this.props.locations[this.state.otherCharacter._id].room
+        ) {
+            player2X = (this.state.otherCharacter.left + this.state.otherCharacter.right) / 2;
+            player2Y = (this.state.otherCharacter.top + this.state.otherCharacter.bottom) / 2;
+
+        if (player2X) {
+            const playerDist = Math.pow((playerX - monster.xPos), 2) + Math.pow((playerY - monster.yPos), 2);
+            const player2Dist = Math.pow((player2X - monster.xPos), 2) + Math.pow((player2Y - monster.yPos), 2);
+            closestPlayer = (playerDist > player2Dist) ? { x: player2X, y: player2Y } : { x: playerX, y: playerY }
+        } else {
+            closestPlayer = {x: playerX, y: playerY}
+        }
+        
+        if (closestPlayer.x < monster.xPos) {
+            updatedMonster.xPos -= 1;
+            updatedMonster.animation = "runningLeft"
+        }
+        else if (closestPlayer.x - 80 > monsterXPos) {
+            updatedMonster.xPos += 1;
+            updatedMonster.animation = "runningRight"
+        }
+        if (closestPlayer.y - 30 < monsterYPos) {
+            updatedMonster.yPos -= 1;
+        }
+        else if (closestPlayer.y > monsterYPos) {
+            updatedMonster.yPos += 1;
+        }
+        updatedMonster.frames = (updatedMonster.frames === 11) ? 0 : updatedMonster.frames + 1;
+        return updatedMonster;
+    }
+
 
     componentDidMount() {
         if (localStorage.lobbykey && Object.keys(this.props.lobby).length === 0) {
@@ -207,14 +250,11 @@ class Room extends React.Component {
                 monstersInRoom = <DisplayMonsters
                     key={monster.id}
                     monster={monster}
-                    positionX={monster.xPos}
-                    positionY={monster.yPos}
+                    xPos={monster.xPos}
+                    yPos={monster.yPos}
+                    animation={monster.animation}
                     activeAttackPixels={this.state.activeAttackPixels}
                     resetAttackPixels={this.resetAttackPixels}
-                    playerX={(this.state.currentCharacter.left + this.state.currentCharacter.right) / 2}
-                    playerY={(this.state.currentCharacter.top + this.state.currentCharacter.bottom) / 2}
-                    player2X={player2X}
-                    player2Y={player2Y}
                 />
             ))
         }
