@@ -86,13 +86,20 @@ class Room extends React.Component {
             currentState.currentCharacter = state;
         }
         if (movingRooms) {
-            this.waitingForData = true;
+            console.log('moving rooms')
+            this.waitingForData = false;
             let room = this.props.room[(currentState.currentCharacter.room % 16) * currentState.currentCharacter.floor];
             currentState.room = room;
             let monsters = {};
+            this.monstersAttacked = {};
             this.props.monsters.forEach(monster => {
                 if (monster.roomId === room.id) {
                     monsters[monster.id] = monster;
+                    monsters[monster.id].xPos *= 64;
+                    monsters[monster.id].yPos *= 64;
+                    monsters[monster.id].animation = "runningRight";
+                    monsters[monster.id].frames = 0;
+                    this.monstersAttacked[monster.id] = false;
                 }
             });
             currentState.monsters = monsters;
@@ -117,7 +124,6 @@ class Room extends React.Component {
     }
 
     updateMonsterPos() {
-        debugger
         if (!this.state.monsters)
             return;
         const monsters = Object.values(this.state.monsters);
