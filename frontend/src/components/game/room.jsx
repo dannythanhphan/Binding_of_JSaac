@@ -55,6 +55,7 @@ class Room extends React.Component {
 
         let room = this.props.room[(currentCharacter.room % 16) * currentCharacter.floor];
         let monsters = {};
+        this.monstersAttacked = {}
         this.props.monsters.forEach( monster => {
             if (monster.roomId === room.id) {
                 monsters[monster.id] = monster;
@@ -62,7 +63,7 @@ class Room extends React.Component {
                 monsters[monster.id].yPos *= 64;
                 monsters[monster.id].animation = "runningRight";
                 monsters[monster.id].frames = 0;
-                monsters[monster.id].attacked = 0;
+                this.monstersAttacked[monster.id] = false;
             }
         });
 
@@ -71,6 +72,12 @@ class Room extends React.Component {
         this.getActiveAttackPixels = this.getActiveAttackPixels.bind(this);
         this.resetAttackPixels = this.resetAttackPixels.bind(this);
         this.waitingForData = false;
+        this.updateMonsterPos = this.updateMonsterPos.bind(this);
+        this.checkIfAttacked = this.checkIfAttacked.bind(this);
+
+        let that = this;
+        this.monsterMoveTimer = setInterval(() => this.updateMonsterPos(), 50);
+        this.checkAttackedTimer = setInterval(() => this.checkIfAttacked(), 50);
     }
 
     childSetState(state, movingRooms) {
@@ -110,6 +117,9 @@ class Room extends React.Component {
     }
 
     updateMonsterPos() {
+        debugger
+        if (!this.state.monsters)
+            return;
         const monsters = Object.values(this.state.monsters);
         const updatedMonsters = {};
         const playerX = (this.state.currentCharacter.left + this.state.currentCharacter.right) / 2
@@ -125,7 +135,7 @@ class Room extends React.Component {
 
         monsters.forEach(monster => {
             updatedMonster = Object.assign({}, monster);
-            if (!monster.attacked) {
+            if (!this.monstersAttacked[monster.id]) {
                 if (player2X) {
                     playerDist = Math.pow((playerX - monster.xPos), 2) + Math.pow((playerY - monster.yPos), 2);
                     player2Dist = Math.pow((player2X - monster.xPos), 2) + Math.pow((player2Y - monster.yPos), 2);
@@ -138,14 +148,14 @@ class Room extends React.Component {
                     updatedMonster.xPos -= 1;
                     updatedMonster.animation = "runningLeft"
                 }
-                else if (closestPlayer.x - 80 > monsterXPos) {
+                else if (closestPlayer.x - 80 > monster.xPos) {
                     updatedMonster.xPos += 1;
                     updatedMonster.animation = "runningRight"
                 }
-                if (closestPlayer.y - 30 < monsterYPos) {
+                if (closestPlayer.y - 30 < monster.yPos) {
                     updatedMonster.yPos -= 1;
                 }
-                else if (closestPlayer.y > monsterYPos) {
+                else if (closestPlayer.y > monster.yPos) {
                     updatedMonster.yPos += 1;
                 }
                 updatedMonster.frames = (updatedMonster.frames === 11) ? 0 : updatedMonster.frames + 1;
@@ -153,10 +163,12 @@ class Room extends React.Component {
             }
         })
 
-        this.setState(monsters, updatedMonsters)
+        this.setState({monsters: updatedMonsters})
     }
 
     checkIfAttacked() {
+        if (!this.state.monsters)
+            return;
         const monsters = Object.values(this.state.monsters);
         const updatedMonsters = {};
         let updatedMonster, activeAttackPixels, rightAttackCheck, leftAttackCheck, attackAnimation;
@@ -173,34 +185,33 @@ class Room extends React.Component {
                                 activeAttackPixels.top <= updatedMonster.bottom &&
                                 activeAttackPixels.left >= updatedMonster.left &&
                                 activeAttackPixels.left <= updatedMonster.right &&
-                                !monster.attacked)
+                                !this.monstersAttacked[monster.id])
             
-            leftAttackCheck = (activeAttackPixels.top >= currentState.top &&
-                                activeAttackPixels.top <= currentState.bottom &&
-                                activeAttackPixels.left <= currentState.left &&
-                                activeAttackPixels.left <= currentState.right &&
-                                !monster.attacked)
+            leftAttackCheck = (activeAttackPixels.top >= updatedMonster.top &&
+                                activeAttackPixels.top <= updatedMonster.bottom &&
+                                activeAttackPixels.left <= updatedMonster.left &&
+                                activeAttackPixels.left <= updatedMonster.right &&
+                                !this.monstersAttacked[monster.id])
 
             if (rightAttackCheck || leftAttackCheck) {
                     attackAnimation = (updatedMonster.animation === "runningRight") ? "attackedRight" : "attackedLeft"
                     
                     updatedMonster.currentHP -= activeAttackPixels.damage;
                     updatedMonster.animation = attackAnimation;
-                    updatedMonster.attacked = true;
+                    this.monstersAttacked[monster.id] = true;
                     updatedMonster.frames = (updatedMonster.frames === 11) ? 0 : updatedMonster.frames + 1;
                     this.resetAttackPixels();
                     console.log("attacked")
                 }
                 
-            if (monster.attacked) {
+            if (this.monstersAttacked[monster.id]) {
                 let that = this;
                 let attackAnimation = (this.state.animation === "attackedRight") ? "runningRight" : "runningLeft"
                 setTimeout(function() {
-                    that.setState({ monsters[monster.id].animation: attackAnimation, monsters[monster.id].attacked: false });
+                    this.monstersAttacked[monster.id] = false;
                 }, 1000)
             }
-        }
-        return updatedMonster;
+        })
     }
 
     componentDidMount() {
@@ -230,9 +241,6 @@ class Room extends React.Component {
                 this.setState(currentState);
             }
         })
-
-        this.monsterMoveTimer = setInterval(this.updateMonsterPos, 50);
-        this.checkAttackedTimer = setInterval(this.checkIfAttacked, 50);
     }
 
     componentWillUnmount() {
