@@ -61,6 +61,8 @@ class Room extends React.Component {
                 monsters[monster.id].xPos *= 64;
                 monsters[monster.id].yPos *= 64;
                 monsters[monster.id].animation = "runningRight";
+                monsters[monster.id].frames = 0;
+                monsters[monster.id].attacked = 0;
             }
         });
 
@@ -107,50 +109,105 @@ class Room extends React.Component {
         this.setState(resetState)
     }
 
-    updateMonsterPos(monster) {
-        let updatedMonster = Object.assign({}, monster);
-        let closestPlayer;
+    updateMonsterPos() {
+        const monsters = Object.values(this.state.monsters);
+        const updatedMonsters = {};
         const playerX = (this.state.currentCharacter.left + this.state.currentCharacter.right) / 2
         const playerY = (this.state.currentCharacter.top + this.state.currentCharacter.bottom) / 2
-        let player2X, player2Y;
+        let updatedMonster, player2X, player2Y, playerDist, player2Dist, closestPlayer;
         if (this.state.otherCharacter &&
             this.props.locations[this.state.currentCharacter._id].floor == this.props.locations[this.state.otherCharacter._id].floor &
             this.props.locations[this.state.currentCharacter._id].room == this.props.locations[this.state.otherCharacter._id].room
         ) {
             player2X = (this.state.otherCharacter.left + this.state.otherCharacter.right) / 2;
             player2Y = (this.state.otherCharacter.top + this.state.otherCharacter.bottom) / 2;
+        }
 
-        if (player2X) {
-            const playerDist = Math.pow((playerX - monster.xPos), 2) + Math.pow((playerY - monster.yPos), 2);
-            const player2Dist = Math.pow((player2X - monster.xPos), 2) + Math.pow((player2Y - monster.yPos), 2);
-            closestPlayer = (playerDist > player2Dist) ? { x: player2X, y: player2Y } : { x: playerX, y: playerY }
-        } else {
-            closestPlayer = {x: playerX, y: playerY}
-        }
-        
-        if (closestPlayer.x < monster.xPos) {
-            updatedMonster.xPos -= 1;
-            updatedMonster.animation = "runningLeft"
-        }
-        else if (closestPlayer.x - 80 > monsterXPos) {
-            updatedMonster.xPos += 1;
-            updatedMonster.animation = "runningRight"
-        }
-        if (closestPlayer.y - 30 < monsterYPos) {
-            updatedMonster.yPos -= 1;
-        }
-        else if (closestPlayer.y > monsterYPos) {
-            updatedMonster.yPos += 1;
-        }
-        updatedMonster.frames = (updatedMonster.frames === 11) ? 0 : updatedMonster.frames + 1;
-        return updatedMonster;
+        monsters.forEach(monster => {
+            updatedMonster = Object.assign({}, monster);
+            if (!monster.attacked) {
+                if (player2X) {
+                    playerDist = Math.pow((playerX - monster.xPos), 2) + Math.pow((playerY - monster.yPos), 2);
+                    player2Dist = Math.pow((player2X - monster.xPos), 2) + Math.pow((player2Y - monster.yPos), 2);
+                    closestPlayer = (playerDist > player2Dist) ? { x: player2X, y: player2Y } : { x: playerX, y: playerY }
+                } else {
+                    closestPlayer = {x: playerX, y: playerY}
+                }
+                
+                if (closestPlayer.x < monster.xPos) {
+                    updatedMonster.xPos -= 1;
+                    updatedMonster.animation = "runningLeft"
+                }
+                else if (closestPlayer.x - 80 > monsterXPos) {
+                    updatedMonster.xPos += 1;
+                    updatedMonster.animation = "runningRight"
+                }
+                if (closestPlayer.y - 30 < monsterYPos) {
+                    updatedMonster.yPos -= 1;
+                }
+                else if (closestPlayer.y > monsterYPos) {
+                    updatedMonster.yPos += 1;
+                }
+                updatedMonster.frames = (updatedMonster.frames === 11) ? 0 : updatedMonster.frames + 1;
+                updatedMonsters[updatedMonster.id] = updatedMonster;
+            }
+        })
+
+        this.setState(monsters, updatedMonsters)
     }
 
+    checkIfAttacked() {
+        const monsters = Object.values(this.state.monsters);
+        const updatedMonsters = {};
+        let updatedMonster, activeAttackPixels, rightAttackCheck, leftAttackCheck, attackAnimation;
+        monsters.forEach(monster => {
+            updatedMonster = Object.assign({}, monster);
+            activeAttackPixels = this.state.activeAttackPixels; 
+
+            updatedMonster.top = updatedMonster.yPos + 22;
+            updatedMonster.bottom = updatedMonster.yPos + 65;
+            updatedMonster.left = updatedMonster.xPos + 25;
+            updatedMonster.right = updatedMonster.xPos + 53;
+
+            rightAttackCheck = (activeAttackPixels.top >= updatedMonster.top &&
+                                activeAttackPixels.top <= updatedMonster.bottom &&
+                                activeAttackPixels.left >= updatedMonster.left &&
+                                activeAttackPixels.left <= updatedMonster.right &&
+                                !monster.attacked)
+            
+            leftAttackCheck = (activeAttackPixels.top >= currentState.top &&
+                                activeAttackPixels.top <= currentState.bottom &&
+                                activeAttackPixels.left <= currentState.left &&
+                                activeAttackPixels.left <= currentState.right &&
+                                !monster.attacked)
+
+            if (rightAttackCheck || leftAttackCheck) {
+                    attackAnimation = (updatedMonster.animation === "runningRight") ? "attackedRight" : "attackedLeft"
+                    
+                    updatedMonster.currentHP -= activeAttackPixels.damage;
+                    updatedMonster.animation = attackAnimation;
+                    updatedMonster.attacked = true;
+                    updatedMonster.frames = (updatedMonster.frames === 11) ? 0 : updatedMonster.frames + 1;
+                    this.resetAttackPixels();
+                    console.log("attacked")
+                }
+                
+            if (monster.attacked) {
+                let that = this;
+                let attackAnimation = (this.state.animation === "attackedRight") ? "runningRight" : "runningLeft"
+                setTimeout(function() {
+                    that.setState({ monsters[monster.id].animation: attackAnimation, monsters[monster.id].attacked: false });
+                }, 1000)
+            }
+        }
+        return updatedMonster;
+    }
 
     componentDidMount() {
         if (localStorage.lobbykey && Object.keys(this.props.lobby).length === 0) {
             this.props.fetchLobby(localStorage.lobbykey);
         }
+        
         // Change update speed 30fps for now
         window.interval = setInterval(() => {
             window.socket.emit("dungeonRefresh", 
@@ -173,11 +230,16 @@ class Room extends React.Component {
                 this.setState(currentState);
             }
         })
+
+        this.monsterMoveTimer = setInterval(this.updateMonsterPos, 50);
+        this.checkAttackedTimer = setInterval(this.checkIfAttacked, 50);
     }
 
     componentWillUnmount() {
         // still need to figure this out
         window.clearInterval(window.interval);
+        window.clearInterval(this.monsterMoveTimer);
+        window.clearInterval(this.checkAttackedTimer);
     }
 
     render() {
@@ -253,8 +315,7 @@ class Room extends React.Component {
                     xPos={monster.xPos}
                     yPos={monster.yPos}
                     animation={monster.animation}
-                    activeAttackPixels={this.state.activeAttackPixels}
-                    resetAttackPixels={this.resetAttackPixels}
+                    frames={monster.frames}
                 />
             ))
         }

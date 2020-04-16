@@ -19,31 +19,9 @@ class DisplayMonsters extends React.Component {
         super(props);
         this.props = props;
         this.state = {
-            monsterXPos: props.positionX * 64,
-            monsterYPos: props.positionY * 64,
-            currentHP: props.monster.currentHP,
-            attacked: false,
             monsterSprite: Math.ceil(Math.random() * 6)
         }
         
-        this.checkIfAttacked = this.checkIfAttacked.bind(this);
-    }
-
-    componentDidMount() {
-        let that = this;
-        this.chasePlayer = setInterval(function() {
-            if (!that.state.attacked) {
-                that.chaseClosestPlayer();
-            }
-        }, 50);
-
-        this.checkAttacked = setInterval(this.checkIfAttacked, 50);
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.chasePlayer);
-        clearInterval(this.checkAttacked);
-        console.log("monster unmounting")
     }
 
     render() {
