@@ -95,7 +95,6 @@ class Room extends React.Component {
                     current.currentCharacter.invincible = false;
                     that.setState(current)
                 }, 1000);
-                console.log(currentState.currentCharacter.currentHP)
                 this.setState(currentState);
                 
             }
@@ -239,7 +238,6 @@ class Room extends React.Component {
                     this.monstersAttacked[monster.id] = true;
                     updatedMonster.frames = (updatedMonster.frames === 11) ? 0 : updatedMonster.frames + 1;
                     this.resetAttackPixels();
-                    console.log("attacked", updatedMonster.currentHP)
                 }
                 
             if (this.monstersAttacked[monster.id]) {
