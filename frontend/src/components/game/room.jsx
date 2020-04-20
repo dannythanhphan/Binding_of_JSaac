@@ -1,10 +1,9 @@
 import React from 'react';
-import { Stage, Layer, Image } from 'react-konva';
+import { Stage, Layer, Image, Text } from 'react-konva';
 import RoomSelector from './room_selector';
 import * as TrapsHelper from './traps.js'
 import DisplayMonsters from './monsters.js';
 import DisplayCharacters from './characters.js';
-
 
 class Room extends React.Component {
     constructor(props) {
@@ -12,8 +11,15 @@ class Room extends React.Component {
         this.props = props;
         let currentCharacter;
         let otherCharacter;
-        let roomImg;
-        const { locations, characters } = this.props;
+        let activeAttackPixels = {
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            damage: 0
+        };
+        const { locations } = this.props;
+        let characters = Object.values(this.props.characters);
         for (let i = 0; i < characters.length; i++) {
             if (characters[i]._id === localStorage.lobbycharacter) {
                 currentCharacter = characters[i];
@@ -27,10 +33,10 @@ class Room extends React.Component {
         currentCharacter.animation = "runningRight";
         currentCharacter.xPixel = currentCharacter.xPos * 64;
         currentCharacter.yPixel = currentCharacter.yPos * 64;
-        // currentCharacter.left = currentCharacter.xPixel;
-        currentCharacter.right = currentCharacter.xPixel + 48;
-        // currentCharacter.top = currentCharacter.yPixel;
-        currentCharacter.bottom = currentCharacter.yPixel + 82;
+        currentCharacter.left = currentCharacter.xPixel + 48;
+        currentCharacter.right = currentCharacter.xPixel + 96;
+        currentCharacter.top = currentCharacter.yPixel + 40;
+        currentCharacter.bottom = currentCharacter.yPixel + 80;
         delete currentCharacter.character;
         currentCharacter.invincible = false;
 
@@ -40,60 +46,270 @@ class Room extends React.Component {
             otherCharacter.animation = "runningRight";
             otherCharacter.xPixel = otherCharacter.xPos * 64;
             otherCharacter.yPixel = otherCharacter.yPos * 64;
+            otherCharacter.left = otherCharacter.xPixel + 48;
+            otherCharacter.right = otherCharacter.xPixel + 96;
+            otherCharacter.top = otherCharacter.yPixel + 40;
+            otherCharacter.bottom = otherCharacter.yPixel + 80;
             delete otherCharacter.character;
         }
-        this.state = { currentCharacter, otherCharacter, roomImg};
+
+        let room = this.props.room[(currentCharacter.room % 16) * currentCharacter.floor];
+        let monsters = {};
+        this.monstersAttacked = {}
+        this.props.monsters.forEach( monster => {
+            if (monster.roomId === room.id) {
+                monsters[monster.id] = monster;
+                monsters[monster.id].xPos *= 64;
+                monsters[monster.id].yPos *= 64;
+                monsters[monster.id].animation = "runningRight";
+                monsters[monster.id].frames = 0;
+                this.monstersAttacked[monster.id] = false;
+            }
+        });
+
+        this.state = { currentCharacter, otherCharacter, activeAttackPixels, room, monsters };
         this.childSetState = this.childSetState.bind(this);
+        this.getActiveAttackPixels = this.getActiveAttackPixels.bind(this);
+        this.resetAttackPixels = this.resetAttackPixels.bind(this);
+        this.waitingForData = false;
+        this.updateMonsterPos = this.updateMonsterPos.bind(this);
+        this.checkIfAttacked = this.checkIfAttacked.bind(this);
+
+        let that = this;
+        this.monsterMoveTimer = setInterval(() => this.updateMonsterPos(), 50);
+        this.checkAttackedTimer = setInterval(() => this.checkIfAttacked(), 50);
+        this.takeDamage = this.takeDamage.bind(this);
+        this.checkPlayerCollision = this.checkPlayerCollision.bind(this);
     }
 
-    childSetState(state) {
+    takeDamage(val) {
+        let currentState = Object.assign({}, this.state);
+        if (!currentState.currentCharacter.invincible) {
+            currentState.currentCharacter.currentHP -= val;
+            if (currentState.currentCharacter.currentHP > 0) {
+                this.props.updateHP(currentState.currentCharacter._id, currentState.currentCharacter.currentHP);
+                currentState.currentCharacter.invincible = true;
+                let that = this;
+                setTimeout( () => {
+                    let current = Object.assign({}, that.state);
+                    current.currentCharacter.invincible = false;
+                    that.setState(current)
+                }, 1000);
+                this.setState(currentState);
+                
+            }
+            else if (currentState.currentCharacter.currentHP <= 0) {
+                currentState.currentCharacter.dead = true;
+                currentState.currentCharacter.currentHP = 0;
+                this.props.updateHP(currentState.currentCharacter._id, currentState.currentCharacter.currentHP);
+                this.setState(currentState);
+            }
+        }
+    }
+
+    childSetState(state, movingRooms, nextExit) {
         let currentState = Object.assign({}, this.state);
         if (state._id === localStorage.lobbycharacter) {
             currentState.currentCharacter = state;
         }
+        if (movingRooms) {
+            let room = this.props.room[(currentState.currentCharacter.room % 16) * currentState.currentCharacter.floor];
+            currentState.room = room;
+            this.waitingForData = (this.state.otherCharacter && 
+              this.state.currentCharacter.floor == this.state.otherCharacter.floor &&
+              nextExit == this.state.otherCharacter.room
+            ) ? true : false;
+
+            let monsters = {};
+            this.monstersAttacked = {};
+            this.props.monsters.forEach(monster => {
+                if (monster.roomId === room.id) {
+                    monsters[monster.id] = monster;
+                    monsters[monster.id].xPos *= 64;
+                    monsters[monster.id].yPos *= 64;
+                    monsters[monster.id].animation = "runningRight";
+                    monsters[monster.id].frames = 0;
+                    this.monstersAttacked[monster.id] = false;
+                }
+            });
+            currentState.monsters = monsters;
+        }
         this.setState(currentState);
+    }
+
+    getActiveAttackPixels(pixels) {
+        let currentState = Object.assign({}, this.state);
+        currentState.activeAttackPixels = pixels;
+        this.setState(currentState);
+    }
+
+    resetAttackPixels() {
+        let resetState = Object.assign({}, this.state);
+        resetState.activeAttackPixels.top = 0;
+        resetState.activeAttackPixels.bottom = 0;
+        resetState.activeAttackPixels.left = 0;
+        resetState.activeAttackPixels.right = 0;
+
+        this.setState(resetState)
+    }
+
+    updateMonsterPos() {
+        if (!this.state.monsters)
+            return;
+        const monsters = Object.values(this.state.monsters);
+        const updatedMonsters = {};
+        const playerX = (this.state.currentCharacter.left + this.state.currentCharacter.right) / 2
+        const playerY = (this.state.currentCharacter.top + this.state.currentCharacter.bottom) / 2
+        let updatedMonster, player2X, player2Y, playerDist, player2Dist, closestPlayer;
+        if (this.state.otherCharacter &&
+            this.props.locations[this.state.currentCharacter._id].floor == this.props.locations[this.state.otherCharacter._id].floor &
+            this.props.locations[this.state.currentCharacter._id].room == this.props.locations[this.state.otherCharacter._id].room
+        ) {
+            player2X = (this.state.otherCharacter.left + this.state.otherCharacter.right) / 2;
+            player2Y = (this.state.otherCharacter.top + this.state.otherCharacter.bottom) / 2;
+        }
+
+        monsters.forEach(monster => {
+            updatedMonster = Object.assign({}, monster);
+            if (!this.monstersAttacked[monster.id]) {
+                if (player2X) {
+                    playerDist = Math.pow((playerX - monster.xPos), 2) + Math.pow((playerY - monster.yPos), 2);
+                    player2Dist = Math.pow((player2X - monster.xPos), 2) + Math.pow((player2Y - monster.yPos), 2);
+                    closestPlayer = (playerDist > player2Dist) ? { x: player2X, y: player2Y } : { x: playerX, y: playerY }
+                } else {
+                    closestPlayer = {x: playerX, y: playerY}
+                }
+                
+                if (closestPlayer.x < monster.xPos) {
+                    updatedMonster.xPos -= 1;
+                    updatedMonster.animation = "runningLeft"
+                }
+                else if (closestPlayer.x - 80 > monster.xPos) {
+                    updatedMonster.xPos += 1;
+                    updatedMonster.animation = "runningRight"
+                }
+                if (closestPlayer.y - 30 < monster.yPos) {
+                    updatedMonster.yPos -= 1;
+                }
+                else if (closestPlayer.y > monster.yPos) {
+                    updatedMonster.yPos += 1;
+                }
+                updatedMonster.frames = (updatedMonster.frames === 11) ? 0 : updatedMonster.frames + 1;
+                updatedMonsters[updatedMonster.id] = updatedMonster;
+                this.checkPlayerCollision(updatedMonster);
+            }
+        })
+
+        this.setState({monsters: updatedMonsters})
+    }
+
+    checkIfAttacked() {
+        if (!this.state.monsters)
+            return;
+        const monsters = Object.values(this.state.monsters);
+        const updatedMonsters = {};
+        let updatedMonster, activeAttackPixels, rightAttackCheck, leftAttackCheck, attackAnimation;
+        monsters.forEach(monster => {
+            updatedMonster = Object.assign({}, monster);
+            activeAttackPixels = this.state.activeAttackPixels; 
+
+            updatedMonster.top = updatedMonster.yPos + 22;
+            updatedMonster.bottom = updatedMonster.yPos + 65;
+            updatedMonster.left = updatedMonster.xPos + 25;
+            updatedMonster.right = updatedMonster.xPos + 53;
+
+            rightAttackCheck = (activeAttackPixels.top >= updatedMonster.top &&
+                                activeAttackPixels.top <= updatedMonster.bottom &&
+                                activeAttackPixels.left >= updatedMonster.left &&
+                                activeAttackPixels.left <= updatedMonster.right &&
+                                !this.monstersAttacked[monster.id])
+            
+            leftAttackCheck = (activeAttackPixels.top >= updatedMonster.top &&
+                                activeAttackPixels.top <= updatedMonster.bottom &&
+                                activeAttackPixels.left <= updatedMonster.left &&
+                                activeAttackPixels.left <= updatedMonster.right &&
+                                !this.monstersAttacked[monster.id])
+
+            if (rightAttackCheck || leftAttackCheck) {
+                    attackAnimation = (updatedMonster.animation === "runningRight") ? "attackedRight" : "attackedLeft"
+                    
+                    updatedMonster.currentHP -= activeAttackPixels.damage;
+                    updatedMonster.animation = attackAnimation;
+                    this.monstersAttacked[monster.id] = true;
+                    updatedMonster.frames = (updatedMonster.frames === 11) ? 0 : updatedMonster.frames + 1;
+                    this.resetAttackPixels();
+                }
+                
+            if (this.monstersAttacked[monster.id]) {
+                let that = this;
+                let attackAnimation = (updatedMonster.animation === "attackedRight") ? "runningRight" : "runningLeft"
+                setTimeout(() => {
+                    this.monstersAttacked[monster.id] = false;
+                }, 1000)
+            }
+        })
+    }
+
+    checkPlayerCollision(monster) {
+        const top = monster.yPos + 22;
+        const bottom = monster.yPos + 65;
+        const left = monster.xPos + 25;
+        const right = monster.xPos + 53;
+        const playerX = (this.state.currentCharacter.left + this.state.currentCharacter.right) / 2
+        const playerY = (this.state.currentCharacter.top + this.state.currentCharacter.bottom) / 2
+        
+        let playerCollisionCheck = ((top >= playerY - 20 &&
+                                    top <= playerY + 20) &&
+                                    (left >= playerX - 24 &&
+                                    left <= playerX + 24))
+
+        if (playerCollisionCheck && this.state.currentCharacter.currentHP > 0) {
+            this.takeDamage(monster.meleeAttack)
+        }
     }
 
     componentDidMount() {
         if (localStorage.lobbykey && Object.keys(this.props.lobby).length === 0) {
             this.props.fetchLobby(localStorage.lobbykey);
         }
+        
         // Change update speed 30fps for now
-        window.interval = setInterval(() => {
+        this.interval = setInterval(() => {
             window.socket.emit("dungeonRefresh", 
             {
                 room: localStorage.lobbykey, 
-                char: this.state.currentCharacter
+                char: this.state.currentCharacter,
+                monsters: this.state.monsters
             });
         }, 1000 / 30)
 
         window.socket.on("receiveDungeon", data => {
-            if (data._id !== localStorage.lobbycharacter) {
+            if (data.char._id !== localStorage.lobbycharacter) {
                 let currentState = Object.assign({}, this.state);
-                currentState.otherCharacter = data;
+                currentState.otherCharacter = data.char;
+                if (this.props.locations[currentState.otherCharacter._id].room !== data.char.room) {
+                    this.props.updateLocation(data.char.room, currentState.otherCharacter._id);
+                }
+                if (this.props.characters[currentState.otherCharacter._id].currentHP != data.char.currentHP) {
+                    this.props.updateHP(currentState.otherCharacter._id, data.char.currentHP);
+                }
+                if (this.waitingForData) {
+                    this.waitingForData = false;
+                    currentState.monsters = data.monsters;
+                }
                 this.setState(currentState);
             }
         })
-        this.setState({ roomImg: RoomSelector(this.state.currentCharacter.room) })
     }
 
     componentWillUnmount() {
         // still need to figure this out
-        window.clearInterval(window.interval);
+        window.clearInterval(this.interval);
+        window.clearInterval(this.monsterMoveTimer);
+        window.clearInterval(this.checkAttackedTimer);
     }
 
-    // componentDidUpdate(prevProps) {
-    //     if (prevProps.locations !== this.props.locations) {
-    //         this.setState({ roomImg: RoomSelector(this.state.currentCharacter.room) })
-    //     }
-    // }
-
     render() {
-        if (this.props.movingRooms) {
-            console.log("changing rooms")
-            return (<div>Changing Rooms!!!!</div>)
-        }
-
         if (Object.keys(this.props.lobby).length === 0) return null;
         let { room, traps, locations, monsters } = this.props;
         let roomImg;
@@ -111,47 +327,74 @@ class Room extends React.Component {
             trapsDisplay = trapsInRoom.map(trap => (
                 TrapsHelper.displayTraps(trap)
             ))
-            currentChar = <DisplayCharacters 
+
+            currentChar = (!this.state.currentCharacter.dead) ? <DisplayCharacters 
                 char={this.state.currentCharacter}
                 movement={true}
                 childSetState={this.childSetState}
+                activePixels={this.getActiveAttackPixels}
+                takeDamage={this.takeDamage}
                 traps={trapsInRoom}
                 moveRoom={this.props.moveRoom}
                 roomNumber={roomNumber}
                 floorNumber={Object.values(locations)[0].floor}
+                updateHP={this.props.updateHP}
+                /> : <Text 
+                fontSize={32}
+                x={100}
+                y={100}
+                fill="white"
+                text="Game Over!"/>
+
+            // tiles are 64 x 64
+            // rooms 15x9, 960 x 576
+            // rooms 17x11 with walls, 1088 x 704
+            // min width-height = 64 x 64
+            // max width-height = 1024 x 640
+            // character sprite 48 x 82
+            let player2X, player2Y;
+            if (this.state.otherCharacter &&
+                this.props.locations[this.state.currentCharacter._id].floor == this.props.locations[this.state.otherCharacter._id].floor &
+                this.props.locations[this.state.currentCharacter._id].room == this.props.locations[this.state.otherCharacter._id].room
+            ) {
+                otherChar = <DisplayCharacters
+                    char={this.state.otherCharacter}
+                    movement={false}
+                    childSetState={this.childSetState}
+                    traps={trapsInRoom}
                 />
-         
-            let monsterCountPerRoom = [];
-            for (let i = 0; i < monsters.length; i++) {
-                if (monsters[i].roomId === roomNumber.id) {
-                    monsterCountPerRoom.push(monsters[i])
-                }
+                player2X = (this.state.otherCharacter.left + this.state.otherCharacter.right) / 2;
+                player2Y = (this.state.otherCharacter.top + this.state.otherCharacter.bottom) / 2;
+            } else {
+                player2X = undefined;
+                player2Y = undefined;
+                otherChar = null;
             }
 
-            monstersInRoom = monsterCountPerRoom.map(monster => (
-                monstersInRoom = <DisplayMonsters 
-                monster={monster} 
-                positionX={monster.xPos} 
-                positionY={monster.yPos}
-                playerX={this.state.currentCharacter.xPixel}
-                playerY={this.state.currentCharacter.yPixel}
+            // let monsterCountPerRoom = [];
+            // for (let i = 0; i < monsters.length; i++) {
+            //     if (monsters[i].roomId === roomNumber.id) {
+            //         // console.log(monsters[i].roomId)
+            //         // console.log(roomNumber.id)
+            //         monsterCountPerRoom.push(monsters[i])
+            //     }
+            // }
+            // console.log(monsterCountPerRoom)
+            // monstersInRoom = monsterCountPerRoom.map(monster => (
+            
+            monstersInRoom = this.waitingForData ? null : 
+            Object.values(this.state.monsters).map(monster => (
+                <DisplayMonsters
+                    key={monster.id}
+                    monster={monster}
+                    xPos={monster.xPos}
+                    yPos={monster.yPos}
+                    animation={monster.animation}
+                    frames={monster.frames}
                 />
             ))
         }
-        // tiles are 64 x 64
-        // rooms 15x9, 960 x 576
-        // rooms 17x11 with walls, 1088 x 704
-        // min width-height = 64 x 64
-        // max width-height = 1024 x 640
-        // character sprite 48 x 82
-        if (this.state.otherCharacter) {
-            otherChar = <DisplayCharacters
-                char={this.state.otherCharacter}
-                movement={false}
-                childSetState={this.childSetState}
-                traps={trapsInRoom}
-            />
-        }
+
         return (
             <div className="room-main">
                 <Stage width={1088} height={704}>

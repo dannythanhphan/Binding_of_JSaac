@@ -38,9 +38,11 @@ class LevelUp extends React.Component {
     render() {
         const increaseUnavailable = this.state.availableStatPoints === 0;
         const decreaseUnavailable = this.state.pointsSpent === 0;
+        const finalizeUnavailable = this.state.pointsSpent != this.props.character.availableStatPoints;
+        const showLevelUp = this.props.character.availableStatPoints > 0 ? 'level-up-box' : 'level-up-box hidden-level-up';
 
         return (
-            <div className="level-up-box">Level Up!
+            <div className={showLevelUp}>Level Up!
                 <div className="level-up-options">
                     <div className="level-up-label">
                         <p>Melee Attack: </p>
@@ -105,7 +107,7 @@ class LevelUp extends React.Component {
                 </div>
                 <div className="level-up-finalize-label">
                     <button
-                        disabled={!increaseUnavailable}
+                        disabled={finalizeUnavailable}
                         onClick={this.handleClick}
                     >
                         Finalize Choices

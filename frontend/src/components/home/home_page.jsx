@@ -4,6 +4,11 @@ import { Link } from 'react-router-dom';
 import logo from '../../assets/logo.png'
 
 class HomePage extends React.Component {
+    handleSubmit() {
+        const user = {username: "demo", password: "password"};
+        this.props.processForm(user)
+    }
+
     render() {
         return (
             <div className="home-page">
@@ -16,6 +21,11 @@ class HomePage extends React.Component {
                                     Existing User
                                 </button>
                             </Link>
+                            <div className="home-page-demo-button">
+                                <button onClick={() => this.handleSubmit()} className="home-page-login-button-text">
+                                    Demo User
+                                </button>
+                            </div>
                             <Link to="/register" className="home-page-signup-button">
                                 <button className="home-page-signup-button-text">
                                     New User
