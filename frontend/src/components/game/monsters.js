@@ -19,130 +19,10 @@ class DisplayMonsters extends React.Component {
         super(props);
         this.props = props;
         this.state = {
-            monsterXPos: props.positionX * 64,
-            monsterYPos: props.positionY * 64,
-            currentHP: props.monster.currentHP,
-            frames: 0,
-            animation: "runningRight",
-            attacked: false,
             monsterSprite: Math.ceil(Math.random() * 6)
         }
         
-        this.chaseClosestPlayer = this.chaseClosestPlayer.bind(this);
-        this.checkIfAttacked = this.checkIfAttacked.bind(this);
-        this.checkPlayerCollision = this.checkPlayerCollision.bind(this);
     }
-
-    componentDidMount() {
-        let that = this;
-        this.chasePlayer = setInterval(function() {
-            if (!that.state.attacked) {
-                that.chaseClosestPlayer();
-            }
-        }, 50);
-
-        this.checkCollision = setInterval(this.checkPlayerCollision, 50);
-
-        this.checkAttacked = setInterval(this.checkIfAttacked, 50);
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.chasePlayer);
-        clearInterval(this.checkAttacked);
-        clearInterval(this.checkCollision);
-    }
-
-    checkPlayerCollision() {
-        let currentState = Object.assign({}, this.state);
-        let {playerX, playerY, playerHP} = this.props;
-
-        currentState.top = currentState.monsterYPos + 22;
-        currentState.bottom = currentState.monsterYPos + 65;
-        currentState.left = currentState.monsterXPos + 25;
-        currentState.right = currentState.monsterXPos + 53;
-        
-        let playerCollisionCheck = ((currentState.top >= playerY - 20 &&
-                                    currentState.top <= playerY + 20) &&
-                                    (currentState.left >= playerX - 24 &&
-                                    currentState.left <= playerX + 24))
-
-        if (playerCollisionCheck && playerHP > 0) {
-            this.props.takeDamage(this.props.monster.meleeAttack)
-        }
-    }
-
-    checkIfAttacked() {
-        let currentState = Object.assign({}, this.state);
-        let { activeAttackPixels, resetAttackPixels } = this.props;
-        currentState.top = currentState.monsterYPos + 22;
-        currentState.bottom = currentState.monsterYPos + 65;
-        currentState.left = currentState.monsterXPos + 25;
-        currentState.right = currentState.monsterXPos + 53;
-
-        let rightAttackCheck = (activeAttackPixels.top >= currentState.top &&
-                            activeAttackPixels.top <= currentState.bottom &&
-                            activeAttackPixels.left >= currentState.left &&
-                            activeAttackPixels.left <= currentState.right &&
-                            !currentState.attacked)
-        
-        let leftAttackCheck = (activeAttackPixels.top >= currentState.top &&
-                            activeAttackPixels.top <= currentState.bottom &&
-                            activeAttackPixels.left <= currentState.left &&
-                            activeAttackPixels.left <= currentState.right &&
-                            !currentState.attacked)
-
-        if (rightAttackCheck || leftAttackCheck) {
-                let attackAnimation = (this.state.animation === "runningRight") ? "attackedRight" : "attackedLeft"
-                
-                currentState.currentHP = this.state.currentHP - activeAttackPixels.damage;
-                currentState.animation = attackAnimation;
-                currentState.attacked = true;
-                currentState.frames = (currentState.frames === 11) ? 0 : currentState.frames + 1;
-                this.setState(currentState)
-                resetAttackPixels();
-            }
-            
-        if (currentState.attacked) {
-            let that = this;
-            let attackAnimation = (this.state.animation === "attackedRight") ? "runningRight" : "runningLeft"
-            setTimeout(function() {
-                that.setState({ animation: attackAnimation, attacked: false });
-            }, 1000)
-        }
-    }
-
-    chaseClosestPlayer() {
-        let currentState = Object.assign({}, this.state);
-        let closestPlayer;
-        let {playerX, playerY, player2X, player2Y} = this.props;
-        let {monsterXPos, monsterYPos} = this.state;
-
-        if (player2X) {
-            let playerDist = Math.sqrt(Math.pow((playerX - monsterXPos), 2) + Math.pow((playerY - monsterYPos), 2));
-            let player2Dist = Math.sqrt(Math.pow((player2X - monsterXPos), 2) + Math.pow((player2Y - monsterYPos), 2));
-            closestPlayer = (playerDist > player2Dist) ? { x: player2X, y: player2Y } : { x: playerX, y: playerY }
-        } else {
-            closestPlayer = {x: playerX, y: playerY}
-        }
-        
-        if (closestPlayer.x - 45 < monsterXPos) {
-            currentState.monsterXPos -= 1;
-            currentState.animation = "runningLeft"
-        }
-        else if (closestPlayer.x - 45 > monsterXPos) {
-            currentState.monsterXPos += 1;
-            currentState.animation = "runningRight"
-        }
-        if (closestPlayer.y - 35 < monsterYPos) {
-            currentState.monsterYPos -= 1;
-        }
-        else if (closestPlayer.y > monsterYPos) {
-            currentState.monsterYPos += 1;
-        }
-        currentState.frames = (currentState.frames === 11) ? 0 : currentState.frames + 1;
-        this.setState(currentState);
-    }
-
 
     render() {
         let monsterImg = new Image();
@@ -173,13 +53,13 @@ class DisplayMonsters extends React.Component {
 
         return (
             <Sprite
-                x={this.state.monsterXPos}
-                y={this.state.monsterYPos}
+                x={this.props.xPos}
+                y={this.props.yPos}
                 image={monsterImg}
-                animation={this.state.animation}
+                animation={this.props.animation}
                 animations={animations}
                 frameRate={24}
-                frameIndex={this.state.frames}
+                frameIndex={this.props.frames}
                 scaleX={0.5}
                 scaleY={0.5}
             />

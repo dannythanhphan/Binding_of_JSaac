@@ -140,6 +140,7 @@ class DisplayCharacters extends React.Component {
         let currentState = Object.assign({}, this.props.char)
         let { roomNumber, char, floorNumber, moveRoom } = this.props
         let movingRooms = false;
+        let nextExit = -1;
 
         switch(dir) {
             case "up":
@@ -158,6 +159,7 @@ class DisplayCharacters extends React.Component {
                         currentState.bottom = currentState.yPixel + 80;
                         moveRoom(localStorage.lobbykey, char._id, floorNumber, roomNumber.topExit);
                         movingRooms = true;
+                        nextExit = roomNumber.topExit;
                     } else if (roomNumber.topExit === -1 && currentState.yPixel - 8 < 0) {
                         currentState.yPixel = currentState.yPixel;
                     } else {
@@ -185,7 +187,7 @@ class DisplayCharacters extends React.Component {
                         currentState.bottom = currentState.yPixel + 80;
                         moveRoom(localStorage.lobbykey, char._id, floorNumber, roomNumber.bottomExit);
                         movingRooms = true;
-
+                        nextExit = roomNumber.bottomExit;
                     } else if (roomNumber.bottomExit === -1 && currentState.yPixel + 8 > 576) {
                         currentState.yPixel = currentState.yPixel;
                     } else {
@@ -208,7 +210,7 @@ class DisplayCharacters extends React.Component {
                         currentState.right = currentState.xPixel + 96;
                         moveRoom(localStorage.lobbykey, char._id, floorNumber, roomNumber.leftExit);
                         movingRooms = true;
-
+                        nextExit = roomNumber.leftExit;
                     } else if (roomNumber.leftExit === -1 && currentState.xPixel - 8 < 64) {
                         currentState.xPixel = currentState.xPixel;
                     } else {
@@ -232,7 +234,7 @@ class DisplayCharacters extends React.Component {
                         currentState.right = currentState.xPixel + 96;
                         moveRoom(localStorage.lobbykey, char._id, floorNumber, roomNumber.rightExit);
                         movingRooms = true;
-
+                        nextExit = roomNumber.rightExit;
                     } else if (roomNumber.rightExit === -1 && currentState.xPixel + 8 < 992) {
                         currentState.xPixel = currentState.xPixel;
                     } else {
@@ -272,7 +274,7 @@ class DisplayCharacters extends React.Component {
             currentState.frames = (currentState.frames === maxFrames) ? 0 : currentState.frames + 1;
         }
 
-        this.props.childSetState(currentState, movingRooms);
+        this.props.childSetState(currentState, movingRooms, nextExit);
         let that = this;
     }
     componentDidMount() {

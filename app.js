@@ -51,7 +51,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('dungeonRefresh', data => {
-        io.to(data.room).emit("receiveDungeon", data.char);
+        io.to(data.room).emit("receiveDungeon", data);
     })
 
 })
