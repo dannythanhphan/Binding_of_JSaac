@@ -52,10 +52,10 @@ class MainPage extends React.Component {
                         Select a character on the right to choose the character you want to play.
                     </li>
                     <li className="instructions">
-                        If you do not have a character, create a new character by clicking the "New Character" button above
+                        If you do not have a character, create a new character by clicking the <br/>"New Character" button above
                     </li>
                     <li className="instructions">
-                        Create a lobby by clicking the "Create Lobby" button above.
+                        Create a lobby by clicking the <br/>"Create Lobby" button above.
                     </li>
                     <li className="instructions">
                         Share the lobby key with a friend or choose to go on your adventure alone.
