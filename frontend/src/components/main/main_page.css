@@ -17,8 +17,9 @@
 
 .main-character-select-side-bar {
     width: 25%;
-    height: 72.5%;
-    margin-top: 5%;
+    height: 88.4%;
+    box-sizing: border-box;
+    margin-top: 4%;
     padding-top: 150px;
     background-color: rgba(238, 239, 241, 0.699);
     display: flex;
@@ -37,7 +38,8 @@
 
 .side-bar-character-box {
     width: 90%;
-    height: 125px;
+    padding: 5px 0;
+    /* height: 125px; */
     background-color: #4e6883;
     display: flex;
     border-radius: 4px;
@@ -95,15 +97,16 @@
 
 .side-bar-character-stats {
     display: flex;
-    padding-left: 5%;
+    /* padding-left: 5%; */
     flex-wrap: wrap;
-    width: 303px;
+    justify-content: center;
+    /* max-width: 303px; */
 }
 
 .character-stats {
     display: flex;
     flex-direction: column;
-    margin-right: 10%;
+    margin: 0 6px;
     text-align: center;
 }
 

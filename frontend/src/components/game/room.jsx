@@ -18,6 +18,9 @@ class Room extends React.Component {
             right: 0,
             damage: 0
         };
+        this.mounted = false;
+        this.scaleFactorX = 0.1;
+        this.scaleFactorY = 0.1;
         const { locations } = this.props;
         let characters = Object.values(this.props.characters);
         for (let i = 0; i < characters.length; i++) {
@@ -272,6 +275,11 @@ class Room extends React.Component {
         if (localStorage.lobbykey && Object.keys(this.props.lobby).length === 0) {
             this.props.fetchLobby(localStorage.lobbykey);
         }
+
+        const div = document.getElementsByClassName("room-main")[0];
+        this.mounted = true;
+        this.scaleFactorX = div.offsetWidth / 1088;
+        this.scaleFactorY = div.offsetHeight / 704;
         
         // Change update speed 30fps for now
         this.interval = setInterval(() => {
@@ -310,6 +318,11 @@ class Room extends React.Component {
     }
 
     render() {
+        if (!this.mounted) {
+            return (
+                <div className="room-main"></div>
+            )
+        }
         if (Object.keys(this.props.lobby).length === 0) return null;
         let { room, traps, locations, monsters } = this.props;
         let roomImg;
@@ -397,7 +410,10 @@ class Room extends React.Component {
 
         return (
             <div className="room-main">
-                <Stage width={1088} height={704}>
+                <Stage width={1088 * this.scaleFactorX} height={704*this.scaleFactorY} 
+                scaleX={this.scaleFactorX}
+                scaleY={this.scaleFactorY}
+                >
                     <Layer>
                         <Image image={roomImg} />
                         {monstersInRoom}

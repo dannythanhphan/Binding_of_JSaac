@@ -12,22 +12,31 @@
 .game-main {
   position: relative;
   display: flex;
+  overflow-x: hidden;
+  overflow: hidden;
 }
 
 .room-main {
-  margin-right: 30px;
-  border-radius: 10px;
-  overflow: hidden;
-  padding: 100px;
+    min-width: 500px;
+    width: calc(80vw - 30px);
+    height: 100vh;
+    margin-right: 30px;
+    border-radius: 10px;
+    /* overflow: hidden; */
+  /* overflow-x: hidden; */
+  /* padding: 100px; */
   background-color: rgba(238, 239, 241, 0.699);
   border-radius: 10px;
+  box-sizing: border-box;
 }
 
 #hud-characters {
-  width: 350px;
-  height: 904px;
+  /* width: 350px; */
+  width: 20vw;
+  height: 100vh;
   background-color: rgba(238, 239, 241, 0.699);
   border-radius: 10px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -41,7 +50,7 @@
 
 .hud-characters-item-box {
   margin-top: 20px;
-  width: 300px;
+  width: 100%;
   height: 130px;
   display: flex;
   flex-direction: column;
