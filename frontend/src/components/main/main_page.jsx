@@ -83,8 +83,11 @@ class MainPage extends React.Component {
                         {nullEle}
                     </Route>
                     <Route path="/main/">
+                        <div className="main-character-select-container">
                         <div className="main-character-select-side-bar">
                             {displayCharacters}
+                        </div>
+
                         </div>
                     </Route>
                 </Switch>
