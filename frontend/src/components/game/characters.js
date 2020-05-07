@@ -345,7 +345,9 @@ class DisplayCharacters extends React.Component {
                     // scaleX={0.8}
                     // scaleY={0.8}
                     ref={(node => {
-                        if (node && !node.isRunning() && (node.attrs.animation === "meleeRight" || node.attrs.animation === "meleeLeft")) {
+                        if (node && !node.isRunning() && 
+                            (node.attrs.animation === "meleeRight" || node.attrs.animation === "meleeLeft")
+                        ) {
                             // setInterval(function() {node.move({x: (20 % 200), y: 0})}, 48)
                             node.start()
                             setTimeout(function () {
