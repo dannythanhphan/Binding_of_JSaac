@@ -63,7 +63,7 @@ class HudCharacters extends React.Component {
               </div>
             </div>
 
-            <button onClick={this.closeModal}>Close Instructions</button>
+            <button onClick={this.closeModal} className="close-instructions-modal">Close Instructions</button>
           </div>
         </div>
       )

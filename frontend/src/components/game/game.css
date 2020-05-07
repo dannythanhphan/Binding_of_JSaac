@@ -310,3 +310,26 @@
 .conditions {
   font-size: 20px;
 }
+
+.close-instructions-modal {
+  display: flex;
+  width: 12vw;
+  height: 6vh;
+  justify-content: center;
+  background-color: transparent;
+  border: 3px solid rgb(62, 84, 114);
+  color:rgb(62, 84, 114);
+  border-radius: 6px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition-duration: 0.4s;
+}
+
+.close-instructions-modal:hover {
+  cursor: pointer;
+  border: 3px solid white;
+  color:white;
+  background-color: rgb(62, 84, 114);
+  
+}
