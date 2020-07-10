@@ -22,6 +22,7 @@ class DisplayCharacters extends React.Component {
             if (!(key in keys)) {
                 return true;
             }
+            event.preventDefault();
             if (!(key in timers)) {
                 timers[key] = null;
                 keys[key]();

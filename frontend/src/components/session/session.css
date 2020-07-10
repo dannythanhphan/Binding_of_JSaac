@@ -2,8 +2,10 @@
     position: absolute;
     /* height: 170px; */
     top: 35%;
-    left: 33%;
-    width: 34%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 40%;
     border-radius: 8px;
 }
 
