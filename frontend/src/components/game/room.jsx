@@ -34,6 +34,8 @@ class Room extends React.Component {
         currentCharacter = Object.assign(currentCharacter, locations[currentCharacter._id])
         currentCharacter.frames = 0;
         currentCharacter.animation = "runningRight";
+        // xPixel and yPixel are location of the sprite image with the white space
+        // left right top bottom are ACTUAL location of the sprite we see
         currentCharacter.xPixel = currentCharacter.xPos * 64;
         currentCharacter.yPixel = currentCharacter.yPos * 64;
         currentCharacter.left = currentCharacter.xPixel + 48;
@@ -182,19 +184,22 @@ class Room extends React.Component {
                 } else {
                     closestPlayer = {x: playerX, y: playerY}
                 }
-                
-                if (closestPlayer.x < monster.xPos) {
+
+                let monsterX = monster.xPos + 48;
+                let monsterY = monster.yPos + 30;
+
+                if (closestPlayer.x < monsterX) {
                     updatedMonster.xPos -= 1;
                     updatedMonster.animation = "runningLeft"
                 }
-                else if (closestPlayer.x - 80 > monster.xPos) {
+                else if (closestPlayer.x > monsterX) {
                     updatedMonster.xPos += 1;
                     updatedMonster.animation = "runningRight"
                 }
-                if (closestPlayer.y - 30 < monster.yPos) {
+                if (closestPlayer.y < monsterY) {
                     updatedMonster.yPos -= 1;
                 }
-                else if (closestPlayer.y > monster.yPos) {
+                else if (closestPlayer.y > monsterY) {
                     updatedMonster.yPos += 1;
                 }
                 updatedMonster.frames = (updatedMonster.frames === 11) ? 0 : updatedMonster.frames + 1;
@@ -311,7 +316,6 @@ class Room extends React.Component {
     }
 
     componentWillUnmount() {
-        // still need to figure this out
         window.clearInterval(this.interval);
         window.clearInterval(this.monsterMoveTimer);
         window.clearInterval(this.checkAttackedTimer);
@@ -383,17 +387,6 @@ class Room extends React.Component {
                 player2Y = undefined;
                 otherChar = null;
             }
-
-            // let monsterCountPerRoom = [];
-            // for (let i = 0; i < monsters.length; i++) {
-            //     if (monsters[i].roomId === roomNumber.id) {
-            //         // console.log(monsters[i].roomId)
-            //         // console.log(roomNumber.id)
-            //         monsterCountPerRoom.push(monsters[i])
-            //     }
-            // }
-            // console.log(monsterCountPerRoom)
-            // monstersInRoom = monsterCountPerRoom.map(monster => (
             
             monstersInRoom = this.waitingForData ? null : 
             Object.values(this.state.monsters).map(monster => (

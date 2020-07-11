@@ -9,8 +9,8 @@ const Trap = require('../models/Trap');
 //Dungeon Parameters
 const NUM_FLOORS = 5;               //Number of floors in the dungeon
 const FLOOR_SIZE = 4;               //The length and width for number of rooms per floor
-const ROOM_WIDTH = 17;              //How many "tiles" there are per width in a room
-const ROOM_HEIGHT = 11;             //How many "tiles" there are per height in a room
+const ROOM_WIDTH = 16;              //How many "tiles" there are per width in a room
+const ROOM_HEIGHT = 10;             //How many "tiles" there are per height in a room
 
 const MONSTER_BASE_HP = 100;        //Monster hp at level 1
 const MONSTER_HP_SCALAR = 25;       //Monsters get 25 more hp per level
