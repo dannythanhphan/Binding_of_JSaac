@@ -18,6 +18,9 @@ class Room extends React.Component {
             right: 0,
             damage: 0
         };
+        this.mounted = false;
+        this.scaleFactorX = 0.1;
+        this.scaleFactorY = 0.1;
         const { locations } = this.props;
         let characters = Object.values(this.props.characters);
         for (let i = 0; i < characters.length; i++) {
@@ -31,6 +34,8 @@ class Room extends React.Component {
         currentCharacter = Object.assign(currentCharacter, locations[currentCharacter._id])
         currentCharacter.frames = 0;
         currentCharacter.animation = "runningRight";
+        // xPixel and yPixel are location of the sprite image with the white space
+        // left right top bottom are ACTUAL location of the sprite we see
         currentCharacter.xPixel = currentCharacter.xPos * 64;
         currentCharacter.yPixel = currentCharacter.yPos * 64;
         currentCharacter.left = currentCharacter.xPixel + 48;
@@ -179,19 +184,22 @@ class Room extends React.Component {
                 } else {
                     closestPlayer = {x: playerX, y: playerY}
                 }
-                
-                if (closestPlayer.x < monster.xPos) {
+
+                let monsterX = monster.xPos + 48;
+                let monsterY = monster.yPos + 30;
+
+                if (closestPlayer.x < monsterX) {
                     updatedMonster.xPos -= 1;
                     updatedMonster.animation = "runningLeft"
                 }
-                else if (closestPlayer.x - 80 > monster.xPos) {
+                else if (closestPlayer.x > monsterX) {
                     updatedMonster.xPos += 1;
                     updatedMonster.animation = "runningRight"
                 }
-                if (closestPlayer.y - 30 < monster.yPos) {
+                if (closestPlayer.y < monsterY) {
                     updatedMonster.yPos -= 1;
                 }
-                else if (closestPlayer.y > monster.yPos) {
+                else if (closestPlayer.y > monsterY) {
                     updatedMonster.yPos += 1;
                 }
                 updatedMonster.frames = (updatedMonster.frames === 11) ? 0 : updatedMonster.frames + 1;
@@ -272,6 +280,11 @@ class Room extends React.Component {
         if (localStorage.lobbykey && Object.keys(this.props.lobby).length === 0) {
             this.props.fetchLobby(localStorage.lobbykey);
         }
+
+        const div = document.getElementsByClassName("room-main")[0];
+        this.mounted = true;
+        this.scaleFactorX = div.offsetWidth / 1088;
+        this.scaleFactorY = div.offsetHeight / 704;
         
         // Change update speed 30fps for now
         this.interval = setInterval(() => {
@@ -303,13 +316,17 @@ class Room extends React.Component {
     }
 
     componentWillUnmount() {
-        // still need to figure this out
         window.clearInterval(this.interval);
         window.clearInterval(this.monsterMoveTimer);
         window.clearInterval(this.checkAttackedTimer);
     }
 
     render() {
+        if (!this.mounted) {
+            return (
+                <div className="room-main"></div>
+            )
+        }
         if (Object.keys(this.props.lobby).length === 0) return null;
         let { room, traps, locations, monsters } = this.props;
         let roomImg;
@@ -370,17 +387,6 @@ class Room extends React.Component {
                 player2Y = undefined;
                 otherChar = null;
             }
-
-            // let monsterCountPerRoom = [];
-            // for (let i = 0; i < monsters.length; i++) {
-            //     if (monsters[i].roomId === roomNumber.id) {
-            //         // console.log(monsters[i].roomId)
-            //         // console.log(roomNumber.id)
-            //         monsterCountPerRoom.push(monsters[i])
-            //     }
-            // }
-            // console.log(monsterCountPerRoom)
-            // monstersInRoom = monsterCountPerRoom.map(monster => (
             
             monstersInRoom = this.waitingForData ? null : 
             Object.values(this.state.monsters).map(monster => (
@@ -397,7 +403,10 @@ class Room extends React.Component {
 
         return (
             <div className="room-main">
-                <Stage width={1088} height={704}>
+                <Stage width={1088 * this.scaleFactorX} height={704*this.scaleFactorY} 
+                scaleX={this.scaleFactorX}
+                scaleY={this.scaleFactorY}
+                >
                     <Layer>
                         <Image image={roomImg} />
                         {monstersInRoom}
