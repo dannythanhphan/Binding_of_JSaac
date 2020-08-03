@@ -1,4 +1,4 @@
-import { RECEIVE_CHARACTER, REMOVE_CHARACTER, RECEIVE_GAME_CHARACTER, UPDATE_HP } from '../actions/character_actions';
+import { RECEIVE_CHARACTER, REMOVE_CHARACTER, RECEIVE_GAME_CHARACTER, UPDATE_HP, UPDATE_XP } from '../actions/character_actions';
 import { RECEIVE_LOBBY, REMOVE_LOBBY } from '../actions/lobby_actions';
 import { RECEIVE_USER } from '../actions/user_actions';
 import { RECEIVE_USER_LOGOUT } from '../actions/session_actions';
@@ -36,7 +36,9 @@ const charactersReducer = (state = initialState, action) => {
         case UPDATE_HP:
             newState['gameCharacters'][action.charId].currentHP = action.hp;
             return newState;
-
+        case UPDATE_XP:
+            newState['gameCharacters'][action.charId].currentEXP = action.xp;
+            return newState;
         case RECEIVE_LOBBY:
             newState['gameCharacters'] = action.payload.characters;
             return newState;

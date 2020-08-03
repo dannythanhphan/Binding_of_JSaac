@@ -264,7 +264,6 @@ class DisplayCharacters extends React.Component {
                     attackPixels.left = currentState.left - 49;
                     attackPixels.right = currentState.right - 48;
                 }
-
                 this.props.activePixels(attackPixels);
             default:
                 break;
@@ -291,6 +290,15 @@ class DisplayCharacters extends React.Component {
             window.addEventListener("keydown", function(e) {
                 if (e.keyCode === 32) {
                     that.move("space");
+                    setTimeout(() => {
+                        that.props.activePixels({
+                            top: -1000,
+                            bottom: -1000,
+                            left: -1000,
+                            right: -1000,
+                            damage: 0
+                        });
+                    }, 10);
                 }
             })
 

@@ -57,7 +57,7 @@ const generateFloor = (level, location, xPos, yPos) => {
             rightExit = (roomCol === FLOOR_SIZE + 1) ? -1 : position + 1;
             topExit = (roomRow === 0) ? -1: position - FLOOR_SIZE;
             bottomExit = (roomRow === FLOOR_SIZE - 1) ? -1: position + FLOOR_SIZE;
-            numMonsters = Math.floor(Math.random() * (5 + level));
+            numMonsters = Math.floor(Math.random() * (5 + level)) + 5;
             numTraps = Math.floor(Math.random() * (5 + level));
             floor.rooms.push(generateRoom(position, width, height, leftExit, rightExit, topExit, bottomExit, numMonsters, numTraps, level))
         }

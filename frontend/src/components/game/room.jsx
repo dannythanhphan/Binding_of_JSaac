@@ -150,10 +150,10 @@ class Room extends React.Component {
 
     resetAttackPixels() {
         let resetState = Object.assign({}, this.state);
-        resetState.activeAttackPixels.top = 0;
-        resetState.activeAttackPixels.bottom = 0;
-        resetState.activeAttackPixels.left = 0;
-        resetState.activeAttackPixels.right = 0;
+        resetState.activeAttackPixels.top = -1000;
+        resetState.activeAttackPixels.bottom = -1000;
+        resetState.activeAttackPixels.left = -1000;
+        resetState.activeAttackPixels.right = -1000;
 
         this.setState(resetState)
     }
@@ -215,47 +215,54 @@ class Room extends React.Component {
         if (!this.state.monsters)
             return;
         const monsters = Object.values(this.state.monsters);
+        const currChar = this.state.currentCharacter;
         const updatedMonsters = {};
         let updatedMonster, activeAttackPixels, rightAttackCheck, leftAttackCheck, attackAnimation;
-        monsters.forEach(monster => {
+        monsters.forEach(monster => {            
             updatedMonster = Object.assign({}, monster);
             activeAttackPixels = this.state.activeAttackPixels; 
-
             updatedMonster.top = updatedMonster.yPos + 22;
             updatedMonster.bottom = updatedMonster.yPos + 65;
             updatedMonster.left = updatedMonster.xPos + 25;
             updatedMonster.right = updatedMonster.xPos + 53;
-
+            
             rightAttackCheck = (activeAttackPixels.top >= updatedMonster.top &&
                                 activeAttackPixels.top <= updatedMonster.bottom &&
-                                activeAttackPixels.left >= updatedMonster.left &&
-                                activeAttackPixels.left <= updatedMonster.right &&
+                                activeAttackPixels.right <= updatedMonster.right &&
+                                activeAttackPixels.right >= updatedMonster.left &&
                                 !this.monstersAttacked[monster.id])
             
             leftAttackCheck = (activeAttackPixels.top >= updatedMonster.top &&
                                 activeAttackPixels.top <= updatedMonster.bottom &&
-                                activeAttackPixels.left <= updatedMonster.left &&
+                                activeAttackPixels.left >= updatedMonster.left &&
                                 activeAttackPixels.left <= updatedMonster.right &&
                                 !this.monstersAttacked[monster.id])
-
             if (rightAttackCheck || leftAttackCheck) {
                     attackAnimation = (updatedMonster.animation === "runningRight") ? "attackedRight" : "attackedLeft"
-                    
                     updatedMonster.currentHP -= activeAttackPixels.damage;
-                    updatedMonster.animation = attackAnimation;
-                    this.monstersAttacked[monster.id] = true;
-                    updatedMonster.frames = (updatedMonster.frames === 11) ? 0 : updatedMonster.frames + 1;
-                    this.resetAttackPixels();
+                    // updatedMonster.animation = attackAnimation;
+                    // this.monstersAttacked[monster.id] = true;
+                    // updatedMonster.frames = (updatedMonster.frames === 11) ? 0 : updatedMonster.frames + 1;
+                    // this.resetAttackPixels();
                 }
                 
             if (this.monstersAttacked[monster.id]) {
                 let that = this;
-                let attackAnimation = (updatedMonster.animation === "attackedRight") ? "runningRight" : "runningLeft"
                 setTimeout(() => {
-                    this.monstersAttacked[monster.id] = false;
+                    that.monstersAttacked[monster.id] = false;
                 }, 1000)
             }
+            if (updatedMonster.currentHP > 0) {
+                updatedMonsters[updatedMonster.id] = updatedMonster;
+            }
+            else {
+                currChar.currentEXP += 10;
+                if (currChar.currentEXP > currChar.totalEXP)
+                    currChar.currentEXP = currChar.totalEXP;
+                this.props.updateXP(currChar._id, currChar.currentEXP);
+            }
         })
+        this.setState({monsters: updatedMonsters, currentCharacter: currChar});
     }
 
     checkPlayerCollision(monster) {

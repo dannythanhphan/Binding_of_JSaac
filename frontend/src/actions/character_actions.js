@@ -5,6 +5,7 @@ export const RECEIVE_CHARACTERS = 'RECEIVE_CHARACTERS';
 export const REMOVE_CHARACTER = 'REMOVE_CHARACTER';
 export const RECEIVE_GAME_CHARACTER = 'RECEIVE_GAME_CHARACTER';
 export const UPDATE_HP = "UPDATE_HP";
+export const UPDATE_XP = "UPDATE_XP";
 
 export const receiveCharacter = payload => ({
     type: RECEIVE_CHARACTER,
@@ -15,6 +16,12 @@ export const updateHP = (charId, hp) => ({
     type: UPDATE_HP,
     charId,
     hp
+});
+
+export const updateXP = (charId, xp) => ({
+    type: UPDATE_XP,
+    charId,
+    xp
 });
 
 export const removeCharacter = id => ({
