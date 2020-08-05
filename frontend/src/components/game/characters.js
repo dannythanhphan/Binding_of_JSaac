@@ -22,7 +22,6 @@ class DisplayCharacters extends React.Component {
             if (!(key in keys)) {
                 return true;
             }
-            event.preventDefault();
             if (!(key in timers)) {
                 timers[key] = null;
                 keys[key]();
@@ -290,15 +289,6 @@ class DisplayCharacters extends React.Component {
             window.addEventListener("keydown", function(e) {
                 if (e.keyCode === 32) {
                     that.move("space");
-                    setTimeout(() => {
-                        that.props.activePixels({
-                            top: -1000,
-                            bottom: -1000,
-                            left: -1000,
-                            right: -1000,
-                            damage: 0
-                        });
-                    }, 10);
                 }
             })
 

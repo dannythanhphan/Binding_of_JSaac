@@ -4,6 +4,7 @@ import RoomSelector from './room_selector';
 import * as TrapsHelper from './traps.js'
 import DisplayMonsters from './monsters.js';
 import DisplayCharacters from './characters.js';
+import * as ExitHelper from './exit.js';
 
 class Room extends React.Component {
     constructor(props) {
@@ -335,11 +336,12 @@ class Room extends React.Component {
             )
         }
         if (Object.keys(this.props.lobby).length === 0) return null;
-        let { room, traps, locations, monsters } = this.props;
+        let { room, traps, locations, monsters, exit, floor } = this.props;
         let roomImg;
         let spriteInRoom;
         let currentChar;
         let otherChar;
+        let nextLevel;
         let trapsInRoom;
         let trapsDisplay;
         let monstersInRoom;
@@ -347,6 +349,11 @@ class Room extends React.Component {
         if (this.state.currentCharacter) {
             let roomNumber = room[(this.state.currentCharacter.room % 16) * this.state.currentCharacter.floor];
             roomImg = RoomSelector(this.state.currentCharacter.room);
+            
+            if (roomNumber.floorId === exit[0].floorId) {
+                nextLevel = ExitHelper.displayExit(exit[0])
+            } 
+
             trapsInRoom = TrapsHelper.GetTraps(roomNumber.id, traps);
             trapsDisplay = trapsInRoom.map(trap => (
                 TrapsHelper.displayTraps(trap)
@@ -416,6 +423,7 @@ class Room extends React.Component {
                 >
                     <Layer>
                         <Image image={roomImg} />
+                        {nextLevel}
                         {monstersInRoom}
                         {trapsDisplay}
                         {currentChar}

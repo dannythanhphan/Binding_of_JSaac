@@ -11,7 +11,9 @@ const mapStateToProps = state => ({
     locations: (state.entities.locations),
     traps: Object.values(state.entities.traps),
     monsters: Object.values(state.entities.monsters),
-    lobby: state.entities.lobby
+    lobby: state.entities.lobby,
+    exit: Object.values(state.entities.exits),
+    floor: Object.values(state.entities.floors)
 });
 
 const mapDispatchToProps = dispatch => ({
