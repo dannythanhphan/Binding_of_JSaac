@@ -1,5 +1,5 @@
 # Binding of JSaac
-![](https://imgur.com/a/60tkYMW)
+![](https://imgur.com/gallery/60tkYMW)
 ## Background
 Binding of Jsaac is a co-op roguelike game. Roguelike is defined as a subgenre of role-playing video game characterized by a dungeon crawl through procedurally generated levels, tile-based graphics, and permanent death of the player character. (Roguelike wikipedia). The players will be able to save and reload all of their data such as gears, dungeon level, and character stats. Binding of Jsaac will use the following technology stack: MongoDB, Express, React, and Node.js.
 
