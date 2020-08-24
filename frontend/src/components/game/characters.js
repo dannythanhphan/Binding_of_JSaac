@@ -85,6 +85,7 @@ class DisplayCharacters extends React.Component {
 
     checkCollision() {
         this.checkTrapsCollision();
+        this.checkExitCollision()
     }
 
     checkTrapsCollision() {
@@ -105,6 +106,31 @@ class DisplayCharacters extends React.Component {
                 this.props.char.currentHP > 0) {
                     this.props.takeDamage(this.props.traps[i].meleeAttack);
                 }     
+        }
+    }
+
+    checkExitCollision() {
+        let { roomNumber, char, floorNumber, moveRoom } = this.props
+        let exitTopLeft, exitBottomRight;
+        let currentState = Object.assign({}, this.props.char)
+        if (this.props.char.room == this.props.exit.location) {
+            exitTopLeft = {
+                x: this.props.exit.xPos * 64,
+                y: this.props.exit.yPos * 64
+            }
+            exitBottomRight = {
+                x: exitTopLeft.x + 64,
+                y: exitTopLeft.y + 64
+            }
+
+            if (!(exitTopLeft.x >= this.props.char.right || 
+                exitBottomRight.x <= this.props.char.left ||
+                exitBottomRight.y <= this.props.char.top ||
+                exitTopLeft.y >= this.props.char.bottom)) {
+                    moveRoom(localStorage.lobbykey, char._id, floorNumber+1, 6);
+                    currentState.room = 6
+                    this.props.childSetState(currentState, true, 6);
+                }                
         }
     }
 

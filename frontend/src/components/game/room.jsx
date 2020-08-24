@@ -344,11 +344,11 @@ class Room extends React.Component {
         let nextLevel;
         let trapsInRoom;
         let trapsDisplay;
-        let monstersInRoom;
+        let monstersInRoom;        
         if (this.state.currentCharacter) {
+            let currentExit = exit[this.state.currentCharacter.floor-1];
             let roomNumber = room[(this.state.currentCharacter.room % 16) * this.state.currentCharacter.floor];
             roomImg = RoomSelector(this.state.currentCharacter.room);
-            console.log(roomNumber.position, exit[this.state.currentCharacter.floor-1].location)
             if (roomNumber.position === exit[this.state.currentCharacter.floor-1].location) {
                 nextLevel = ExitHelper.displayExit(exit[0])
             } 
@@ -365,6 +365,7 @@ class Room extends React.Component {
                 activePixels={this.getActiveAttackPixels}
                 takeDamage={this.takeDamage}
                 traps={trapsInRoom}
+                exit={currentExit}
                 moveRoom={this.props.moveRoom}
                 roomNumber={roomNumber}
                 floorNumber={Object.values(locations)[0].floor}
