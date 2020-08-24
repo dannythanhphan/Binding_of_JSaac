@@ -9,8 +9,8 @@ const Trap = require('../models/Trap');
 //Dungeon Parameters
 const NUM_FLOORS = 5;               //Number of floors in the dungeon
 const FLOOR_SIZE = 4;               //The length and width for number of rooms per floor
-const ROOM_WIDTH = 17;              //How many "tiles" there are per width in a room
-const ROOM_HEIGHT = 11;             //How many "tiles" there are per height in a room
+const ROOM_WIDTH = 16;              //How many "tiles" there are per width in a room
+const ROOM_HEIGHT = 10;             //How many "tiles" there are per height in a room
 
 const MONSTER_BASE_HP = 100;        //Monster hp at level 1
 const MONSTER_HP_SCALAR = 25;       //Monsters get 25 more hp per level
@@ -29,8 +29,8 @@ const generateDungeon = () => {
     for (let level = 0; level < NUM_FLOORS; level++) {
         if (level !== NUM_FLOORS - 1) {
             location = Math.floor(Math.random() * numRooms);
-            xPos = Math.floor(Math.random() * ROOM_WIDTH);
-            yPos = Math.floor(Math.random() * ROOM_HEIGHT);
+            xPos = Math.floor(Math.random() * ((ROOM_WIDTH - 4) + 2));
+            yPos = Math.floor(Math.random() * ((ROOM_HEIGHT - 4) + 2));
         }
         else {
             location = -1;
@@ -57,7 +57,7 @@ const generateFloor = (level, location, xPos, yPos) => {
             rightExit = (roomCol === FLOOR_SIZE + 1) ? -1 : position + 1;
             topExit = (roomRow === 0) ? -1: position - FLOOR_SIZE;
             bottomExit = (roomRow === FLOOR_SIZE - 1) ? -1: position + FLOOR_SIZE;
-            numMonsters = Math.floor(Math.random() * (5 + level));
+            numMonsters = Math.floor(Math.random() * (5 + level)) + 5;
             numTraps = Math.floor(Math.random() * (5 + level));
             floor.rooms.push(generateRoom(position, width, height, leftExit, rightExit, topExit, bottomExit, numMonsters, numTraps, level))
         }

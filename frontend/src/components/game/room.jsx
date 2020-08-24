@@ -4,6 +4,7 @@ import RoomSelector from './room_selector';
 import * as TrapsHelper from './traps.js'
 import DisplayMonsters from './monsters.js';
 import DisplayCharacters from './characters.js';
+import * as ExitHelper from './exit.js';
 
 class Room extends React.Component {
     constructor(props) {
@@ -18,6 +19,9 @@ class Room extends React.Component {
             right: 0,
             damage: 0
         };
+        this.mounted = false;
+        this.scaleFactorX = 0.1;
+        this.scaleFactorY = 0.1;
         const { locations } = this.props;
         let characters = Object.values(this.props.characters);
         for (let i = 0; i < characters.length; i++) {
@@ -31,6 +35,8 @@ class Room extends React.Component {
         currentCharacter = Object.assign(currentCharacter, locations[currentCharacter._id])
         currentCharacter.frames = 0;
         currentCharacter.animation = "runningRight";
+        // xPixel and yPixel are location of the sprite image with the white space
+        // left right top bottom are ACTUAL location of the sprite we see
         currentCharacter.xPixel = currentCharacter.xPos * 64;
         currentCharacter.yPixel = currentCharacter.yPos * 64;
         currentCharacter.left = currentCharacter.xPixel + 48;
@@ -145,10 +151,10 @@ class Room extends React.Component {
 
     resetAttackPixels() {
         let resetState = Object.assign({}, this.state);
-        resetState.activeAttackPixels.top = 0;
-        resetState.activeAttackPixels.bottom = 0;
-        resetState.activeAttackPixels.left = 0;
-        resetState.activeAttackPixels.right = 0;
+        resetState.activeAttackPixels.top = -1000;
+        resetState.activeAttackPixels.bottom = -1000;
+        resetState.activeAttackPixels.left = -1000;
+        resetState.activeAttackPixels.right = -1000;
 
         this.setState(resetState)
     }
@@ -179,19 +185,22 @@ class Room extends React.Component {
                 } else {
                     closestPlayer = {x: playerX, y: playerY}
                 }
-                
-                if (closestPlayer.x < monster.xPos) {
+
+                let monsterX = monster.xPos + 48;
+                let monsterY = monster.yPos + 30;
+
+                if (closestPlayer.x < monsterX) {
                     updatedMonster.xPos -= 1;
                     updatedMonster.animation = "runningLeft"
                 }
-                else if (closestPlayer.x - 80 > monster.xPos) {
+                else if (closestPlayer.x > monsterX) {
                     updatedMonster.xPos += 1;
                     updatedMonster.animation = "runningRight"
                 }
-                if (closestPlayer.y - 30 < monster.yPos) {
+                if (closestPlayer.y < monsterY) {
                     updatedMonster.yPos -= 1;
                 }
-                else if (closestPlayer.y > monster.yPos) {
+                else if (closestPlayer.y > monsterY) {
                     updatedMonster.yPos += 1;
                 }
                 updatedMonster.frames = (updatedMonster.frames === 11) ? 0 : updatedMonster.frames + 1;
@@ -207,47 +216,54 @@ class Room extends React.Component {
         if (!this.state.monsters)
             return;
         const monsters = Object.values(this.state.monsters);
+        const currChar = this.state.currentCharacter;
         const updatedMonsters = {};
         let updatedMonster, activeAttackPixels, rightAttackCheck, leftAttackCheck, attackAnimation;
-        monsters.forEach(monster => {
+        monsters.forEach(monster => {            
             updatedMonster = Object.assign({}, monster);
             activeAttackPixels = this.state.activeAttackPixels; 
-
             updatedMonster.top = updatedMonster.yPos + 22;
             updatedMonster.bottom = updatedMonster.yPos + 65;
             updatedMonster.left = updatedMonster.xPos + 25;
             updatedMonster.right = updatedMonster.xPos + 53;
-
+            
             rightAttackCheck = (activeAttackPixels.top >= updatedMonster.top &&
                                 activeAttackPixels.top <= updatedMonster.bottom &&
-                                activeAttackPixels.left >= updatedMonster.left &&
-                                activeAttackPixels.left <= updatedMonster.right &&
+                                activeAttackPixels.right <= updatedMonster.right &&
+                                activeAttackPixels.right >= updatedMonster.left &&
                                 !this.monstersAttacked[monster.id])
             
             leftAttackCheck = (activeAttackPixels.top >= updatedMonster.top &&
                                 activeAttackPixels.top <= updatedMonster.bottom &&
-                                activeAttackPixels.left <= updatedMonster.left &&
+                                activeAttackPixels.left >= updatedMonster.left &&
                                 activeAttackPixels.left <= updatedMonster.right &&
                                 !this.monstersAttacked[monster.id])
-
             if (rightAttackCheck || leftAttackCheck) {
                     attackAnimation = (updatedMonster.animation === "runningRight") ? "attackedRight" : "attackedLeft"
-                    
                     updatedMonster.currentHP -= activeAttackPixels.damage;
-                    updatedMonster.animation = attackAnimation;
-                    this.monstersAttacked[monster.id] = true;
-                    updatedMonster.frames = (updatedMonster.frames === 11) ? 0 : updatedMonster.frames + 1;
-                    this.resetAttackPixels();
+                    // updatedMonster.animation = attackAnimation;
+                    // this.monstersAttacked[monster.id] = true;
+                    // updatedMonster.frames = (updatedMonster.frames === 11) ? 0 : updatedMonster.frames + 1;
+                    // this.resetAttackPixels();
                 }
                 
             if (this.monstersAttacked[monster.id]) {
                 let that = this;
-                let attackAnimation = (updatedMonster.animation === "attackedRight") ? "runningRight" : "runningLeft"
                 setTimeout(() => {
-                    this.monstersAttacked[monster.id] = false;
+                    that.monstersAttacked[monster.id] = false;
                 }, 1000)
             }
+            if (updatedMonster.currentHP > 0) {
+                updatedMonsters[updatedMonster.id] = updatedMonster;
+            }
+            else {
+                currChar.currentEXP += 10;
+                if (currChar.currentEXP > currChar.totalEXP)
+                    currChar.currentEXP = currChar.totalEXP;
+                this.props.updateXP(currChar._id, currChar.currentEXP);
+            }
         })
+        this.setState({monsters: updatedMonsters, currentCharacter: currChar});
     }
 
     checkPlayerCollision(monster) {
@@ -272,6 +288,11 @@ class Room extends React.Component {
         if (localStorage.lobbykey && Object.keys(this.props.lobby).length === 0) {
             this.props.fetchLobby(localStorage.lobbykey);
         }
+
+        const div = document.getElementsByClassName("room-main")[0];
+        this.mounted = true;
+        this.scaleFactorX = div.offsetWidth / 1088;
+        this.scaleFactorY = div.offsetHeight / 704;
         
         // Change update speed 30fps for now
         this.interval = setInterval(() => {
@@ -303,26 +324,35 @@ class Room extends React.Component {
     }
 
     componentWillUnmount() {
-        // still need to figure this out
         window.clearInterval(this.interval);
         window.clearInterval(this.monsterMoveTimer);
         window.clearInterval(this.checkAttackedTimer);
     }
 
     render() {
+        if (!this.mounted) {
+            return (
+                <div className="room-main"></div>
+            )
+        }
         if (Object.keys(this.props.lobby).length === 0) return null;
-        let { room, traps, locations, monsters } = this.props;
+        let { room, traps, locations, monsters, exit, floor } = this.props;
         let roomImg;
         let spriteInRoom;
         let currentChar;
         let otherChar;
+        let nextLevel;
         let trapsInRoom;
         let trapsDisplay;
-        let monstersInRoom;
-
+        let monstersInRoom;        
         if (this.state.currentCharacter) {
+            let currentExit = exit[this.state.currentCharacter.floor-1];
             let roomNumber = room[(this.state.currentCharacter.room % 16) * this.state.currentCharacter.floor];
             roomImg = RoomSelector(this.state.currentCharacter.room);
+            if (roomNumber.position === exit[this.state.currentCharacter.floor-1].location) {
+                nextLevel = ExitHelper.displayExit(exit[0])
+            } 
+
             trapsInRoom = TrapsHelper.GetTraps(roomNumber.id, traps);
             trapsDisplay = trapsInRoom.map(trap => (
                 TrapsHelper.displayTraps(trap)
@@ -335,6 +365,7 @@ class Room extends React.Component {
                 activePixels={this.getActiveAttackPixels}
                 takeDamage={this.takeDamage}
                 traps={trapsInRoom}
+                exit={currentExit}
                 moveRoom={this.props.moveRoom}
                 roomNumber={roomNumber}
                 floorNumber={Object.values(locations)[0].floor}
@@ -370,17 +401,6 @@ class Room extends React.Component {
                 player2Y = undefined;
                 otherChar = null;
             }
-
-            // let monsterCountPerRoom = [];
-            // for (let i = 0; i < monsters.length; i++) {
-            //     if (monsters[i].roomId === roomNumber.id) {
-            //         // console.log(monsters[i].roomId)
-            //         // console.log(roomNumber.id)
-            //         monsterCountPerRoom.push(monsters[i])
-            //     }
-            // }
-            // console.log(monsterCountPerRoom)
-            // monstersInRoom = monsterCountPerRoom.map(monster => (
             
             monstersInRoom = this.waitingForData ? null : 
             Object.values(this.state.monsters).map(monster => (
@@ -397,9 +417,13 @@ class Room extends React.Component {
 
         return (
             <div className="room-main">
-                <Stage width={1088} height={704}>
+                <Stage width={1088 * this.scaleFactorX} height={704*this.scaleFactorY} 
+                scaleX={this.scaleFactorX}
+                scaleY={this.scaleFactorY}
+                >
                     <Layer>
                         <Image image={roomImg} />
+                        {nextLevel}
                         {monstersInRoom}
                         {trapsDisplay}
                         {currentChar}
