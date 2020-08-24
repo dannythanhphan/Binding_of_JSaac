@@ -345,12 +345,11 @@ class Room extends React.Component {
         let trapsInRoom;
         let trapsDisplay;
         let monstersInRoom;
-
         if (this.state.currentCharacter) {
             let roomNumber = room[(this.state.currentCharacter.room % 16) * this.state.currentCharacter.floor];
             roomImg = RoomSelector(this.state.currentCharacter.room);
-            
-            if (roomNumber.floorId === exit[0].floorId) {
+            console.log(roomNumber.position, exit[this.state.currentCharacter.floor-1].location)
+            if (roomNumber.position === exit[this.state.currentCharacter.floor-1].location) {
                 nextLevel = ExitHelper.displayExit(exit[0])
             } 
 
