@@ -20,18 +20,76 @@ Each character starts off with 100 hit points (HP). Once they take more than 100
   * MongoDB
   * Node.js
   
-### Features
+## Features
 
 ### 2D Sprite and Rendering
-All of the 2D sprite and rendering was done using a library called React Konva. We were able to modify the sprites frame by frame by using React Konva's Sprite class in conjunction with keypress movement to change the animation of the sprites. 
+All of the 2D sprite and rendering was done using a library called React Konva. We were able to modify the sprites frame by frame by using React Konva's Sprite class in conjunction with keypress movement to change the animation of the sprites.
 
+### Lobby Creation
+Our lobby creation uses an API call with Express to generate a key and create the lobby and dungeon in the database.
+```javascript
+router.post("/create/:characterId", 
+  passport.authenticate('jwt', { session: false }), (req, res) => {
+    let lobbykey = generateKey(6);
+    Lobby.findOne({ lobbykey: lobbykey }).then(lobby => {
+      if (lobby) {
+        lobbykey = generateKey(6);
+      }
+      const newLobby = new Lobby({
+        lobbykey: lobbykey,
+        player1: req.params.characterId,
+        active: true,
+        dungeon: generateDungeon()
+      });
+      newLobby.locations.push({character: req.params.characterId});
+      newLobby.save()
+        .then(lobby => buildLobbyJson(lobby, res))
+        .catch(err => console.log(err));
+      });
+    }
+  );
+```
+
+### Joining Lobbies
+The game uses Socket.IO's rooms to allow other players to join into the same lobby to play in the same dungeon
+```javascript
+export const join = (id, charId) => dispatch => {
+  dispatch(startLoadingLobby());
+  return APIUtil.join(id, charId)
+    .then(
+      res => { 
+        window.socket = socket;
+        socket.emit('room', res.data.lobby.lobbykey);
+        localStorage.setItem('lobbykey', res.data.lobby.lobbykey);
+        localStorage.setItem('lobbycharacter', charId)
+
+        socket.on('changeLobbyData', (data) => {
+          return dispatch(retrieve(data.lobbykey));
+        })
+        return dispatch(receiveLobby(res.data));
+      }
+    )
+    .catch(
+      err => dispatch(receiveErrors(err.response.data))
+    )
+};
+```
 ### Multiplayer
-The game uses Socket.IO to allow both players to join into the same lobby and play in the same dungeon. The game state of both players are synchronized by utilizing Socket.IO's broadcasting and React's local state.
+The game state of both players are synchronized by utilizing Socket.IO's broadcasting and React's local state.
+```javascript
+this.interval = setInterval(() => {
+  window.socket.emit("dungeonRefresh", 
+    {
+      room: localStorage.lobbykey, 
+      char: this.state.currentCharacter,
+      monsters: this.state.monsters
+    });
+}, 1000 / 30)
+```
 
-### First Iteration
-* Usage of Change Streams causes unintended glitches in game when saving to database
-* Currently unable to save game state
-### Planned Changes for second iteration
+
+## Planned Changes for the future
 * Removal of MongoDB Change Streams and only use Socket.IO
-* Modify lobbies to be an owner and guest instead of player1 and player2
+* Modify lobbies to be an owner and guest instead of player1 and player2 for better synchronization
+* Add more floors to dungeon
 
