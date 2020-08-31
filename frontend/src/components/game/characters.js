@@ -110,13 +110,13 @@ class DisplayCharacters extends React.Component {
     }
 
     checkExitCollision() {
-        let { roomNumber, char, floorNumber, moveRoom } = this.props
+        let { roomNumber, char, floorNumber, moveRoom, exit } = this.props;
         let exitTopLeft, exitBottomRight;
         let currentState = Object.assign({}, this.props.char)
-        if (this.props.char.room == this.props.exit.location) {
+        if (this.props.char.room == exit.location) {
             exitTopLeft = {
-                x: this.props.exit.xPos * 64,
-                y: this.props.exit.yPos * 64
+                x: exit.xPos * 64,
+                y: exit.yPos * 64
             }
             exitBottomRight = {
                 x: exitTopLeft.x + 64,

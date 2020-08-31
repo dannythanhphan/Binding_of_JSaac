@@ -58,4 +58,4 @@ class HudCharacterItem extends React.Component {
   }
 }
 
-export default HudCharacterItem
+export default HudCharacterItem;

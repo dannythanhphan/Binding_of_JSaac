@@ -9,7 +9,7 @@ import monstersReducer from "./monsters_reducer";
 import trapsReducer from "./traps_reducer";
 import locationsReducer from "./locations_reducer";
 import exitsReducer from "./exits_reducer";
-
+import scoreReducer from "./score_reducer";
 
 export default combineReducers({
     users: usersReducer,
@@ -20,5 +20,6 @@ export default combineReducers({
     monsters: monstersReducer,
     traps: trapsReducer,
     locations: locationsReducer,
-    exits: exitsReducer
+    exits: exitsReducer,
+    score: scoreReducer
 });
