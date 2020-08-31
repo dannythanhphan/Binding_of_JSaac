@@ -261,6 +261,7 @@ class Room extends React.Component {
                 if (currChar.currentEXP > currChar.totalEXP)
                     currChar.currentEXP = currChar.totalEXP;
                 this.props.updateXP(currChar._id, currChar.currentEXP);
+                this.props.updateScore(100);
             }
         })
         this.setState({monsters: updatedMonsters, currentCharacter: currChar});
@@ -339,6 +340,7 @@ class Room extends React.Component {
         let { room, traps, locations, monsters, exit, floor } = this.props;
         let roomImg;
         let spriteInRoom;
+        let refChar = this.props.characters[localStorage.lobbycharacter];
         let currentChar;
         let otherChar;
         let nextLevel;
@@ -346,11 +348,11 @@ class Room extends React.Component {
         let trapsDisplay;
         let monstersInRoom;        
         if (this.state.currentCharacter) {
-            let currentExit = exit[this.state.currentCharacter.floor-1];
+            let currentExit = exit[refChar.floor-1];
             let roomNumber = room[(this.state.currentCharacter.room % 16) * this.state.currentCharacter.floor];
             roomImg = RoomSelector(this.state.currentCharacter.room);
-            if (roomNumber.position === exit[this.state.currentCharacter.floor-1].location) {
-                nextLevel = ExitHelper.displayExit(exit[0])
+            if (roomNumber.position === exit[locations[localStorage.lobbycharacter].floor-1].location) {
+                nextLevel = ExitHelper.displayExit(exit[locations[localStorage.lobbycharacter].floor-1])
             } 
 
             trapsInRoom = TrapsHelper.GetTraps(roomNumber.id, traps);

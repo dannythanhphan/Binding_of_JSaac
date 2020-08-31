@@ -16,7 +16,8 @@ const locationsReducer = (state = {}, action) => {
             return {};
             
         case UPDATE_LOCATION:
-            nextState[action.charId].room = action.room
+            nextState[action.charId].room = action.room;
+            nextState[action.charId].floor = action.floor;
             return nextState;
         default:
             return state;

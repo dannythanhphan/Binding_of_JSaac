@@ -3,6 +3,7 @@ import Room from './room';
 import { retrieve } from '../../actions/lobby_actions';
 import { moveRoom, updateLocation } from '../../actions/room_actions';
 import { updateHP, updateXP } from '../../actions/character_actions';
+import { updateScore } from '../../actions/score_actions';
 
 const mapStateToProps = state => ({
     movingRooms: state.ui.moving,
@@ -22,6 +23,7 @@ const mapDispatchToProps = dispatch => ({
     updateLocation: (room, charId) => dispatch(updateLocation(room, charId)),
     updateHP: (charId, hp) => dispatch(updateHP(charId, hp)),
     updateXP: (charId, xp) => dispatch(updateXP(charId, xp)),
+    updateScore: amount => dispatch(updateScore(amount)),
 });
 
 export default connect(
