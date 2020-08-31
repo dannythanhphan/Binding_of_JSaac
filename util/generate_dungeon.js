@@ -29,8 +29,8 @@ const generateDungeon = () => {
     for (let level = 0; level < NUM_FLOORS; level++) {
         if (level !== NUM_FLOORS - 1) {
             location = Math.floor(Math.random() * numRooms);
-            xPos = Math.floor(Math.random() * ROOM_WIDTH);
-            yPos = Math.floor(Math.random() * ROOM_HEIGHT);
+            xPos = Math.floor(Math.random() * ((ROOM_WIDTH - 4) + 2));
+            yPos = Math.floor(Math.random() * ((ROOM_HEIGHT - 4) + 2));
         }
         else {
             location = -1;

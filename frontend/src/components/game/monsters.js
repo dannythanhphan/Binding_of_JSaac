@@ -8,20 +8,13 @@ import reaper3 from '../../assets/animations/reaper3_animation.png'
 import { Sprite } from 'react-konva';
 import monsterAnimations from './monster_animations';
 
-const MAXXPOS = 1024;
-const MINXPOS = 64;
-const MAXYPOS = 640;
-const MINYPOS = 64;
-const RANDOMMOVEPOSITION = [-5, 0, 5]
-
 class DisplayMonsters extends React.Component {
     constructor(props) {
         super(props);
         this.props = props;
         this.state = {
             monsterSprite: Math.ceil(Math.random() * 6)
-        }
-        
+        } 
     }
 
     render() {
