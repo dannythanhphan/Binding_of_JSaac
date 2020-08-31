@@ -333,3 +333,13 @@
   background-color: rgb(62, 84, 114);
   
 }
+
+#score-box {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 400px;
+  height: 75px;
+  background-color: rgba(0.8,0.8,0.8,0.6);
+  border: 1px solid black;
+}

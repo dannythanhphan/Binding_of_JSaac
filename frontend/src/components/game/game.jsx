@@ -13,6 +13,7 @@ class Game extends React.Component {
     return(
       <div className="game-main">
         <RoomContainer />
+        <div id="score-box"/>
         <HudCharactersContainer />
       </div>
     )
